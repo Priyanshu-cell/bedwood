@@ -6,7 +6,7 @@ export const ImageSection = () => {
       {/* Slider Image Section */}
       <div className="w-full md:w-3/5 h-full bg-gray-200 flex items-center justify-center">
         {/* Add your slider here */}
-        <div className="w-full h-full bg-black flex items-center justify-center">
+        <div className="w-full h-full bg-blue-50 flex items-center justify-center">
           <p>Slider Images Here</p>
         </div>
       </div>

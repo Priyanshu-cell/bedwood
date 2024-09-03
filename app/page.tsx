@@ -1,5 +1,7 @@
-import { BestSellerSection, BrandSection, Header, ImageSection, OfferSection, TopPicksSection } from "@/components";
-import Image from "next/image";
+import { BestSellerSection, BrandSection, Header, ImageSection, OfferSection, TopPicksSection, EssentialsSection, CollectionsSection, FurnishingSection, NewArrivalsSection, ModulersSection, ReviewsSection } from "@/components";
+
+
+
 
 export default function Home() {
   return (
@@ -10,6 +12,12 @@ export default function Home() {
       <BrandSection/>
       <BestSellerSection/>
       <OfferSection/>
+      <EssentialsSection/>
+      <CollectionsSection/>
+      <FurnishingSection />
+      <NewArrivalsSection/>
+      <ModulersSection/>
+      
     </main>
   );
 }
