@@ -2,3 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
+.swiperButtonPrev, .swiperButtonNext {
+  width: 30px; /* Smaller width */
+  height: 30px; /* Smaller height */
+  background-color: #FBD38D; /* Orange-50 color */
+  color: #4A5568; /* Text color */
+  border-radius: 0; /* Square shape */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0; /* Remove any margin */
+  padding: 0; /* Remove any padding */
+  top: 50%; /* Center vertically */
+  transform: translateY(-50%); /* Center vertically */
+}
+
+.swiperButtonPrev {
+  left: 0; /* Touch the left margin */
+}
+
+.swiperButtonNext {
+  right: 0; /* Touch the right margin */
+}
+
+.swiperButtonPrev::after, .swiperButtonNext::after {
+  font-size: 16px; /* Adjust font size to fit smaller buttons */
+  margin: 0; /* Remove any margin from the icon */
+}
+
+
+  
