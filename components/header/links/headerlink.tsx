@@ -113,7 +113,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({ className }) => {
           </Link>
           {link.subMenu && (
             <div
-              className={`absolute z-50 top-full left-0 mt-0.5 text-sm w-48 bg-white shadow-lg border border-gray-300 ${
+              className={`absolute z-50 top-full left-0  text-sm w-48 bg-white shadow-lg border border-gray-300 ${
                 activeMenu === index ? 'block' : 'hidden'
               }`}
               onMouseEnter={() => setActiveMenu(index)}
