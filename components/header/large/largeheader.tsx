@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { HeaderLink } from '../links/headerlink';
 
 interface LargeHeaderProps {
@@ -12,6 +12,18 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
   isSidebarOpen,
   setIsSidebarOpen,
 }) => {
+  // Manage body scroll when sidebar is open
+  useEffect(() => {
+    if (isSidebarOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isSidebarOpen]);
+
   return (
     <header className="w-full h-auto py-4 px-2 bg-gray-50">
       {/* Desktop View */}
@@ -103,8 +115,8 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
           </button>
         </div>
 
-              {/* Search Bar */}
-              <div className="w-full max-w-6xl mx-auto mt-4">
+        {/* Search Bar */}
+        <div className="w-full max-w-6xl mx-auto mt-4">
           <div className="relative flex-grow w-full">
             <input
               type="text"
@@ -139,7 +151,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
-                className="w-6 h-6"
+                className="w-8 h-7"
                 fill="none"
                 stroke="currentColor"
               >
@@ -150,7 +162,8 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
             {/* Logo */}
             <img src="/path/to/logo.svg" alt="Logo" className="h-8" />
           </div>
-          <HeaderLink />
+          <hr className="md:hidden border-t border-gray-300 w-full mt-4" />
+          <HeaderLink  />
         </div>
 
         {/* Overlay to prevent scrolling */}
@@ -164,4 +177,3 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
     </header>
   );
 };
-
