@@ -1,79 +1,130 @@
 import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export const TopPicksSection = () => {
+  const picks = [
+    {
+      id: 1,
+      href: "/sofa-sets",
+      src: "/images/home-new1/icon1.jpg",
+      alt: "Wooden Sofa Set Furniture",
+      title: "Sofa set online",
+      name: "Sofa Sets",
+    },
+    {
+      id: 2,
+      href: "/beds",
+      src: "/images/home-new1/icon2.jpg",
+      alt: "Wooden Bed Furniture",
+      title: "Wooden Bed",
+      name: "Beds",
+    },
+    {
+      id: 3,
+      href: "/dining-table-sets",
+      src: "/images/home-new1/icon3.jpg",
+      alt: "Wooden Dining Furniture",
+      title: "Dining Table set",
+      name: "Dining Table Sets",
+    },
+    {
+      id: 4,
+      href: "/sofa-cum-beds",
+      src: "/images/home-new1/icon4.jpg",
+      alt: "Wooden Sofa Come Bed Furniture",
+      title: "Sofa cum bed online",
+      name: "Sofa Cum Beds",
+    },
+    {
+      id: 5,
+      href: "/tv-units",
+      src: "/images/home-new1/icon10.jpg",
+      alt: "Wooden Tv Unit Furniture",
+      title: "Wooden TV Unit",
+      name: "TV Units",
+    },
+    {
+      id: 6,
+      href: "/bookshelves",
+      src: "/images/home-new1/icon7.jpg",
+      alt: "Wooden Bookshelf Furniture Online",
+      title: "Book Shelves online",
+      name: "Book Shelves",
+    },
+    {
+      id: 7,
+      href: "/coffee-tables",
+      src: "/images/home-new1/icon8.jpg",
+      alt: "Buy Coffee Table for Home | Wooden Coffee Table Furniture",
+      title: "Coffee Table Sets online",
+      name: "Coffee Tables",
+    },
+    {
+      id: 8,
+      href: "/study-tables",
+      src: "/images/home-new1/icon6.jpg",
+      alt: "Wooden Study Table Furniture",
+      title: "Study Table",
+      name: "Study Tables",
+    },
+    {
+      id: 9,
+      href: "/home-decors",
+      src: "/images/home-new1/icon11.jpg",
+      alt: "Home Decor Items",
+      title: "Decor Item",
+      name: "Home Decor",
+    },
+    {
+      id: 10,
+      href: "/home-furnishing",
+      src: "/images/home-new1/icon9.jpg",
+      alt: "Home Furnishing Items",
+      title: "Home Furnishing Online",
+      name: "Home Furnishing",
+    },
+    {
+      id: 11,
+      href: "/lamps-and-lighting",
+      src: "/images/home-new1/icon12.jpg",
+      alt: "Lamp Lights Online in India",
+      title: "Lamp and Lighting",
+      name: "Lamps & Lightings",
+    },
+    {
+      id: 12,
+      href: "/furniture-sale",
+      src: "/images/home-new1/icon5.jpg",
+      alt: "Furniture Sale Online in India",
+      title: "Wooden Online Sale",
+      name: "Sale",
+    },
+  ];
+
   return (
-    <section className="w-full h-auto py-12 px-6 bg-gray-50 flex flex-col items-center">
-      {/* Text Section */}
+    <div className="container mx-auto py-8 px-4">
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-semibold mb-2">Top Picks For You</h2>
+        <h2 className="text-2xl font-semibold">Top Picks For You</h2>
         <p className="text-lg text-gray-600">Impressive Collection for Your Dream Home</p>
       </div>
-
-      {/* Images Grid Section */}
-      <div className="w-full max-w-7xl grid grid-cols-6 gap-2">
-        {/* First Row */}
-        <div className="col-span-1 flex items-center justify-center">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 xl:w-40 xl:h-40 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-            <img src="https://via.placeholder.com/150" alt="Top Pick 1" className="w-full h-full object-cover" />
-          </div>
-        </div>
-        <div className="col-span-1 flex items-center justify-center">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 xl:w-40 xl:h-40 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-            <img src="https://via.placeholder.com/150" alt="Top Pick 2" className="w-full h-full object-cover" />
-          </div>
-        </div>
-        <div className="col-span-1 flex items-center justify-center">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 xl:w-40 xl:h-40 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-            <img src="https://via.placeholder.com/150" alt="Top Pick 3" className="w-full h-full object-cover" />
-          </div>
-        </div>
-        <div className="col-span-1 flex items-center justify-center">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 xl:w-40 xl:h-40 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-            <img src="https://via.placeholder.com/150" alt="Top Pick 4" className="w-full h-full object-cover" />
-          </div>
-        </div>
-        {/* Second Row */}
-        <div className="col-span-1 flex items-center justify-center">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 xl:w-40 xl:h-40 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-            <img src="https://via.placeholder.com/150" alt="Top Pick 5" className="w-full h-full object-cover" />
-          </div>
-        </div>
-        <div className="col-span-1 flex items-center justify-center">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 xl:w-40 xl:h-40 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-            <img src="https://via.placeholder.com/150" alt="Top Pick 6" className="w-full h-full object-cover" />
-          </div>
-        </div>
-        <div className="col-span-1 flex items-center justify-center">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 xl:w-40 xl:h-40 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-            <img src="https://via.placeholder.com/150" alt="Top Pick 7" className="w-full h-full object-cover" />
-          </div>
-        </div>
-        <div className="col-span-1 flex items-center justify-center">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 xl:w-40 xl:h-40 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-            <img src="https://via.placeholder.com/150" alt="Top Pick 8" className="w-full h-full object-cover" />
-          </div>
-        </div>
-        <div className="col-span-1 flex items-center justify-center">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 xl:w-40 xl:h-40 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-            <img src="https://via.placeholder.com/150" alt="Top Pick 9" className="w-full h-full object-cover" />
-          </div>
-        </div>
-        <div className="col-span-1 flex items-center justify-center">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 xl:w-40 xl:h-40 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-            <img src="https://via.placeholder.com/150" alt="Top Pick 10" className="w-full h-full object-cover" />
-          </div>
-        </div>
-        <div className="col-span-1 flex items-center justify-center">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 xl:w-40 xl:h-40 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-            <img src="https://via.placeholder.com/150" alt="Top Pick 11" className="w-full h-full object-cover" />
-          </div>
-        </div>
-        <div className="col-span-1 flex items-center justify-center">
-          <div className="w-12 h-12 sm:w-16 sm:h-16 md:w-24 md:h-24 lg:w-32 lg:h-32 xl:w-40 xl:h-40 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
-            <img src="https://via.placeholder.com/150" alt="Top Pick 12" className="w-full h-full object-cover" />
-          </div>
+      <div className="relative overflow-x-auto scrollbar-hidden">
+        <div className="flex items-center space-x-4">
+          {picks.map((pick) => (
+            <Link key={pick.id} href={pick.href} className="flex flex-col items-center">
+              <div className="relative overflow-hidden rounded-full bg-gray-200 w-24 h-24 sm:w-32 sm:h-32 md:w-44 md:h-44">
+                <img
+                  src={pick.src}
+                  alt={pick.alt}
+                  title={pick.title}
+                  className="object-cover w-full h-full"
+                />
+              </div>
+              <p className="mt-2 text-center text-xs lg:text-base font-medium">{pick.name}</p>
+            </Link>
+          ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 };
