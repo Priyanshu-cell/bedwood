@@ -23,11 +23,17 @@ export const ModulersSection = () => {
   return (
     <section className="w-full h-auto py-12 px-6 bg-gray-50">
       {/* Text Section */}
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-bold">Modular Furniture Designs</h2>
-        <Link href="/furnishing" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-          View All
-        </Link>
+      <div className="flex flex-col lg:flex-row items-start lg:items-center lg:justify-between mb-8 space-y-4 lg:space-y-0">
+        <div className="text-start">
+          <h2 className="md:text-2xl text-xl font-semibold mb-2">Modular Furniture Designs</h2>
+          <p className="md:text-lg text-sm text-gray-600">The Trendsetters of the Year</p>
+        </div>
+
+        <div className="hidden lg:block text-center">
+          <Link href="/new-arrivals" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm">
+            View All
+          </Link>
+        </div>
       </div>
 
       {/* Swiper for Horizontal Scrolling */}

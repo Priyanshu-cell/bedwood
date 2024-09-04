@@ -15,9 +15,9 @@ const images = [
 
 export const ImageSection = () => {
   return (
-    <section className="w-full h-[78vh] min-h-[40vh] flex flex-col md:flex-row p-4">
+    <section className="w-full md:h-[72vh] min-h-[20vh] flex flex-col md:flex-row p-4">
       {/* Slider Image Section */}
-      <div className="w-full md:w-3/5 h-full bg-gray-200">
+      <div className="w-full h-[30vh] md:w-3/5 md:h-full bg-gray-200">
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
           navigation
@@ -35,15 +35,13 @@ export const ImageSection = () => {
       </div>
 
       {/* Other Images Section */}
-      <div className="w-full md:w-2/5 h-full flex md:flex-col flex-row">
+      <div className="w-full md:w-2/5 h-full md:flex-col flex-row md:block hidden">
         {/* First Image */}
         <div className="w-full h-1/2 bg-gray-300 flex items-center justify-center">
-          {/* Add your first image here */}
           <p>First Image Here</p>
         </div>
         {/* Second Image */}
         <div className="w-full h-1/2 bg-gray-400 flex items-center justify-center">
-          {/* Add your second image here */}
           <p>Second Image Here</p>
         </div>
       </div>

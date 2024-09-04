@@ -8,7 +8,7 @@ interface CardProps {
 
 export const Card: React.FC<CardProps> = ({ image, title, paragraph }) => {
   return (
-    <div className="relative w-full max-w-xl aspect-[4/3] bg-gray-200 overflow-hidden rounded-lg shadow-md">
+    <div className="relative min-w-[270px] md:min-w-[370px] max-w-xs md:max-w-md aspect-[4/3] bg-gray-200 overflow-hidden shadow-xs">
       {/* Image */}
       <img src={image} alt={title} className="w-full h-full object-cover" />
 

@@ -1,24 +1,23 @@
-// components/card.tsx
 import React from 'react';
 
-interface CardProps {
+interface FurnishingCardProps {
   image: string;
   title: string;
   paragraph: string;
 }
 
-export const FurnishingCard: React.FC<CardProps> = ({ image, title, paragraph }) => {
+export const FurnishingCard: React.FC<FurnishingCardProps> = ({ image, title, paragraph }) => {
   return (
-    <div className="relative w-full overflow-hidden bg-white shadow-md rounded-lg">
-      {/* Image Container */}
-      <div className="aspect-[1.5/1]">
-        <img src={image} alt={title} className="w-full h-full object-cover" />
-      </div>
+    <div className="bg-white shadow-lg rounded-lg overflow-hidden flex flex-col min-w-[150px] max-w-xs md:min-w-[300px] md:max-w-md lg:min-w-[350px] lg:max-w-lg aspect-auto">
+      {/* Image */}
+      <img src={image} alt={title} className="w-full object-cover" style={{ height: 'auto' }} />
 
-      {/* Paragraph below the image */}
-      <div className="p-4 text-center">
-        <h3 className="text-lg font-bold">{title}</h3>
-        <p className="text-sm">{paragraph}</p>
+      {/* Text Section */}
+      <div className="flex flex-col justify-between p-4 bg-white">
+        <div>
+          <h3 className="md:text-lg text-sm font-semibold mb-2">{title}</h3>
+          <p className="text-gray-600 text-xs mb-4">{paragraph}</p>
+        </div>
       </div>
     </div>
   );

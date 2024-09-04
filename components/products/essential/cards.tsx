@@ -21,22 +21,22 @@ export const EssentialsSection: React.FC = () => {
   ];
 
   return (
-    <section className="w-full h-auto py-12 px-6 bg-white">
+    <section className="w-full py-12 px-6 bg-white">
       {/* Text Section */}
       <div className="text-center mb-8">
         <h2 className="text-2xl font-semibold mb-2">Explore Essential Home Furniture</h2>
-        <p className="text-lg text-gray-600">Discover our selection of essential furniture pieces</p>
+        <p className="text-lg text-gray-600">Design Your Home Decor, Your Way</p>
       </div>
 
-      {/* Essentials Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {essentials.map((item, index) => (
+      {/* Offers Grid */}
+      <div className="grid grid-cols-2 gap-6 md:grid-cols-3 lg:grid-cols-4">
+        {essentials.map((items, index) => (
           <EssentialCard
             key={index}
-            image={item.image}
-            title={item.title}
-            description={item.description}
-            link={item.link}
+            image={items.image}
+            title={items.title}
+            description={items.description}
+            link={items.link}
           />
         ))}
       </div>

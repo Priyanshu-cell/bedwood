@@ -1,4 +1,5 @@
-import { BestSellerSection, BrandSection, Header, ImageSection, OfferSection, TopPicksSection, EssentialsSection, CollectionsSection, FurnishingSection, NewArrivalsSection, ModulersSection, ReviewsSection } from "@/components";
+import { BestSellerSection, BrandSection, Header, ImageSection, OfferSection, TopPicksSection, EssentialsSection, CollectionsSection, FurnishingSection, NewArrivalsSection, ModulersSection, ReviewSection, Footer } from "@/components";
+
 
 
 
@@ -17,6 +18,8 @@ export default function Home() {
       <FurnishingSection />
       <NewArrivalsSection/>
       <ModulersSection/>
+      <ReviewSection />
+      <Footer/>
       
     </main>
   );

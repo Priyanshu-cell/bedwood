@@ -21,8 +21,8 @@ export const CollectionsSection = () => {
   return (
     <section className="w-full h-auto py-12 px-6 bg-gray-50">
       {/* Text Section */}
-      <div className="text-start mb-8 px-4">
-        <h2 className="text-2xl font-semibold mb-2">New Collections</h2>
+      <div className="text-start mb-8 ">
+        <h2 className="md:text-2xl text-xl font-semibold mb-2">New Collections</h2>
       </div>
 
       {/* Swiper for Horizontal Scrolling */}
