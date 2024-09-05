@@ -13,15 +13,15 @@ export const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages,
             <button
                 disabled={currentPage === 1}
                 onClick={() => onPageChange(currentPage - 1)}
-                className="px-4 py-2 mx-1 bg-gray-600 text-black rounded "
+                className="px-4 py-2 mx-1 bg-white text-black rounded "
             >
                 Previous
             </button>
-            <span className="px-4 py-2 mx-1 bg-gray-500 text-gray-800 rounded">{currentPage}</span>
+            <span className="px-4 py-2 mx-1 bg-gray-300 text-gray-800 rounded">{currentPage}</span>
             <button
                 disabled={currentPage === totalPages}
                 onClick={() => onPageChange(currentPage + 1)}
-                className="px-4 py-2 mx-1 bg-gray-600 text-black rounded"
+                className="px-4 py-2 mx-1 bg-white text-black rounded"
             >
                 Next
             </button>
