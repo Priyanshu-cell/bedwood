@@ -13,7 +13,7 @@ export const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages,
             <button
                 disabled={currentPage === 1}
                 onClick={() => onPageChange(currentPage - 1)}
-                className="px-4 py-2 mx-1 bg-white text-black rounded "
+                className="px-4 py-2 mx-1 bg-blue-300 text-black rounded hover:bg-blue-500"
             >
                 Previous
             </button>
@@ -21,7 +21,7 @@ export const Pagination: React.FC<PaginationProps> = ({ currentPage, totalPages,
             <button
                 disabled={currentPage === totalPages}
                 onClick={() => onPageChange(currentPage + 1)}
-                className="px-4 py-2 mx-1 bg-white text-black rounded"
+                className="px-4 py-2 mx-1 bg-blue-300 text-black rounded hover:bg-blue-500"
             >
                 Next
             </button>
