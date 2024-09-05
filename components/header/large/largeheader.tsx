@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { HeaderLink } from "../links/headerlink";
+import Link from "next/link";
 
 interface LargeHeaderProps {
   isScrolled: boolean;
@@ -52,7 +53,8 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
             </div>
 
             {/* Cart Button */}
-            <button className="flex flex-col items-center justify-center rounded-full">
+            <Link className="flex flex-col items-center justify-center rounded-full"
+            href='/cart'>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 128 128"
@@ -63,7 +65,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
                 <path d="M92.1 96c-5.2 0-9.3 4.2-9.3 9.3 0 5.2 4.2 9.3 9.3 9.3s9.3-4.2 9.3-9.3c0-5.1-4.1-9.3-9.3-9.3zm0 16a6.7 6.7 0 1 1 6.7-6.7c0 3.8-3 6.7-6.7 6.7zM41.4 96c-5.2 0-9.3 4.2-9.3 9.3 0 5.2 4.2 9.3 9.3 9.3s9.3-4.2 9.3-9.3c0-5.1-4.2-9.3-9.3-9.3zm0 16a6.7 6.7 0 1 1 6.7-6.7c0 3.8-3 6.7-6.7 6.7zm86.2-73.5c-.5-.8-1.3-1.2-2.2-1.2h-102L19 15.4c-.3-1.2-1.3-2.1-2.6-2.1H2.7C1.2 13.3 0 14.5 0 16c0 1.5 1.2 2.7 2.7 2.7h11.4l14.6 72.6c.3 1.2 1.3 2.1 2.6 2.1h72.2c1.1 0 2-.6 2.4-1.6L127.8 41c.3-.8.3-1.7-.2-2.5zM101.7 88H33.5l-2.7-13.3h76.7L101.7 88zm6.9-16H30.3l-2.7-13.3h86.8L108.6 72zm6.9-16H27l-2.7-13.3h96.9L115.5 56z" />
               </svg>
               <span className="text-xs text-gray-600 mt-1">Cart</span>
-            </button>
+            </Link>
           </div>
         </div>
         {/* Sticky Links Header */}
@@ -108,7 +110,8 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
           </div>
 
           {/* Cart Button */}
-          <button className="flex items-center">
+          <Link className="flex items-center"
+          href="/cart">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 128 128"
@@ -118,7 +121,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
             >
               <path d="M92.1 96c-5.2 0-9.3 4.2-9.3 9.3 0 5.2 4.2 9.3 9.3 9.3s9.3-4.2 9.3-9.3c0-5.1-4.1-9.3-9.3-9.3zm0 16a6.7 6.7 0 1 1 6.7-6.7c0 3.8-3 6.7-6.7 6.7zM41.4 96c-5.2 0-9.3 4.2-9.3 9.3 0 5.2 4.2 9.3 9.3 9.3s9.3-4.2 9.3-9.3c0-5.1-4.2-9.3-9.3-9.3zm0 16a6.7 6.7 0 1 1 6.7-6.7c0 3.8-3 6.7-6.7 6.7zm86.2-73.5c-.5-.8-1.3-1.2-2.2-1.2h-102L19 15.4c-.3-1.2-1.3-2.1-2.6-2.1H2.7C1.2 13.3 0 14.5 0 16c0 1.5 1.2 2.7 2.7 2.7h11.4l14.6 72.6c.3 1.2 1.3 2.1 2.6 2.1h72.2c1.1 0 2-.6 2.4-1.6L127.8 41c.3-.8.3-1.7-.2-2.5zM101.7 88H33.5l-2.7-13.3h76.7L101.7 88zm6.9-16H30.3l-2.7-13.3h86.8L108.6 72zm6.9-16H27l-2.7-13.3h96.9L115.5 56z" />
             </svg>
-          </button>
+          </Link>
         </div>
 
         {/* Search Bar */}

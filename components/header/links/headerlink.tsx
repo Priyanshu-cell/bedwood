@@ -20,72 +20,72 @@ interface HeaderLinkProps {
 
 const linkData: LinkData[] = [
   { 
-    href: "/sofas", 
+    href: "/productlist", 
     text: "Sofas", 
     logo: "/path/to/sofas-logo.svg",
     subMenu: [
-      { href: "/sofas/room", text: "Room Sofa" },
-      { href: "/sofas/office", text: "Office Sofa" },
-      { href: "/sofas/hotel", text: "Hotel Sofa" },
-      { href: "/sofas/living", text: "Living Sofa" },
-      { href: "/sofas/sofa-cum-bed", text: "Sofa Cum Bed" },
-      { href: "/sofas/carvin", text: "Carvin Sofa" },
+      { href: "/productlist", text: "Room Sofa" },
+      { href: "/productlist", text: "Office Sofa" },
+      { href: "/productlist", text: "Hotel Sofa" },
+      { href: "/productlist", text: "Living Sofa" },
+      { href: "/productlist", text: "Sofa Cum Bed" },
+      { href: "/productlist", text: "Carvin Sofa" },
     ]
   },
   { 
-    href: "/bed", 
+    href: "/productlist", 
     text: "Bed", 
     logo: "/path/to/bed-logo.svg",
     subMenu: [
-      { href: "/bed/single", text: "Single Bed" },
-      { href: "/bed/double", text: "Double Bed" },
-      { href: "/bed/hotel", text: "Hotel Bed" },
-      { href: "/bed/carvin", text: "Carvin Bed" },
+      { href: "/productlist", text: "Single Bed" },
+      { href: "/productlist", text: "Double Bed" },
+      { href: "/productlist", text: "Hotel Bed" },
+      { href: "/productlist", text: "Carvin Bed" },
     ]
   },
   { 
-    href: "/almirah", 
+    href: "/productlist", 
     text: "Almirah", 
     logo: "/path/to/almirah-logo.svg"
   },
   { 
-    href: "/dining-tables", 
+    href: "/productlist", 
     text: "Dining Tables", 
     logo: "/path/to/dining-tables-logo.svg",
     subMenu: [
-      { href: "/dining-tables/luxury", text: "Luxury Dining Table" },
-      { href: "/dining-tables/hotel", text: "Hotel Dining Table" },
-      { href: "/dining-tables/carvin", text: "Carvin Dining Table" },
+      { href: "/productlist", text: "Luxury Dining Table" },
+      { href: "/productlist", text: "Hotel Dining Table" },
+      { href: "/productlist", text: "Carvin Dining Table" },
     ]
   },
   { 
-    href: "/chairs", 
+    href: "/productlist", 
     text: "Chairs", 
     logo: "/path/to/chairs-logo.svg",
     subMenu: [
-      { href: "/chairs/auditorium", text: "Auditorium Chair" },
-      { href: "/chairs/wooden", text: "Wooden Chair" },
-      { href: "/chairs/racking", text: "Racking Chair" },
-      { href: "/chairs/outdoor", text: "Outdoor Lounge Chair" },
+      { href: "/productlist", text: "Auditorium Chair" },
+      { href: "/productlist", text: "Wooden Chair" },
+      { href: "/productlist", text: "Racking Chair" },
+      { href: "/productlist", text: "Outdoor Lounge Chair" },
     ]
   },
   { 
-    href: "/furniture", 
+    href: "/productlist", 
     text: "Furniture", 
     logo: "/path/to/furniture-logo.svg",
     subMenu: [
-      { href: "/furniture/office", text: "Office Furniture" },
-      { href: "/furniture/outdoor", text: "Outdoor Furniture" },
+      { href: "/productlist", text: "Office Furniture" },
+      { href: "/productlist", text: "Outdoor Furniture" },
     ]
   },
   { 
-    href: "/wooden", 
+    href: "/productlist", 
     text: "Wooden", 
     logo: "/path/to/wooden-logo.svg",
     subMenu: [
-      { href: "/wooden/table", text: "Wooden Side Table" },
-      { href: "/wooden/stool", text: "Stool" },
-      { href: "/wooden/jhula", text: "Jhula" },
+      { href: "/productlist", text: "Wooden Side Table" },
+      { href: "/productlist", text: "Stool" },
+      { href: "/productlist", text: "Jhula" },
     ]
   },
 ];
