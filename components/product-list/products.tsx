@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import {ProductCard} from './ProductCard';
-import {Pagination} from './Pagination';
+import {ProductCard} from './productCard';
+import {Pagination} from './pagination';
 import{ Header} from './header';
 import { getDummyProducts } from '../../utils/dummyData';
 import { Product } from '../../types';
