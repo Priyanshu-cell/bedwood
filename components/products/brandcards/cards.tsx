@@ -39,7 +39,7 @@ export const BrandSection = () => {
     <section className="w-full h-auto py-12 px-6 bg-gray-50">
       {/* Text Section */}
       <div className="text-center mb-8">
-        <h2 className="text-2xl font-semibold mb-2">India's Finest Online Furniture Brand</h2>
+        <h2 className="text-2xl font-semibold mb-2">India`&apos;`s Finest Online Furniture Brand.</h2>
         <p className="text-lg text-gray-600 text-balance">Buy Furniture Online from our extensive collection of wooden furniture units to give your home an elegant touch.</p>
       </div>
 
