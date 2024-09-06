@@ -1,4 +1,3 @@
-// app/cart/page.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -8,10 +7,20 @@ import { OrderSummary } from './orderSummary';
 import { getStoredCartItems, saveCartItems } from '@/utils/cartUtils'; 
 
 export const CartPage = () => {
-  const [cartItems, setCartItems] = useState<{ product: Product; quantity: number }[]>(getStoredCartItems());
+  const [cartItems, setCartItems] = useState<{ product: Product; quantity: number }[]>([]);
+
+  // Ensure cart is loaded only on the client side
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedItems = getStoredCartItems();
+      setCartItems(storedItems);
+    }
+  }, []);
 
   useEffect(() => {
-    saveCartItems(cartItems);
+    if (typeof window !== 'undefined') {
+      saveCartItems(cartItems);
+    }
   }, [cartItems]);
 
   const handleUpdateQuantity = (productId: number, quantity: number) => {
@@ -35,8 +44,7 @@ export const CartPage = () => {
 
   return (
     <div className="overflow-y-auto">
-      
-      <section className="bg-gray-50 py-10 px-4 h-full mx-auto ">
+      <section className="bg-gray-50 py-10 px-4 h-full mx-auto">
         <div className="flex flex-col gap-4 justify-center items-center m-auto">
           <ProductList
             cartItems={cartItems}
@@ -49,5 +57,3 @@ export const CartPage = () => {
     </div>
   );
 };
-
-
