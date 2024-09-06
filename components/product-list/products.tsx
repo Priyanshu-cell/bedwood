@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import { ProductCard } from './productCard';
@@ -14,7 +14,8 @@ const getStoredCartItems = (): { product: Product; quantity: number }[] => {
     const storedCart = localStorage.getItem('cartItems');
     try {
       return storedCart ? JSON.parse(storedCart) : [];
-    } catch {
+    } catch (error) {
+      console.error('Error parsing cart items from localStorage:', error);
       return [];
     }
   }
@@ -23,7 +24,11 @@ const getStoredCartItems = (): { product: Product; quantity: number }[] => {
 
 const saveCartItems = (cartItems: { product: Product; quantity: number }[]) => {
   if (typeof window !== 'undefined') {
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    try {
+      localStorage.setItem('cartItems', JSON.stringify(cartItems));
+    } catch (error) {
+      console.error('Error saving cart items to localStorage:', error);
+    }
   }
 };
 
@@ -43,10 +48,8 @@ export const ProductsPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedItems = getStoredCartItems();
-      setCartItems(storedItems);
-    }
+    const storedItems = getStoredCartItems();
+    setCartItems(storedItems);
   }, []);
 
   useEffect(() => {
@@ -110,21 +113,25 @@ export const ProductsPage: React.FC = () => {
 
   return (
     <section className="py-12 bg-gray-100">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
         <Header selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        
+        {/* Responsive Grid Layout */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
           {paginatedProducts.map(product => (
             <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
           ))}
         </div>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
+
+        {/* Pagination */}
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+
+        {/* Cart Button */}
         <div className="fixed bottom-8 right-8">
           <CartButton onClick={openCartDialog} itemCount={cartItems.length} />
         </div>
+
+        {/* Cart Dialog */}
         <CartDialog
           open={openCart}
           onClose={() => setOpenCart(false)}

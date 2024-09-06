@@ -10,19 +10,24 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
   return (
-    <div className="bg-white rounded-2xl p-5 cursor-pointer hover:-translate-y-2 transition-all relative shadow-lg">
-      <div className="w-5/6 h-[210px] overflow-hidden mx-auto aspect-w-16 aspect-h-9 mb-4">
-        <img src={product.imageUrl} alt={product.name} className="h-full w-full object-contain" />
+    <div className="bg-white rounded-2xl px-4  relative shadow-lg">
+      {/* Image */}
+      <div className="w-full md:h-[210px] overflow-hidden mx-auto my-4 cursor-pointer hover:-translate-y-2 transition-all duration-300">
+        <img src={product.imageUrl} alt={product.name} className="h-full w-full object-cover" />
       </div>
 
-      <div className="relative">
-        <h3 className="text-lg font-extrabold text-gray-800 mb-2">{product.name}</h3>
-        <p className="text-gray-600 text-sm mb-2">Lorem ipsum dolor sit amet.</p>
-        <h4 className="text-lg text-gray-800 font-bold mb-4">{product.price}</h4>
+      {/* Text Content */}
+      <div className="relative ">
+        <h3 className="text-lg sm:text-base font-extrabold text-gray-800 mb-2">{product.name}</h3>
+        <p className="text-gray-600 text-sm sm:text-xs mb-2">High-quality furniture for your home.</p>
+        <h4 className="md:text-lg text-sm text-gray-800 font-bold mb-4">{product.price}</h4>
+        
+        {/* Add to Cart Button */}
         <button
           onClick={() => onAddToCart(product)}
-          className="absolute bottom-0 right-5 bg-gray-100 w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-200 transition-all">
-          <ShoppingCartIcon className="h-6 w-6 text-gray-800" />
+          className=" absolute bottom-0 md:right-5 right-0 bg-gray-100 md:w-10 md:h-10 w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-200 transition-all"
+        >
+          <ShoppingCartIcon className="md:h-6 md:w-6 w-4 h-4 text-gray-800" />
         </button>
       </div>
     </div>

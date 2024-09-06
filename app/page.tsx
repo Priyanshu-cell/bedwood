@@ -3,7 +3,7 @@ import { BestSellerSection, BrandSection, Header, ImageSection, OfferSection, To
 
 export default function Home() {
   return (
-    <main>
+    <main className="overflow-hidden">
       <Header/>
       <ImageSection/>
       <TopPicksSection/>

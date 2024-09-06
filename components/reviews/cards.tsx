@@ -25,7 +25,7 @@ export const ReviewSection: React.FC = () => {
   return (
     <section className="bg-white px-4 py-12 md:py-24">
       <div className="max-w-screen-2xl mx-auto">
-        <h2 className="font-black text-black text-center text-3xl leading-none uppercase max-w-2xl mx-auto mb-12">
+        <h2 className="font-semibold text-black text-center md:text-3xl text-lg leading-none uppercase max-w-2xl mx-auto mb-12">
           Their Words, Our Pride
         </h2>
         <Swiper

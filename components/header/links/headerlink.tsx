@@ -95,7 +95,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({ className }) => {
 
   return (
     <nav
-      className={`md:p-4 flex flex-col md:flex-row md:justify-center md:items-center text-md w-full max-w-7xl mx-auto ${className}`}
+      className={`md:p-4 flex flex-col md:flex-row md:justify-center md:items-center text-md font-medium w-full max-w-7xl mx-auto ${className}`}
     >
       {linkData.map((link, index) => (
         <div
