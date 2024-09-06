@@ -10,16 +10,21 @@ import { Product } from '@/types';
 import { CartButton } from './cartButton';
 
 const getStoredCartItems = (): { product: Product; quantity: number }[] => {
-  const storedCart = localStorage.getItem('cartItems');
-  try {
-    return storedCart ? JSON.parse(storedCart) : [];
-  } catch {
-    return [];
+  if (typeof window !== 'undefined') {
+    const storedCart = localStorage.getItem('cartItems');
+    try {
+      return storedCart ? JSON.parse(storedCart) : [];
+    } catch {
+      return [];
+    }
   }
+  return [];
 };
 
 const saveCartItems = (cartItems: { product: Product; quantity: number }[]) => {
-  localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  if (typeof window !== 'undefined') {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }
 };
 
 export const ProductsPage: React.FC = () => {
@@ -28,13 +33,20 @@ export const ProductsPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [openCart, setOpenCart] = useState(false);
-  const [cartItems, setCartItems] = useState<{ product: Product; quantity: number }[]>(getStoredCartItems());
+  const [cartItems, setCartItems] = useState<{ product: Product; quantity: number }[]>([]);
   const perPage = 8;
 
   useEffect(() => {
     const initialProducts = getDummyProducts();
     setProducts(initialProducts);
     setFilteredProducts(initialProducts);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedItems = getStoredCartItems();
+      setCartItems(storedItems);
+    }
   }, []);
 
   useEffect(() => {
