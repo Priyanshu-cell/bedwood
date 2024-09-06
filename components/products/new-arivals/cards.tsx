@@ -27,7 +27,7 @@ export const NewArrivalsSection: React.FC = () => {
         </div>
 
         <div className="hidden lg:block text-center">
-          <Link href="/new-arrivals" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm">
+          <Link href="/productlist" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm">
             View All
           </Link>
         </div>
@@ -47,7 +47,7 @@ export const NewArrivalsSection: React.FC = () => {
 
       {/* View All Button for Small Screens */}
       <div className="lg:hidden flex justify-center mb-8">
-        <Link href="/new-arrivals" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-xs">
+        <Link href="/productlist" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-xs">
           View All
         </Link>
       </div>

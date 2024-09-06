@@ -30,7 +30,7 @@ export const ModulersSection = () => {
         </div>
 
         <div className="hidden lg:block text-center">
-          <Link href="/new-arrivals" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm">
+          <Link href="/productlist" className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm">
             View All
           </Link>
         </div>

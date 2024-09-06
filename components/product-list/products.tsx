@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useEffect, useState } from 'react';
 import { ProductCard } from './productCard';
 import { Header } from './header';
@@ -9,26 +8,23 @@ import { getDummyProducts } from '@/utils/dummyData';
 import { Product } from '@/types';
 import { CartButton } from './cartButton';
 
-const getStoredCartItems = (): { product: Product; quantity: number }[] => {
-  if (typeof window !== 'undefined') {
-    const storedCart = localStorage.getItem('cartItems');
-    try {
-      return storedCart ? JSON.parse(storedCart) : [];
-    } catch (error) {
-      console.error('Error parsing cart items from localStorage:', error);
-      return [];
-    }
+const saveCartItems = (cartItems: { product: Product; quantity: number }[]) => {
+  try {
+    console.log('Saving cart items:', cartItems); // Debugging log
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  } catch (error) {
+    console.error('Error saving cart items to localStorage:', error);
   }
-  return [];
 };
 
-const saveCartItems = (cartItems: { product: Product; quantity: number }[]) => {
-  if (typeof window !== 'undefined') {
-    try {
-      localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    } catch (error) {
-      console.error('Error saving cart items to localStorage:', error);
-    }
+// New function to load cart items
+const loadCartItems = () => {
+  try {
+    const storedItems = localStorage.getItem('cartItems');
+    return storedItems ? JSON.parse(storedItems) : [];
+  } catch (error) {
+    console.error('Error loading cart items from localStorage:', error);
+    return [];
   }
 };
 
@@ -38,20 +34,22 @@ export const ProductsPage: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [openCart, setOpenCart] = useState(false);
-  const [cartItems, setCartItems] = useState<{ product: Product; quantity: number }[]>([]);
+  const [cartItems, setCartItems] = useState<{ product: Product; quantity: number }[]>(loadCartItems()); // Load cart items on initial state
   const perPage = 8;
 
+  // Fetch dummy products when the component mounts
   useEffect(() => {
     const initialProducts = getDummyProducts();
     setProducts(initialProducts);
     setFilteredProducts(initialProducts);
   }, []);
 
+  // Update cart items when cartItems state changes and save them to localStorage
   useEffect(() => {
-    const storedItems = getStoredCartItems();
-    setCartItems(storedItems);
-  }, []);
+    saveCartItems(cartItems);
+  }, [cartItems]);
 
+  // Handle category filtering
   useEffect(() => {
     if (selectedCategory === 'All') {
       setFilteredProducts(products);
@@ -60,10 +58,6 @@ export const ProductsPage: React.FC = () => {
     }
     setCurrentPage(1);
   }, [selectedCategory, products]);
-
-  useEffect(() => {
-    saveCartItems(cartItems);
-  }, [cartItems]);
 
   const totalPages = Math.ceil(filteredProducts.length / perPage);
   const paginatedProducts = filteredProducts.slice((currentPage - 1) * perPage, currentPage * perPage);
@@ -113,11 +107,11 @@ export const ProductsPage: React.FC = () => {
 
   return (
     <section className="py-12 bg-gray-100">
-      <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
+      <div className="mx-auto max-w-8xl px-2 sm:px-4 lg:px-8">
         <Header selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
         
         {/* Responsive Grid Layout */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {paginatedProducts.map(product => (
             <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
           ))}
@@ -127,7 +121,7 @@ export const ProductsPage: React.FC = () => {
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
 
         {/* Cart Button */}
-        <div className="fixed bottom-8 right-8">
+        <div className="fixed md:bottom-8 md:right-8 bottom-12 right-4">
           <CartButton onClick={openCartDialog} itemCount={cartItems.length} />
         </div>
 

@@ -18,8 +18,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
 
       {/* Text Content */}
       <div className="relative ">
-        <h3 className="text-lg sm:text-base font-extrabold text-gray-800 mb-2">{product.name}</h3>
-        <p className="text-gray-600 text-sm sm:text-xs mb-2">High-quality furniture for your home.</p>
+        <h3 className="md:text-lg text-sm font-extrabold text-gray-800 mb-2">{product.name}</h3>
+        <p className="text-gray-600 md:text-sm text-xs mb-2">High-quality furniture for your home.</p>
         <h4 className="md:text-lg text-sm text-gray-800 font-bold mb-4">{product.price}</h4>
         
         {/* Add to Cart Button */}
