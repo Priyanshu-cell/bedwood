@@ -1,3 +1,4 @@
+
 import React, { useEffect } from "react";
 import { HeaderLink } from "../links/headerlink";
 import Link from "next/link";
@@ -57,7 +58,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
           </div>
         </div>
         {/* Sticky Links Header */}
-        <div className={`${isScrolled ? "fixed top-0 left-0 w-full shadow-lg bg-white z-50" : ""} hidden md:block`}>
+        <div className={`${isScrolled ? "fixed top-0 left-0 w-full border-b bg-white z-50" : ""} hidden md:block`}>
           <HeaderLink />
         </div>
       </div>

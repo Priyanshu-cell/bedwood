@@ -1,12 +1,13 @@
 
 'use client';
 
-import { CartPage, CartHeader } from '@/components';
+import { CartHeader, CartPage } from '@/components';
+
 
 export default function CartCom ()  {
   return (
     <div className='overflow-hidden min-h-screen'>
-        <CartHeader />
+        <CartHeader/>
         <CartPage />
     </div>
   );

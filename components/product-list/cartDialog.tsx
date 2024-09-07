@@ -36,7 +36,7 @@ export const CartDialog: React.FC<CartDialogProps> = ({
   };
 
   return (
-    <Dialog open={open} onClose={onClose} className="relative z-10">
+    <Dialog open={open} onClose={onClose} className="relative z-50">
       <DialogBackdrop
         transition
         className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"

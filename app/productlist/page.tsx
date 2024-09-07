@@ -1,8 +1,9 @@
-import { ProductsPage } from "@/components";
+import { Header, ProductsPage } from "@/components";
 
 export default function ProductListPage () {
     return (
-        <div >
+        <div>
+            <Header/>
             <ProductsPage/>
         </div>
     );

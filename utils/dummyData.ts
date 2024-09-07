@@ -1,8 +1,8 @@
 // utils/dummyData.ts
 import { Product } from '../types';
 
-export const getDummyProducts = (): Product[] => {
-    return Array.from({ length: 30 }, (_, index) => ({
+export const getDummyProducts = (count: number): Product[] => {
+    return Array.from({ length: count }, (_, index) => ({
         id: index + 1,
         name: `Product ${index + 1}`,
         price: `$${(Math.random() * 100).toFixed(2)}`,

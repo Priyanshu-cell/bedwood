@@ -1,4 +1,3 @@
-// components/cart/OrderSummary.tsx
 import React from 'react';
 import { Product } from '@/types';
 
@@ -12,7 +11,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({ cartItems }) => {
     .toFixed(2);
 
   return (
-    <div className="max-w-5xl w-full min-w-xl bg-white shadow-md rounded-lg p-6 m-4">
+    <div className="max-w-5xl w-full min-w-xl bg-white shadow-md rounded-lg p-6">
       <h2 className="text-3xl font-bold text-gray-900 mb-6">Order Summary</h2>
       <div className="flex justify-between mb-4">
         <p className="text-lg">Items: {cartItems.reduce((total, { quantity }) => total + quantity, 0)}</p>

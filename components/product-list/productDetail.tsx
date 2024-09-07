@@ -1,7 +1,7 @@
-// components/ProductCard.tsx
 import React from 'react';
 import { Product } from '@/types';
 import { ShoppingCartIcon, InformationCircleIcon, StarIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 
 interface ProductCardProps {
   product: Product;
@@ -21,12 +21,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
         <img src={product.imageUrl} alt={product.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110" />
 
         {/* Detail Button */}
-        <button
-          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-400 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          onClick={() => console.log('Detail button clicked')}
-        >
-          <InformationCircleIcon className="w-6 h-6" />
-        </button>
+        <Link href={`/detail`}
+          
+            className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-400 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+          >
+            <InformationCircleIcon className="w-6 h-6" />
+          
+        </Link>
       </div>
 
       {/* Text Content */}

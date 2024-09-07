@@ -1,28 +1,21 @@
 'use client'
 
 import React from 'react';
-import { HomeIcon,ListBulletIcon  } from '@heroicons/react/24/outline';
-import Link from 'next/link';
 
 export const CartHeader: React.FC = () => {
-  
-
   return (
-    <header className="flex justify-between items-center p-4 bg-slate-50 ">
-      <Link
-       href='/'
-        className="flex items-center space-x-2 text-sm font-medium hover:text-gray-400"
-      >
-        <HomeIcon className="h-6 w-6" aria-hidden="true" />
-        
-      </Link>
-      <Link
-       href='/productlist'
-        className="flex items-center space-x-2 text-sm font-medium hover:text-gray-400"
-      >
-        <ListBulletIcon className="h-6 w-6" aria-hidden="true" />
-        <span>Products</span>
-      </Link>
+    <header className='w-full h-auto py-4 px-2 bg-gray-50 border-b-2' >
+      <div className="flex justify-between items-center  bg-slate-50 md:px-44">
+        {/* Logo */}
+      <div className="flex items-center space-x-2 text-sm font-medium">
+        <span className="text-lg font-bold">YourLogo</span>
+      </div>
+      
+      {/* Contact Information */}
+      <div className="flex items-center space-x-2 text-md font-medium">
+        <span>Contact Us</span>
+      </div>
+      </div>
     </header>
   );
 };

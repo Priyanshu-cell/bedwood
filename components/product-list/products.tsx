@@ -1,24 +1,21 @@
-'use client';
+'use client'
 import React, { useEffect, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { ProductCard } from './productCard';
 import { Header } from './header';
-import { Pagination } from './pagination';
 import { CartDialog } from './cartDialog';
 import { getDummyProducts } from '@/utils/dummyData';
 import { Product } from '@/types';
 import { CartButton } from './cartButton';
-import { TopHeader } from './topHeader';
 
 const saveCartItems = (cartItems: { product: Product; quantity: number }[]) => {
   try {
-    console.log('Saving cart items:', cartItems); // Debugging log
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   } catch (error) {
     console.error('Error saving cart items to localStorage:', error);
   }
 };
 
-// New function to load cart items
 const loadCartItems = () => {
   try {
     const storedItems = localStorage.getItem('cartItems');
@@ -32,43 +29,60 @@ const loadCartItems = () => {
 export const ProductsPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [selectedSortOption, setSelectedSortOption] = useState('Price (Low to High)');
+  const [selectedLayout, setSelectedLayout] = useState('3x3'); // Default layout for desktop
   const [openCart, setOpenCart] = useState(false);
-  const [cartItems, setCartItems] = useState<{ product: Product; quantity: number }[]>(loadCartItems()); // Load cart items on initial state
+  const [cartItems, setCartItems] = useState<{ product: Product; quantity: number }[]>(loadCartItems());
+  const [hasMore, setHasMore] = useState(true);
   const perPage = 8;
 
-  // Fetch dummy products when the component mounts
+  // Initial product load
   useEffect(() => {
-    const initialProducts = getDummyProducts();
-    setProducts(initialProducts);
-    setFilteredProducts(initialProducts);
+    setProducts(getDummyProducts(100));
+    setFilteredProducts(getDummyProducts(100));
   }, []);
 
-  // Update cart items when cartItems state changes and save them to localStorage
   useEffect(() => {
     saveCartItems(cartItems);
   }, [cartItems]);
 
-  // Handle category filtering
   useEffect(() => {
-    if (selectedCategory === 'All') {
-      setFilteredProducts(products);
-    } else {
-      setFilteredProducts(products.filter(product => product.category === selectedCategory));
+    let filtered = selectedCategory === 'All' 
+      ? [...products]
+      : products.filter(product => product.category === selectedCategory);
+
+    const convertPriceToNumber = (price: string) => parseFloat(price.replace('$', ''));
+
+    if (selectedSortOption === 'Price (Low to High)') {
+      filtered = [...filtered].sort((a, b) => convertPriceToNumber(a.price) - convertPriceToNumber(b.price));
+    } else if (selectedSortOption === 'Price (High to Low)') {
+      filtered = [...filtered].sort((a, b) => convertPriceToNumber(b.price) - convertPriceToNumber(a.price));
     }
-    setCurrentPage(1);
-  }, [selectedCategory, products]);
 
-  const totalPages = Math.ceil(filteredProducts.length / perPage);
-  const paginatedProducts = filteredProducts.slice((currentPage - 1) * perPage, currentPage * perPage);
+    setFilteredProducts(filtered);
+  }, [selectedCategory, selectedSortOption, products]);
 
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+  const fetchMoreData = () => {
+    setTimeout(() => {
+      setFilteredProducts(prev => [
+        ...prev,
+        ...getDummyProducts(prev.length + perPage),
+      ]);
+    }, 500);
   };
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
+    setFilteredProducts(products.filter(product => category === 'All' || product.category === category));
+  };
+
+  const handleSortChange = (sortOption: string) => {
+    setSelectedSortOption(sortOption);
+  };
+
+  const handleLayoutChange = (layout: string) => {
+    setSelectedLayout(layout);
   };
 
   const handleAddToCart = (product: Product) => {
@@ -107,28 +121,39 @@ export const ProductsPage: React.FC = () => {
   };
 
   return (
-    <section className="pb-12 bg-gray-100">
-      <TopHeader/>
-      <div className="mx-auto max-w-8xl my-6 px-2 sm:px-4 lg:px-8">
-        
-        <Header selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
-        
-        {/* Responsive Grid Layout */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {paginatedProducts.map(product => (
-            <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
-          ))}
-        </div>
+    <section className="pb-12 bg-gray-100 min-h-screen">
+      <div className="mx-auto max-w-8xl">
+        <Header 
+          selectedCategory={selectedCategory} 
+          onCategoryChange={handleCategoryChange} 
+          selectedSortOption={selectedSortOption} 
+          onSortChange={handleSortChange} 
+          onLayoutChange={handleLayoutChange}
+          selectedLayout={selectedLayout}
+        />
 
-        {/* Pagination */}
-        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={handlePageChange} />
+        <InfiniteScroll
+          dataLength={filteredProducts.length}
+          next={fetchMoreData}
+          hasMore={hasMore}
+          loader={<h4 className='text-center md:text-xl text-sm font-semibold'>Loading...</h4>}
+          endMessage={<p className='md:text-xl text-sm text-center font-semibold'>No more products</p>}
+        >
+          <div className={`grid gap-6 my-10 px-4 lg:px-8 
+            ${selectedLayout === '2x2' ? 'grid-cols-2 md:grid-cols-3' 
+            : selectedLayout === '3x3' ? 'grid-cols-3 md:grid-cols-3'
+            : selectedLayout === '4x4' ? 'grid-cols-4 md:grid-cols-4'
+            : 'grid-cols-5 md:grid-cols-5'}`}>
+            {filteredProducts.map(product => (
+              <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
+            ))}
+          </div>
+        </InfiniteScroll>
 
-        {/* Cart Button */}
         <div className="fixed md:bottom-8 md:right-8 bottom-12 right-4">
           <CartButton onClick={openCartDialog} itemCount={cartItems.length} />
         </div>
 
-        {/* Cart Dialog */}
         <CartDialog
           open={openCart}
           onClose={() => setOpenCart(false)}

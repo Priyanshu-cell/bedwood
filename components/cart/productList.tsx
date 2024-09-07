@@ -1,6 +1,6 @@
 import React from 'react';
 import { Product } from '@/types';
-import { FaTrash } from 'react-icons/fa'; // Import the trash icon
+import { FaTrash } from 'react-icons/fa';
 
 interface ProductListProps {
   cartItems: { product: Product; quantity: number }[];
@@ -14,52 +14,71 @@ export const ProductList: React.FC<ProductListProps> = ({
   onUpdateQuantity,
 }) => {
   return (
-    <div className="flex-1 w-full bg-white shadow-md rounded-lg p-6">
-      <h2 className="text-3xl font-bold text-gray-900 mb-6">Shopping Cart</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-        {cartItems.map(({ product, quantity }) => (
-          <div key={product.id} className="flex flex-col shadow-md rounded-md p-4 bg-gray-100">
-            <img
-              src={product.imageUrl}
-              alt={product.name}
-              className="w-full h-44 object-cover rounded-lg"
-            />
-            <div className="flex justify-between items-center mt-2">
-              <div>
-                <h3 className="text-lg font-semibold text-gray-800">{product.name}</h3>
-                <p className="text-gray-600">{product.price}</p>
-                <div className="flex items-center mt-2 space-x-2">
+    <div className="bg-white shadow-md rounded-lg pb-6 px-4 h-full flex flex-col">
+      {/* Header */}
+      <div className="sticky bg-white z-10 border-b pb-2">
+        <h1 className="text-2xl font-semibold">Shopping Cart</h1>
+      </div>
+
+      {/* Product List */}
+      <div className="flex-1 overflow-y-auto scrollbar-hide">
+        {cartItems.length === 0 ? (
+          <p>Your cart is empty.</p>
+        ) : (
+          <div className="space-y-6 flex flex-col items-center">
+            {cartItems.map(({ product, quantity }) => (
+              <div key={product.id} className="flex items-center justify-between border-b p-6 w-full max-w-4xl">
+                <div className="flex items-center space-x-6 w-full">
+                  <img
+                    src={product.imageUrl}
+                    alt={product.name}
+                    className="w-24 h-24 object-cover rounded-md"
+                  />
+                  <div className="flex-1">
+                    <h3 className="text-xl font-semibold text-gray-800">{product.name}</h3>
+                    <p className="text-lg text-gray-600">{product.price}</p>
+                    <div className="flex items-center mt-3">
+                      <button
+                        onClick={() => onUpdateQuantity(product.id, quantity - 1)}
+                        className="bg-gray-300 hover:bg-gray-500 px-3 rounded-md text-lg"
+                        disabled={quantity <= 1}
+                      >
+                        -
+                      </button>
+                      <span className="mx-3 text-lg">{quantity}</span>
+                      <button
+                        onClick={() => onUpdateQuantity(product.id, quantity + 1)}
+                        className="bg-gray-300 hover:bg-gray-500 px-3 rounded-md text-lg"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </div>
                   <button
-                    onClick={() => onUpdateQuantity(product.id, quantity - 1)}
-                    className="bg-gray-300 hover:bg-gray-500 px-2 rounded-md"
-                    disabled={quantity <= 1}
+                    onClick={() => onRemoveFromCart(product.id)}
+                    className=" text-red-500 hover:text-red-600 text-sm"
                   >
-                    -
-                  </button>
-                  <span className="text-gray-700">{quantity}</span>
-                  <button
-                    onClick={() => onUpdateQuantity(product.id, quantity + 1)}
-                    className="bg-gray-300 hover:bg-gray-500 px-2 rounded-md"
-                  >
-                    +
+                    <FaTrash />
                   </button>
                 </div>
               </div>
-              <button
-                onClick={() => onRemoveFromCart(product.id)}
-                className="bg-red-500 hover:bg-red-600 text-white text-sm px-4 py-2 rounded-md flex items-center"
-              >
-                <FaTrash  /> {/* Add delete icon */}
-              </button>
-            </div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
-      <div className="mt-6 flex justify-between border-t pt-4">
-        <p className="font-bold text-xl">Subtotal</p>
-        <p className="font-bold text-xl">
-          ${cartItems.reduce((total, { product, quantity }) => total + parseFloat(product.price.slice(1)) * quantity, 0).toFixed(2)}
-        </p>
+
+      {/* Footer */}
+      <div className="sticky bottom-0 bg-white border-t py-4 mt-4">
+        <div className="flex justify-between">
+          <p className="font-bold text-2xl">Subtotal</p>
+          <p className="font-bold text-2xl">
+            ${cartItems.reduce(
+              (total, { product, quantity }) =>
+                total + parseFloat(product.price.slice(1)) * quantity,
+              0
+            ).toFixed(2)}
+          </p>
+        </div>
       </div>
     </div>
   );
