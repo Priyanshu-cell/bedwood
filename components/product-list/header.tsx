@@ -11,11 +11,10 @@ export const Header: React.FC<HeaderProps> = ({ selectedCategory, onCategoryChan
   return (
     <div className="flex justify-between items-center mb-8 overflow-hidden">
       {/* Dynamic Title with responsive text sizing */}
-      <h1 className="font-manrope font-bold text-3xl text-black md:text-xl sm:text-lg">Products</h1>
+      <h1 className="font-manrope font-bold text-black md:text-3xl text-md">Products</h1>
       
       {/* Category Selection */}
       <div className="flex space-x-4 items-center">
-        
         {/* Dropdown for mobile view */}
         <select
           value={selectedCategory}

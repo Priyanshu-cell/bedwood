@@ -7,6 +7,7 @@ import { CartDialog } from './cartDialog';
 import { getDummyProducts } from '@/utils/dummyData';
 import { Product } from '@/types';
 import { CartButton } from './cartButton';
+import { TopHeader } from './topHeader';
 
 const saveCartItems = (cartItems: { product: Product; quantity: number }[]) => {
   try {
@@ -106,8 +107,10 @@ export const ProductsPage: React.FC = () => {
   };
 
   return (
-    <section className="py-12 bg-gray-100">
-      <div className="mx-auto max-w-8xl px-2 sm:px-4 lg:px-8">
+    <section className="pb-12 bg-gray-100">
+      <TopHeader/>
+      <div className="mx-auto max-w-8xl my-6 px-2 sm:px-4 lg:px-8">
+        
         <Header selectedCategory={selectedCategory} onCategoryChange={handleCategoryChange} />
         
         {/* Responsive Grid Layout */}

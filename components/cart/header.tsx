@@ -14,7 +14,7 @@ export const CartHeader: React.FC = () => {
         className="flex items-center space-x-2 text-sm font-medium hover:text-gray-400"
       >
         <HomeIcon className="h-6 w-6" aria-hidden="true" />
-        <span>Back to Home</span>
+        
       </Link>
       <Link
        href='/productlist'

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { ShoppingCartIcon } from '@heroicons/react/24/outline';
+import React, { useEffect, useState } from "react";
+import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 
 interface CartButtonProps {
   onClick: () => void;
@@ -9,9 +9,8 @@ interface CartButtonProps {
 export const CartButton: React.FC<CartButtonProps> = ({ onClick, itemCount }) => {
   const [isMounted, setIsMounted] = useState(false);
 
-  // Set isMounted to true when the component has mounted
   useEffect(() => {
-    setIsMounted(true);
+    setIsMounted(true); // Ensure component mounts before rendering item count
   }, []);
 
   return (

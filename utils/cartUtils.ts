@@ -1,9 +1,14 @@
+// utils/cartUtils.tsx
 import { Product } from '@/types';
 
-// Get cart items from localStorage
-export const getStoredCartItems = (): { product: Product; quantity: number }[] => {
-  if (typeof window === 'undefined') return [];
-  
+// Type for cart item
+interface CartItem {
+  product: Product;
+  quantity: number;
+}
+
+// Load cart items from localStorage
+export const getCartItems = (): CartItem[] => {
   try {
     const storedItems = localStorage.getItem('cartItems');
     return storedItems ? JSON.parse(storedItems) : [];
@@ -14,12 +19,45 @@ export const getStoredCartItems = (): { product: Product; quantity: number }[] =
 };
 
 // Save cart items to localStorage
-export const saveCartItems = (cartItems: { product: Product; quantity: number }[]) => {
-  if (typeof window === 'undefined') return;
-  
+export const saveCartItems = (cartItems: CartItem[]) => {
   try {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
   } catch (error) {
     console.error('Error saving cart items to localStorage:', error);
   }
+};
+
+// Add item to cart
+export const addToCart = (product: Product) => {
+  const cartItems = getCartItems();
+  const itemIndex = cartItems.findIndex(item => item.product.id === product.id);
+
+  if (itemIndex >= 0) {
+    cartItems[itemIndex].quantity += 1;
+  } else {
+    cartItems.push({ product, quantity: 1 });
+  }
+
+  saveCartItems(cartItems);
+};
+
+// Update cart item quantity
+export const updateCartItemQuantity = (productId: number, quantity: number) => {
+  const cartItems = getCartItems();
+  const itemIndex = cartItems.findIndex(item => item.product.id === productId);
+
+  if (itemIndex >= 0) {
+    if (quantity <= 0) {
+      cartItems.splice(itemIndex, 1); // Remove the item
+    } else {
+      cartItems[itemIndex].quantity = quantity;
+    }
+    saveCartItems(cartItems);
+  }
+};
+
+// Remove item from cart
+export const removeCartItem = (productId: number) => {
+  const cartItems = getCartItems().filter(item => item.product.id !== productId);
+  saveCartItems(cartItems);
 };
