@@ -1,7 +1,12 @@
 // components/ProductCard.tsx
-import React from 'react';
-import { Product } from '@/types';
-import { ShoppingCartIcon, InformationCircleIcon, StarIcon } from '@heroicons/react/24/outline';
+import React from "react";
+import { Product } from "@/types";
+import {
+  ShoppingCartIcon,
+  InformationCircleIcon,
+  StarIcon,
+} from "@heroicons/react/24/outline";
+import Link from "next/link";
 
 interface ProductCardProps {
   product: Product;
@@ -9,42 +14,58 @@ interface ProductCardProps {
 }
 
 // Function to generate a random rating between 3 and 5
-const getRandomRating = (): number => Math.floor(Math.random() * (5 - 3 + 1)) + 3;
+const getRandomRating = (): number =>
+  Math.floor(Math.random() * (5 - 3 + 1)) + 3;
 
-export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }) => {
+export const ProductCard: React.FC<ProductCardProps> = ({
+  product,
+  onAddToCart,
+}) => {
   const rating = getRandomRating();
 
   return (
     <div className="bg-inherit relative group">
       {/* Image Container */}
       <div className="w-full md:h-[250px] overflow-hidden mx-auto my-4 relative cursor-pointer">
-        <img src={product.imageUrl} alt={product.name} className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110" />
+        <img
+          src={product.imageUrl}
+          alt={product.name}
+          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+        />
 
         {/* Detail Button */}
-        <button
+        <Link
+          href={`/product/${product.id}`}
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-400 text-white p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          onClick={() => console.log('Detail button clicked')}
         >
           <InformationCircleIcon className="w-6 h-6" />
-        </button>
+        </Link>
       </div>
 
       {/* Text Content */}
       <div className="relative">
-        <h3 className="md:text-lg text-sm font-extrabold text-gray-800 mb-2">{product.name}</h3>
-        <p className="text-gray-600 md:text-sm text-xs mb-2">High-quality furniture for your home.</p>
-        <h4 className="md:text-lg text-sm text-gray-800 font-bold mb-4">{product.price}</h4>
+        <h3 className="md:text-lg text-sm font-extrabold text-gray-800 mb-2">
+          {product.name}
+        </h3>
+        <p className="text-gray-600 md:text-sm text-xs mb-2">
+          High-quality furniture for your home.
+        </p>
+        <h4 className="md:text-lg text-sm text-gray-800 font-bold mb-4">
+          {product.price}
+        </h4>
 
         {/* Rating */}
         <div className="flex items-center mb-2">
           {Array.from({ length: 5 }, (_, index) => (
             <StarIcon
               key={index}
-              className={`w-5 h-5 ${index < rating ? 'text-yellow-400' : 'text-gray-300'}`}
+              className={`w-5 h-5 ${
+                index < rating ? "text-yellow-400" : "text-gray-300"
+              }`}
             />
           ))}
         </div>
-        
+
         {/* Add to Cart Button */}
         <button
           onClick={() => onAddToCart(product)}
