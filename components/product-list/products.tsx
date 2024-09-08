@@ -7,6 +7,8 @@ import { CartDialog } from './cartDialog';
 import { getDummyProducts } from '@/utils/dummyData';
 import { Product } from '@/types';
 import { CartButton } from './cartButton';
+import { cartItemsCountState } from '@/state/atoms/countCartState';
+import { useRecoilState } from 'recoil';
 
 const saveCartItems = (cartItems: { product: Product; quantity: number }[]) => {
   try {
@@ -35,6 +37,7 @@ export const ProductsPage: React.FC = () => {
   const [openCart, setOpenCart] = useState(false);
   const [cartItems, setCartItems] = useState<{ product: Product; quantity: number }[]>(loadCartItems());
   const [hasMore, setHasMore] = useState(true);
+  const [cartItemCount, setCartItemCount] = useRecoilState(cartItemsCountState);
   const perPage = 8;
 
   // Initial product load
@@ -45,7 +48,8 @@ export const ProductsPage: React.FC = () => {
 
   useEffect(() => {
     saveCartItems(cartItems);
-  }, [cartItems]);
+    setCartItemCount(cartItems.length); // update Recoil state with the cart items count
+  }, [cartItems, setCartItemCount]);
 
   useEffect(() => {
     let filtered = selectedCategory === 'All' 
@@ -151,7 +155,7 @@ export const ProductsPage: React.FC = () => {
         </InfiniteScroll>
 
         <div className="fixed md:bottom-8 md:right-8 bottom-12 right-4">
-          <CartButton onClick={openCartDialog} itemCount={cartItems.length} />
+          <CartButton onClick={openCartDialog}  itemCount={cartItemCount} />
         </div>
 
         <CartDialog
