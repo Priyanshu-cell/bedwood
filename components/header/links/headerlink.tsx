@@ -146,7 +146,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({ className,setSideBarOpen
           {/* Sub-menu for desktop (on hover) */}
           {link.subMenu && !isMobile && (
             <div
-              className={`absolute z-50 top-full left-0 w-48 bg-white shadow-lg border border-gray-300 rounded-md  scale-95 transform transition-transform duration-300 ease-in-out ${
+              className={`absolute z-50 top-5 left-0 w-48 bg-white shadow-lg border border-gray-300 rounded-md  scale-95 transform transition-transform duration-300 ease-in-out ${
                 activeMenu === index ? 'block' : 'hidden'
               }`}
             >
