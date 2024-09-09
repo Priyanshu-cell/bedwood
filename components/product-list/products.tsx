@@ -126,7 +126,7 @@ export const ProductsPage: React.FC = () => {
 
   return (
     <section className="pb-12 bg-gray-100 min-h-screen">
-      <div className="mx-auto max-w-8xl">
+      <div className="mx-auto max-w-8xl z-40">
         <Header 
           selectedCategory={selectedCategory} 
           onCategoryChange={handleCategoryChange} 
