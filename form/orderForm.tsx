@@ -25,8 +25,9 @@ export const OrderForm: React.FC<OrderFormProps> = ({ cartItems, onClose }) => {
       const { formData, cartItems } = orderData;
       return sendOrderToWhatsApp(formData, cartItems);
     },
-    onSuccess: () => {
-      alert('Order sent successfully!');
+    onSuccess: (res) => {
+
+      alert(JSON.stringify(res));
       reset();
       onClose();
     },
