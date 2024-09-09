@@ -184,7 +184,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
               Add to Cart
               <ShoppingCartIcon className="w-6 h-6 inline-block ml-2" />
             </button>
-            <button onClick={()=>OrderForm(cartItems, onclose())} className="bg-green-400 flex gap-2 items-center  text-white px-6 py-2 rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+            <button  className="bg-green-400 flex gap-2 items-center  text-white px-6 py-2 rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
               <BiPurchaseTag className="w-6 h-6 inline-block " />
               BUY NOW
             </button>
