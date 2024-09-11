@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import React, { useEffect, useState } from "react";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
@@ -37,9 +37,11 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
   const [notification, setNotification] = useState<string | null>(null);
   const [cartItems, setCartItems] = useState<{ product: Product; quantity: number }[]>([]);
   const [cartItemCount, setCartItemCount] = useRecoilState(cartItemsCountState);
-  const [quantity, setQuantity] = useState(1); // New state for quantity
-  const [isMounted, setIsMounted] = useState(false); // Track if component is mounted
-  const [isProductInCart, setIsProductInCart] = useState(false); // New state to track if the product is in the cart
+  const [quantity, setQuantity] = useState(1);
+  const [isMounted, setIsMounted] = useState(false);
+  const [isProductInCart, setIsProductInCart] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
 
   // Fetch product data
   useEffect(() => {
@@ -53,12 +55,12 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
     fetchProduct();
   }, [id]);
 
-  // Load cart items only after the component is mounted (to avoid hydration issues)
+  // Load cart items only after the component is mounted
   useEffect(() => {
     if (isMounted) {
       const storedCartItems = loadCartItems();
       setCartItems(storedCartItems);
-      setCartItemCount(storedCartItems.length); // Set initial cart count from localStorage
+      setCartItemCount(storedCartItems.length);
 
       // Check if the product is already in the cart
       const productInCart = storedCartItems.some((item: { product: { id: number; }; }) => item.product.id === id);
@@ -75,7 +77,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
   useEffect(() => {
     if (isMounted) {
       saveCartItems(cartItems);
-      setCartItemCount(cartItems.length); // update Recoil state with the cart items count
+      setCartItemCount(cartItems.length);
     }
   }, [cartItems, isMounted, setCartItemCount]);
 
@@ -89,12 +91,52 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
       setCartItems((prevCart) => {
         return [...prevCart, { product, quantity }];
       });
-      setIsProductInCart(true); // Mark product as added to the cart
+      setIsProductInCart(true);
       setNotification("Product added to cart!");
     } else {
       setNotification("This item is already in your cart!");
     }
     setTimeout(() => setNotification(null), 3000);
+  };
+
+  const handleBuyNow = () => {
+    setShowModal(true);
+  };
+
+  const handleSubmit = () => {
+    if (!product) return; // Ensure product details are available
+
+    const productDetails = {
+      name: product.name,
+      category: product.category,
+      quantity,
+      price: product.price,
+      description: product.description,
+    };
+
+    const message = `
+*Product Details:*
+Name: ${productDetails.name}
+Category: ${productDetails.category}
+Quantity: ${quantity}
+Price: ${productDetails.price}
+Description: ${productDetails.description}
+
+*User Info:*
+Name: ${formData.name}
+Email: ${formData.email}
+Phone: ${formData.phone}
+    `.trim();
+
+    // Encode the message and create the WhatsApp link
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappLink = `https://wa.me/8218719347?text=${encodedMessage}`;
+    
+    // Open the WhatsApp link in a new tab
+    window.open(whatsappLink);
+    
+    // Close the modal
+    setShowModal(false);
   };
 
   if (isLoading) {
@@ -153,9 +195,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
           </div>
 
           <p className="text-gray-700 mb-4 text-balance">
-            Experience premium sound quality and industry-leading noise
-            cancellation with these wireless headphones. Perfect for music
-            lovers and frequent travelers.
+            {product.description}
           </p>
 
           {/* Rating */}
@@ -197,7 +237,10 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
               Add to Cart
               <ShoppingCartIcon className="w-6 h-6 inline-block ml-2" />
             </button>
-            <button className="bg-green-500 flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-1 focus:ring-green-500 focus:ring-offset-1">
+            <button
+              onClick={handleBuyNow}
+              className="bg-green-500 flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-1 focus:ring-green-500 focus:ring-offset-1"
+            >
               <BiPurchaseTag className="w-6 h-6 inline-block" />
               BUY NOW
             </button>
@@ -209,6 +252,68 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
       {notification && (
         <div className="fixed bottom-5 right-5 bg-green-500 text-white p-4 rounded-md shadow-md transition-opacity duration-300">
           {notification}
+        </div>
+      )}
+
+      {/* Modal for form */}
+      {showModal && (
+        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-md shadow-lg relative w-full max-w-md">
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+            >
+              &times;
+            </button>
+            <h2 className="text-xl font-bold mb-4">Complete Your Purchase</h2>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit();
+              }}
+              className="flex flex-col space-y-4"
+            >
+              <div>
+                <label htmlFor="name" className="block mb-1">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  required
+                  className="border border-gray-300 p-2 rounded-md w-full"
+                />
+              </div>
+              <div>
+                <label htmlFor="email" className="block mb-1">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  required
+                  className="border border-gray-300 p-2 rounded-md w-full"
+                />
+              </div>
+              <div>
+                <label htmlFor="phone" className="block mb-1">Phone</label>
+                <input
+                  type="tel"
+                  id="phone"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  required
+                  className="border border-gray-300 p-2 rounded-md w-full"
+                />
+              </div>
+              <button
+                type="submit"
+                className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+              >
+                Send
+              </button>
+            </form>
+          </div>
         </div>
       )}
     </div>

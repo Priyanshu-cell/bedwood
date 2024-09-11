@@ -1,24 +1,33 @@
-'use client'
-import React, { useEffect, useState } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
-import { ProductCard } from './productCard';
-import { Header } from './header';
-import { CartDialog } from './cartDialog';
-import { getDummyProducts } from '@/utils/dummyData';
-import { Product } from '@/types';
-import { CartButton } from './cartButton';
-import { cartItemsCountState } from '@/state/atoms/countCartState';
-import { useRecoilState } from 'recoil';
-import { addToCart, updateCartItemQuantity, removeCartItem, getCartItems } from '@/utils/cartUtils';
+"use client";
+import React, { useEffect, useState } from "react";
+import InfiniteScroll from "react-infinite-scroll-component";
+import { ProductCard } from "./productCard";
+import { Header } from "./header";
+import { CartDialog } from "./cartDialog";
+import { getDummyProducts } from "@/utils/dummyData";
+import { Product } from "@/types";
+import { CartButton } from "./cartButton";
+import { cartItemsCountState } from "@/state/atoms/countCartState";
+import { useRecoilState } from "recoil";
+import {
+  addToCart,
+  updateCartItemQuantity,
+  removeCartItem,
+  getCartItems,
+} from "@/utils/cartUtils";
 
 export const ProductsPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [selectedSortOption, setSelectedSortOption] = useState('Price (Low to High)');
-  const [selectedLayout, setSelectedLayout] = useState('3x3');
+  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedSortOption, setSelectedSortOption] = useState(
+    "Price (Low to High)"
+  );
+  const [selectedLayout, setSelectedLayout] = useState("3x3");
   const [openCart, setOpenCart] = useState(false);
-  const [cartItems, setCartItems] = useState<{ product: Product; quantity: number }[]>([]);
+  const [cartItems, setCartItems] = useState<
+    { product: Product; quantity: number }[]
+  >([]);
   const [hasMore, setHasMore] = useState(true);
   const [cartItemCount, setCartItemCount] = useRecoilState(cartItemsCountState);
   const perPage = 8;
@@ -34,16 +43,22 @@ export const ProductsPage: React.FC = () => {
   }, [cartItems, setCartItemCount]);
 
   useEffect(() => {
-    let filtered = selectedCategory === 'All' 
-      ? [...products]
-      : products.filter(product => product.category === selectedCategory);
+    let filtered =
+      selectedCategory === "All"
+        ? [...products]
+        : products.filter((product) => product.category === selectedCategory);
 
-    const convertPriceToNumber = (price: string) => parseFloat(price.replace('$', ''));
+    const convertPriceToNumber = (price: string) =>
+      parseFloat(price.replace("$", ""));
 
-    if (selectedSortOption === 'Price (Low to High)') {
-      filtered.sort((a, b) => convertPriceToNumber(a.price) - convertPriceToNumber(b.price));
-    } else if (selectedSortOption === 'Price (High to Low)') {
-      filtered.sort((a, b) => convertPriceToNumber(b.price) - convertPriceToNumber(a.price));
+    if (selectedSortOption === "Price (Low to High)") {
+      filtered.sort(
+        (a, b) => convertPriceToNumber(a.price) - convertPriceToNumber(b.price)
+      );
+    } else if (selectedSortOption === "Price (High to Low)") {
+      filtered.sort(
+        (a, b) => convertPriceToNumber(b.price) - convertPriceToNumber(a.price)
+      );
     }
 
     setFilteredProducts(filtered);
@@ -51,7 +66,7 @@ export const ProductsPage: React.FC = () => {
 
   const fetchMoreData = () => {
     setTimeout(() => {
-      setFilteredProducts(prev => [
+      setFilteredProducts((prev) => [
         ...prev,
         ...getDummyProducts(prev.length + perPage),
       ]);
@@ -60,7 +75,11 @@ export const ProductsPage: React.FC = () => {
 
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
-    setFilteredProducts(products.filter(product => category === 'All' || product.category === category));
+    setFilteredProducts(
+      products.filter(
+        (product) => category === "All" || product.category === category
+      )
+    );
   };
 
   const handleSortChange = (sortOption: string) => {
@@ -75,6 +94,16 @@ export const ProductsPage: React.FC = () => {
     addToCart(product, quantity);
     setCartItems(getCartItems());
   };
+
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedItems = getCartItems();
+      setCartItems(storedItems);
+    }
+  }, []);
+
+ 
 
   const handleUpdateQuantity = (productId: number, quantity: number) => {
     updateCartItemQuantity(productId, quantity);
@@ -93,11 +122,11 @@ export const ProductsPage: React.FC = () => {
   return (
     <section className="pb-12 bg-gray-100 min-h-screen">
       <div className="mx-auto max-w-8xl">
-        <Header 
-          selectedCategory={selectedCategory} 
-          onCategoryChange={handleCategoryChange} 
-          selectedSortOption={selectedSortOption} 
-          onSortChange={handleSortChange} 
+        <Header
+          selectedCategory={selectedCategory}
+          onCategoryChange={handleCategoryChange}
+          selectedSortOption={selectedSortOption}
+          onSortChange={handleSortChange}
           onLayoutChange={handleLayoutChange}
           selectedLayout={selectedLayout}
         />
@@ -106,16 +135,35 @@ export const ProductsPage: React.FC = () => {
           dataLength={filteredProducts.length}
           next={fetchMoreData}
           hasMore={hasMore}
-          loader={<h4 className='text-center md:text-xl text-sm font-semibold'>Loading...</h4>}
-          endMessage={<p className='md:text-xl text-sm text-center font-semibold'>No more products</p>}
+          loader={
+            <h4 className="text-center md:text-xl text-sm font-semibold">
+              Loading...
+            </h4>
+          }
+          endMessage={
+            <p className="md:text-xl text-sm text-center font-semibold">
+              No more products
+            </p>
+          }
         >
-          <div className={`grid gap-6 my-10 px-4 lg:px-8 
-            ${selectedLayout === '2x2' ? 'grid-cols-2 md:grid-cols-3' 
-            : selectedLayout === '3x3' ? 'grid-cols-3 md:grid-cols-3'
-            : selectedLayout === '4x4' ? 'grid-cols-4 md:grid-cols-4'
-            : 'grid-cols-5 md:grid-cols-5'}`}>
-            {filteredProducts.map(product => (
-              <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
+          <div
+            className={`grid gap-6 my-10 px-4 lg:px-8 
+            ${
+              selectedLayout === "2x2"
+                ? "grid-cols-2 md:grid-cols-3"
+                : selectedLayout === "3x3"
+                ? "grid-cols-3 md:grid-cols-3"
+                : selectedLayout === "4x4"
+                ? "grid-cols-4 md:grid-cols-4"
+                : "grid-cols-5 md:grid-cols-5"
+            }`}
+          >
+            {filteredProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                onAddToCart={handleAddToCart}
+              />
             ))}
           </div>
         </InfiniteScroll>
@@ -128,8 +176,8 @@ export const ProductsPage: React.FC = () => {
           open={openCart}
           onClose={() => setOpenCart(false)}
           cartItems={cartItems}
-          onUpdateQuantity={handleUpdateQuantity}
           onRemoveFromCart={handleRemoveFromCart}
+          onUpdateQuantity={handleUpdateQuantity}
         />
       </div>
     </section>

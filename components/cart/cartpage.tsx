@@ -17,10 +17,7 @@ export const CartPage = () => {
     }
   }, []);
 
-  const handleAddToCart = (product: Product, quantity: number) => {
-    addToCart(product, quantity);
-    setCartItems(getCartItems());
-  };
+ 
 
   const handleUpdateQuantity = (productId: number, quantity: number) => {
     updateCartItemQuantity(productId, quantity);

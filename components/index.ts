@@ -6,3 +6,4 @@ export * from './reviews/index'
 export * from './footer/index'
 export * from './product-list/index'
 export * from './cart/index'
+

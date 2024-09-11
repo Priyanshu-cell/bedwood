@@ -4,7 +4,7 @@ import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/re
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { FaTrash } from "react-icons/fa";
 import { Product } from "@/types";
-import Link from "next/link";
+import { WhatsAppCheckout } from "@/form/whatsappCheckOut";
 
 interface CartDialogProps {
   open: boolean;
@@ -113,15 +113,12 @@ export const CartDialog: React.FC<CartDialogProps> = ({
                     <p className="text-lg font-medium text-gray-900">Subtotal</p>
                     <p className="text-lg font-medium text-gray-900">${calculateSubtotal()}</p>
                   </div>
-                  <div className="flex-shrink-0 px-4 py-6 sm:px-6">
-                    <Link href="/checkout">
-                      <button
-                        type="button"
-                        className="w-full bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-                      >
-                        Checkout
-                      </button>
-                    </Link>
+                  <div className="w-fit bg-blue-500 text-white py-2 px-6 m-4 rounded-md hover:bg-blue-600">
+                    {/* Adding WhatsAppCheckout Component */}
+                    <WhatsAppCheckout
+                      cartItems={cartItems}
+                      onCheckoutComplete={onClose} 
+                    />
                   </div>
                 </div>
               </div>
