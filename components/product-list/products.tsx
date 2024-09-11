@@ -103,7 +103,13 @@ export const ProductsPage: React.FC = () => {
     }
   }, []);
 
- 
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const clearCart = () => {
+    setCartItems([]); // Clear the cart in Recoil
+    localStorage.removeItem('cartItems'); // Clear the cart in localStorage
+  };
 
   const handleUpdateQuantity = (productId: number, quantity: number) => {
     updateCartItemQuantity(productId, quantity);
@@ -178,6 +184,7 @@ export const ProductsPage: React.FC = () => {
           cartItems={cartItems}
           onRemoveFromCart={handleRemoveFromCart}
           onUpdateQuantity={handleUpdateQuantity}
+          clearCart={clearCart}
         />
       </div>
     </section>

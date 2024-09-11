@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Product } from '@/types';
 import { ProductList } from './productList';
 import { OrderSummary } from './orderSummary';
-import { getCartItems, addToCart, updateCartItemQuantity, removeCartItem } from '@/utils/cartUtils';
+import { getCartItems, addToCart, updateCartItemQuantity, removeCartItem, clearCartItems } from '@/utils/cartUtils'; // Import clearCartItems
 import Link from 'next/link';
 
 export const CartPage = () => {
@@ -17,8 +17,6 @@ export const CartPage = () => {
     }
   }, []);
 
- 
-
   const handleUpdateQuantity = (productId: number, quantity: number) => {
     updateCartItemQuantity(productId, quantity);
     setCartItems(getCartItems());
@@ -27,6 +25,12 @@ export const CartPage = () => {
   const handleRemoveFromCart = (productId: number) => {
     removeCartItem(productId);
     setCartItems(getCartItems());
+  };
+
+  // Function to clear the cart
+  const clearCart = () => {
+    clearCartItems(); // Clear the cart from utils
+    setCartItems([]); // Update the state to reflect the cleared cart
   };
 
   return (
@@ -42,7 +46,7 @@ export const CartPage = () => {
           </div>
         </div>
         <div id="summary" className="md:w-2/6 px-8 py-10">
-          <OrderSummary cartItems={cartItems} />
+          <OrderSummary cartItems={cartItems} onCheckout={clearCart} /> {/* Pass clearCart function */}
         </div>
       </div>
       <Link href="/productlist" className="flex font-semibold text-indigo-600 text-sm px-12">

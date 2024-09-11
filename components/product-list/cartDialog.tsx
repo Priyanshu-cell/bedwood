@@ -12,6 +12,7 @@ interface CartDialogProps {
   cartItems: { product: Product; quantity: number }[];
   onUpdateQuantity: (productId: number, quantity: number) => void;
   onRemoveFromCart: (productId: number) => void;
+  clearCart: () => void; 
 }
 
 export const CartDialog: React.FC<CartDialogProps> = ({
@@ -20,6 +21,7 @@ export const CartDialog: React.FC<CartDialogProps> = ({
   cartItems,
   onUpdateQuantity,
   onRemoveFromCart,
+  clearCart, 
 }) => {
   const calculateSubtotal = () => {
     return cartItems
@@ -29,6 +31,11 @@ export const CartDialog: React.FC<CartDialogProps> = ({
         0
       )
       .toFixed(2);
+  };
+
+  const handleCheckoutComplete = () => {
+    clearCart(); 
+    onClose(); 
   };
 
   return (
@@ -45,7 +52,7 @@ export const CartDialog: React.FC<CartDialogProps> = ({
               className="pointer-events-auto w-screen max-w-md transform transition-transform duration-300 ease-in-out "
             >
               <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
-                <div className="flex-1 overflow-y-auto px-4  sm:px-6 ">
+                <div className="flex-1 overflow-y-auto px-4 sm:px-6">
                   <div className="flex items-start justify-between sticky py-6 top-0 bg-white z-10">
                     <DialogTitle className="text-lg font-medium text-gray-900">
                       Shopping Cart
@@ -114,10 +121,10 @@ export const CartDialog: React.FC<CartDialogProps> = ({
                     <p className="text-lg font-medium text-gray-900">${calculateSubtotal()}</p>
                   </div>
                   <div className="w-fit bg-blue-500 text-white py-2 px-6 m-4 rounded-md hover:bg-blue-600">
-                    {/* Adding WhatsAppCheckout Component */}
+                    {/* WhatsAppCheckout Component with onCheckoutComplete */}
                     <WhatsAppCheckout
                       cartItems={cartItems}
-                      onCheckoutComplete={onClose} 
+                      onCheckoutComplete={handleCheckoutComplete} 
                     />
                   </div>
                 </div>

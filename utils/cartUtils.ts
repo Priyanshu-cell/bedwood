@@ -60,3 +60,9 @@ export const removeCartItem = (productId: number) => {
   const cartItems = getCartItems().filter(item => item.product.id !== productId);
   saveCartItems(cartItems);
 };
+
+// Remove cartitem on checkout
+export const clearCartItems = () => {
+  localStorage.removeItem('cartItems'); // Clear the cart from localStorage
+};
+

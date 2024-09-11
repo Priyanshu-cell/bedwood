@@ -9,7 +9,7 @@ import { Product } from '@/types';
 
 interface WhatsAppCheckoutProps {
   cartItems: { product: Product; quantity: number }[];
-  onCheckoutComplete?: () => void; // Optional callback when checkout is complete
+  onCheckoutComplete: () => void; // Callback when checkout is complete
 }
 
 // Define the schema using Yup
@@ -32,9 +32,17 @@ export const WhatsAppCheckout: React.FC<WhatsAppCheckoutProps> = ({ cartItems, o
   });
 
   const handleCheckout = (data: { name: string; email: string; phone: string }) => {
+    // Generate the WhatsApp message link
     const whatsappLink = generateWhatsAppMessage(cartItems, data);
+
+    // Open WhatsApp in a new tab
     window.open(whatsappLink);
+
+    // Clear cart items by calling onCheckoutComplete
     if (onCheckoutComplete) onCheckoutComplete();
+
+    // Close the modal after sending the message
+    setShowModal(false);
   };
 
   return (
@@ -48,7 +56,7 @@ export const WhatsAppCheckout: React.FC<WhatsAppCheckoutProps> = ({ cartItems, o
 
       {/* Modal for form */}
       {showModal && (
-        <div className="fixed inset-0 text-black bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 ">
+        <div className="fixed inset-0 text-black bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-md shadow-lg relative w-full max-w-md m-4">
             <button
               onClick={() => setShowModal(false)}
