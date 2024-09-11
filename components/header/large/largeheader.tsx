@@ -1,4 +1,4 @@
-
+'use client'
 import React, { useEffect } from "react";
 import { HeaderLink } from "../links/headerlink";
 import Link from "next/link";
@@ -42,7 +42,9 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
       <div className="hidden md:flex flex-col items-center">
         <div className="flex items-center justify-between w-full max-w-6xl mx-auto">
           {/* Logo */}
+          <Link href="/">
           <img src="https://t4.ftcdn.net/jpg/01/33/48/03/360_F_133480376_PWlsZ1Bdr2SVnTRpb8jCtY59CyEBdoUt.jpg" alt="Logo" className="h-8" />
+          </Link>
 
           {/* Search Bar and Cart Button */}
           <div className="flex items-center space-x-4 ml-4">
