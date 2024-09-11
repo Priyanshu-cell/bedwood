@@ -1,4 +1,3 @@
-// utils/cartUtils.tsx
 import { Product } from '@/types';
 
 // Type for cart item
@@ -28,14 +27,14 @@ export const saveCartItems = (cartItems: CartItem[]) => {
 };
 
 // Add item to cart
-export const addToCart = (product: Product) => {
+export const addToCart = (product: Product, quantity: number) => {
   const cartItems = getCartItems();
   const itemIndex = cartItems.findIndex(item => item.product.id === product.id);
 
   if (itemIndex >= 0) {
-    cartItems[itemIndex].quantity += 1;
+    cartItems[itemIndex].quantity += quantity;
   } else {
-    cartItems.push({ product, quantity: 1 });
+    cartItems.push({ product, quantity });
   }
 
   saveCartItems(cartItems);

@@ -9,46 +9,28 @@ import { Product } from '@/types';
 import { CartButton } from './cartButton';
 import { cartItemsCountState } from '@/state/atoms/countCartState';
 import { useRecoilState } from 'recoil';
-
-const saveCartItems = (cartItems: { product: Product; quantity: number }[]) => {
-  try {
-    localStorage.setItem('cartItems', JSON.stringify(cartItems));
-  } catch (error) {
-    console.error('Error saving cart items to localStorage:', error);
-  }
-};
-
-const loadCartItems = () => {
-  try {
-    const storedItems = localStorage.getItem('cartItems');
-    return storedItems ? JSON.parse(storedItems) : [];
-  } catch (error) {
-    console.error('Error loading cart items from localStorage:', error);
-    return [];
-  }
-};
+import { addToCart, updateCartItemQuantity, removeCartItem, getCartItems } from '@/utils/cartUtils';
 
 export const ProductsPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [selectedSortOption, setSelectedSortOption] = useState('Price (Low to High)');
-  const [selectedLayout, setSelectedLayout] = useState('3x3'); // Default layout for desktop
+  const [selectedLayout, setSelectedLayout] = useState('3x3');
   const [openCart, setOpenCart] = useState(false);
-  const [cartItems, setCartItems] = useState<{ product: Product; quantity: number }[]>(loadCartItems());
+  const [cartItems, setCartItems] = useState<{ product: Product; quantity: number }[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [cartItemCount, setCartItemCount] = useRecoilState(cartItemsCountState);
   const perPage = 8;
 
-  // Initial product load
   useEffect(() => {
-    setProducts(getDummyProducts(100));
-    setFilteredProducts(getDummyProducts(100));
+    const initialProducts = getDummyProducts(100);
+    setProducts(initialProducts);
+    setFilteredProducts(initialProducts);
   }, []);
 
   useEffect(() => {
-    saveCartItems(cartItems);
-    setCartItemCount(cartItems.length); // update Recoil state with the cart items count
+    setCartItemCount(cartItems.length);
   }, [cartItems, setCartItemCount]);
 
   useEffect(() => {
@@ -59,9 +41,9 @@ export const ProductsPage: React.FC = () => {
     const convertPriceToNumber = (price: string) => parseFloat(price.replace('$', ''));
 
     if (selectedSortOption === 'Price (Low to High)') {
-      filtered = [...filtered].sort((a, b) => convertPriceToNumber(a.price) - convertPriceToNumber(b.price));
+      filtered.sort((a, b) => convertPriceToNumber(a.price) - convertPriceToNumber(b.price));
     } else if (selectedSortOption === 'Price (High to Low)') {
-      filtered = [...filtered].sort((a, b) => convertPriceToNumber(b.price) - convertPriceToNumber(a.price));
+      filtered.sort((a, b) => convertPriceToNumber(b.price) - convertPriceToNumber(a.price));
     }
 
     setFilteredProducts(filtered);
@@ -89,35 +71,19 @@ export const ProductsPage: React.FC = () => {
     setSelectedLayout(layout);
   };
 
-  const handleAddToCart = (product: Product) => {
-    setCartItems(prevCart => {
-      const itemIndex = prevCart.findIndex(item => item.product.id === product.id);
-      if (itemIndex >= 0) {
-        const newCart = [...prevCart];
-        newCart[itemIndex].quantity += 1;
-        return newCart;
-      }
-      return [...prevCart, { product, quantity: 1 }];
-    });
+  const handleAddToCart = (product: Product, quantity: number) => {
+    addToCart(product, quantity);
+    setCartItems(getCartItems());
   };
 
   const handleUpdateQuantity = (productId: number, quantity: number) => {
-    setCartItems(prevCart => {
-      const itemIndex = prevCart.findIndex(item => item.product.id === productId);
-      if (itemIndex >= 0) {
-        if (quantity <= 0) {
-          return prevCart.filter(item => item.product.id !== productId);
-        }
-        const newCart = [...prevCart];
-        newCart[itemIndex].quantity = quantity;
-        return newCart;
-      }
-      return prevCart;
-    });
+    updateCartItemQuantity(productId, quantity);
+    setCartItems(getCartItems());
   };
 
   const handleRemoveFromCart = (productId: number) => {
-    setCartItems(prevCart => prevCart.filter(item => item.product.id !== productId));
+    removeCartItem(productId);
+    setCartItems(getCartItems());
   };
 
   const openCartDialog = () => {
@@ -155,7 +121,7 @@ export const ProductsPage: React.FC = () => {
         </InfiniteScroll>
 
         <div className="fixed md:bottom-8 md:right-8 bottom-12 right-4">
-          <CartButton onClick={openCartDialog}  itemCount={cartItemCount} />
+          <CartButton onClick={openCartDialog} itemCount={cartItemCount} />
         </div>
 
         <CartDialog

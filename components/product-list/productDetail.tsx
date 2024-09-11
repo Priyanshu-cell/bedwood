@@ -8,7 +8,6 @@ import { ShoppingCartIcon, StarIcon } from "@heroicons/react/24/outline";
 import { useRecoilState } from "recoil";
 import { cartItemsCountState } from "@/state/atoms/countCartState";
 import { BiPurchaseTag } from "react-icons/bi";
-import { OrderForm } from "@/form/orderForm";
 
 interface ProductDetailProps {
   id: number;
@@ -36,11 +35,11 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [notification, setNotification] = useState<string | null>(null);
-  const [cartItems, setCartItems] = useState<
-    { product: Product; quantity: number }[]
-  >([]);
+  const [cartItems, setCartItems] = useState<{ product: Product; quantity: number }[]>([]);
   const [cartItemCount, setCartItemCount] = useRecoilState(cartItemsCountState);
+  const [quantity, setQuantity] = useState(1); // New state for quantity
   const [isMounted, setIsMounted] = useState(false); // Track if component is mounted
+  const [isProductInCart, setIsProductInCart] = useState(false); // New state to track if the product is in the cart
 
   // Fetch product data
   useEffect(() => {
@@ -60,8 +59,12 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
       const storedCartItems = loadCartItems();
       setCartItems(storedCartItems);
       setCartItemCount(storedCartItems.length); // Set initial cart count from localStorage
+
+      // Check if the product is already in the cart
+      const productInCart = storedCartItems.some((item: { product: { id: number; }; }) => item.product.id === id);
+      setIsProductInCart(productInCart);
     }
-  }, [isMounted, setCartItemCount]);
+  }, [isMounted, setCartItemCount, id]);
 
   // Mark component as mounted after the first render
   useEffect(() => {
@@ -82,20 +85,15 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
   const rating = getRandomRating();
 
   const handleAddToCart = (product: Product) => {
-    setCartItems((prevCart) => {
-      const itemIndex = prevCart.findIndex(
-        (item) => item.product.id === product.id
-      );
-      if (itemIndex >= 0) {
-        const newCart = [...prevCart];
-        newCart[itemIndex].quantity += 1;
-        return newCart;
-      }
-      return [...prevCart, { product, quantity: 1 }];
-    });
-    // Set notification message
-    setNotification("Product added to cart!");
-    // Clear notification after 3 seconds
+    if (!isProductInCart) {
+      setCartItems((prevCart) => {
+        return [...prevCart, { product, quantity }];
+      });
+      setIsProductInCart(true); // Mark product as added to the cart
+      setNotification("Product added to cart!");
+    } else {
+      setNotification("This item is already in your cart!");
+    }
     setTimeout(() => setNotification(null), 3000);
   };
 
@@ -148,22 +146,20 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
 
         {/* Product Details */}
         <div className="w-full md:w-1/2 px-4 md:m-0 m-6">
-          <h2 className="md:text-4xl text-2xl font-bold mb-2">
-            {product.name}
-          </h2>
+          <h2 className="md:text-4xl text-2xl font-bold mb-2">{product.name}</h2>
           <p className="text-gray-600 mb-4">{product.category}</p>
           <div className="mb-4">
             <span className="text-2xl font-bold mr-2">{product.price}</span>
           </div>
 
-          <p className="text-gray-700 mb-6 text-balance">
+          <p className="text-gray-700 mb-4 text-balance">
             Experience premium sound quality and industry-leading noise
             cancellation with these wireless headphones. Perfect for music
             lovers and frequent travelers.
           </p>
 
           {/* Rating */}
-          <div className="flex items-center mb-4">
+          <div className="flex items-center ">
             {Array.from({ length: 5 }, (_, index) => (
               <StarIcon
                 key={index}
@@ -175,17 +171,34 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
             <span className="ml-2 text-gray-500">({rating}/5)</span>
           </div>
 
+          {/* Quantity Selector */}
+          <div className="flex items-center space-x-2 p-4 pl-0">
+            <button
+              onClick={() => setQuantity(prev => Math.max(prev - 1, 1))}
+              className="bg-gray-300 text-gray-700  px-2 rounded-md "
+            >
+              -
+            </button>
+            <p>{quantity}</p>
+            <button
+              onClick={() => setQuantity(prev => prev + 1)}
+              className="bg-gray-300 text-gray-700 px-2 rounded-md "
+            >
+              +
+            </button>
+          </div>
+
           <div className="flex space-x-4 mb-6 text-nowrap text-xs md:text-sm">
             {/* Add to Cart Button */}
             <button
               onClick={() => handleAddToCart(product)}
-              className="bg-gray-800 text-white  py-2 px-4 rounded-md hover:bg-gray-700 transition-all"
+              className="bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-all"
             >
               Add to Cart
               <ShoppingCartIcon className="w-6 h-6 inline-block ml-2" />
             </button>
-            <button  className="bg-green-400 flex gap-2 items-center  text-white px-6 py-2 rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
-              <BiPurchaseTag className="w-6 h-6 inline-block " />
+            <button className="bg-green-500 flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-1 focus:ring-green-500 focus:ring-offset-1">
+              <BiPurchaseTag className="w-6 h-6 inline-block" />
               BUY NOW
             </button>
           </div>
@@ -194,7 +207,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
 
       {/* Notification */}
       {notification && (
-        <div className="fixed bottom-5 right-5 bg-green-500 text-white px-4 py-2 rounded-md shadow-md transition-opacity duration-300">
+        <div className="fixed bottom-5 right-5 bg-green-500 text-white p-4 rounded-md shadow-md transition-opacity duration-300">
           {notification}
         </div>
       )}
