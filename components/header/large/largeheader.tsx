@@ -1,8 +1,8 @@
-'use client'
+"use client";
 import React, { useEffect } from "react";
 import { HeaderLink } from "../links/headerlink";
 import Link from "next/link";
-import { FaSearch, FaShoppingCart} from "react-icons/fa";
+import { FaSearch, FaShoppingCart } from "react-icons/fa";
 import { HiOutlineArrowLongLeft } from "react-icons/hi2";
 import { MdMenu } from "react-icons/md";
 import { RiMapPinLine } from "react-icons/ri";
@@ -21,7 +21,6 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
   isSidebarOpen,
   setIsSidebarOpen,
 }) => {
-
   const cartItemCount = useRecoilValue(cartItemsCountState);
 
   // Manage body scroll when sidebar is open
@@ -43,7 +42,11 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
         <div className="flex items-center justify-between w-full max-w-6xl mx-auto">
           {/* Logo */}
           <Link href="/">
-          <img src="https://t4.ftcdn.net/jpg/01/33/48/03/360_F_133480376_PWlsZ1Bdr2SVnTRpb8jCtY59CyEBdoUt.jpg" alt="Logo" className="h-8" />
+            <img
+              src="https://t4.ftcdn.net/jpg/01/33/48/03/360_F_133480376_PWlsZ1Bdr2SVnTRpb8jCtY59CyEBdoUt.jpg"
+              alt="Logo"
+              className="h-8"
+            />
           </Link>
 
           {/* Search Bar and Cart Button */}
@@ -58,15 +61,25 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
             </div>
 
             {/* Cart Button */}
-            <Link className="relative flex flex-col items-center justify-center rounded-full" href="/cart">
+            <Link
+              className="relative flex flex-col items-center justify-center rounded-full"
+              href="/cart"
+            >
               <FaShoppingCart className=" text-gray-600 text-xl mt-2" />
-              <span className="absolute -top-1 -right-2 text-xs text-red-500 mt-1"> {cartItemCount}</span>
+              <span className="absolute -top-1 -right-2 text-xs text-red-500 mt-1">
+                {" "}
+                {cartItemCount}
+              </span>
             </Link>
           </div>
         </div>
         {/* Sticky Links Header */}
-        <div className={`${isScrolled ? "fixed top-0 left-0 w-full border-b bg-white z-40" : ""} hidden md:block`}>
-          <HeaderLink  />
+        <div
+          className={`${
+            isScrolled ? "fixed top-0 left-0 w-full border-b bg-white z-40" : ""
+          } hidden md:block`}
+        >
+          <HeaderLink />
         </div>
       </div>
 
@@ -75,19 +88,34 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
         <div className="flex items-center w-full max-w-6xl mx-auto justify-between">
           <div className="flex items-center">
             {/* Hamburger Icon */}
-            <button className="flex items-center" onClick={() => setIsSidebarOpen(true)}>
+            <button
+              className="flex items-center"
+              onClick={() => setIsSidebarOpen(true)}
+            >
               <MdMenu className="text-gray-600 text-3xl ml-1" />
             </button>
 
             {/* Logo */}
-            <img src="https://t4.ftcdn.net/jpg/01/33/48/03/360_F_133480376_PWlsZ1Bdr2SVnTRpb8jCtY59CyEBdoUt.jpg" alt="Logo" className="h-8 mx-2" />
+            <Link href="/">
+              <img
+                src="https://t4.ftcdn.net/jpg/01/33/48/03/360_F_133480376_PWlsZ1Bdr2SVnTRpb8jCtY59CyEBdoUt.jpg"
+                alt="Logo"
+                className="h-8"
+              />
+            </Link>
           </div>
 
           {/* Cart Button */}
-          <Link className="relative mr-2 flex flex-col items-center justify-center rounded-full" href="/cart">
-              <FaShoppingCart className=" text-gray-600 text-xl mt-2" />
-              <span className="absolute -top-1 -right-2 text-xs text-red-500 mt-1"> {cartItemCount}</span>
-            </Link>
+          <Link
+            className="relative mr-2 flex flex-col items-center justify-center rounded-full"
+            href="/cart"
+          >
+            <FaShoppingCart className=" text-gray-600 text-xl mt-2" />
+            <span className="absolute -top-1 -right-2 text-xs text-red-500 mt-1">
+              {" "}
+              {cartItemCount}
+            </span>
+          </Link>
         </div>
 
         {/* Search Bar */}
@@ -103,15 +131,28 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
         </div>
 
         {/* Sidebar */}
-        <div className={`fixed inset-0 bg-gray-200 transform overflow-y-auto pb-10 scroll-smooth ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} transition-transform duration-500 ease-in-out z-50`}>
+        <div
+          className={`fixed inset-0 bg-gray-200 transform overflow-y-auto pb-10 scroll-smooth ${
+            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } transition-transform duration-500 ease-in-out z-50`}
+        >
           <div className="flex items-center py-2 bg-white">
             {/* Arrow Icon for closing */}
-            <button className="flex items-center px-4" onClick={() => setIsSidebarOpen(false)}>
+            <button
+              className="flex items-center px-4"
+              onClick={() => setIsSidebarOpen(false)}
+            >
               <HiOutlineArrowLongLeft className="text-gray-600 text-3xl" />
             </button>
 
             {/* Logo */}
-            <img src="https://t4.ftcdn.net/jpg/01/33/48/03/360_F_133480376_PWlsZ1Bdr2SVnTRpb8jCtY59CyEBdoUt.jpg" alt="Logo" className="h-8" />
+            <Link href="/">
+              <img
+                src="https://t4.ftcdn.net/jpg/01/33/48/03/360_F_133480376_PWlsZ1Bdr2SVnTRpb8jCtY59CyEBdoUt.jpg"
+                alt="Logo"
+                className="h-8"
+              />
+            </Link>
           </div>
           <hr className="md:hidden border-t border-gray-300 w-full mt-10" />
           <HeaderLink setSideBarOpen={setIsSidebarOpen} />
@@ -135,7 +176,10 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
 
         {/* Overlay to prevent scrolling */}
         {isSidebarOpen && (
-          <div className="fixed inset-0 bg-black opacity-50 z-40" onClick={() => setIsSidebarOpen(false)} />
+          <div
+            className="fixed inset-0 bg-black opacity-50 z-40"
+            onClick={() => setIsSidebarOpen(false)}
+          />
         )}
       </div>
     </header>

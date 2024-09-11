@@ -39,14 +39,14 @@ export const CartDialog: React.FC<CartDialogProps> = ({
       />
       <div className="fixed inset-0 overflow-hidden">
         <div className="absolute inset-0 overflow-hidden">
-          <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+          <div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-screen pl-10 ">
             <DialogPanel
               transition
-              className="pointer-events-auto w-screen max-w-md transform transition-transform duration-300 ease-in-out"
+              className="pointer-events-auto w-screen max-w-md transform transition-transform duration-300 ease-in-out "
             >
               <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
-                <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
-                  <div className="flex items-start justify-between sticky top-0 bg-white z-10">
+                <div className="flex-1 overflow-y-auto px-4  sm:px-6 ">
+                  <div className="flex items-start justify-between sticky py-6 top-0 bg-white z-10">
                     <DialogTitle className="text-lg font-medium text-gray-900">
                       Shopping Cart
                     </DialogTitle>
@@ -60,7 +60,7 @@ export const CartDialog: React.FC<CartDialogProps> = ({
                       </button>
                     </div>
                   </div>
-                  <div className="mt-8">
+                  <div className="mt-4">
                     {cartItems.length === 0 ? (
                       <p className="text-center text-gray-500">Your cart is empty.</p>
                     ) : (
