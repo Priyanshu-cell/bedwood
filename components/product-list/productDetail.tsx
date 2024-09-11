@@ -1,4 +1,5 @@
-'use client';
+"use client";
+
 import React, { useEffect, useState } from "react";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
@@ -8,6 +9,22 @@ import { ShoppingCartIcon, StarIcon } from "@heroicons/react/24/outline";
 import { useRecoilState } from "recoil";
 import { cartItemsCountState } from "@/state/atoms/countCartState";
 import { BiPurchaseTag } from "react-icons/bi";
+import { useForm, Controller } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+// Form validation schema using Yup
+const schema = yup.object().shape({
+  name: yup.string().required("Name is required"),
+  email: yup
+    .string()
+    .email("Invalid email format")
+    .required("Email is required"),
+  phone: yup
+    .string()
+    .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
+    .required("Phone number is required"),
+});
 
 interface ProductDetailProps {
   id: number;
@@ -35,13 +52,29 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [notification, setNotification] = useState<string | null>(null);
-  const [cartItems, setCartItems] = useState<{ product: Product; quantity: number }[]>([]);
+  const [cartItems, setCartItems] = useState<
+    { product: Product; quantity: number }[]
+  >([]);
   const [cartItemCount, setCartItemCount] = useRecoilState(cartItemsCountState);
   const [quantity, setQuantity] = useState(1);
   const [isMounted, setIsMounted] = useState(false);
   const [isProductInCart, setIsProductInCart] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '' });
+
+  // React Hook Form setup
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+    },
+    resolver: yupResolver(schema), // Yup schema for validation
+  });
 
   // Fetch product data
   useEffect(() => {
@@ -63,7 +96,9 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
       setCartItemCount(storedCartItems.length);
 
       // Check if the product is already in the cart
-      const productInCart = storedCartItems.some((item: { product: { id: number; }; }) => item.product.id === id);
+      const productInCart = storedCartItems.some(
+        (item: { product: { id: number } }) => item.product.id === id
+      );
       setIsProductInCart(productInCart);
     }
   }, [isMounted, setCartItemCount, id]);
@@ -103,7 +138,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
     setShowModal(true);
   };
 
-  const handleSubmit = () => {
+  const onSubmit = (data: { name: string; email: string; phone: string }) => {
     if (!product) return; // Ensure product details are available
 
     const productDetails = {
@@ -123,20 +158,23 @@ Price: ${productDetails.price}
 Description: ${productDetails.description}
 
 *User Info:*
-Name: ${formData.name}
-Email: ${formData.email}
-Phone: ${formData.phone}
+Name: ${data.name}
+Email: ${data.email}
+Phone: ${data.phone}
     `.trim();
 
     // Encode the message and create the WhatsApp link
     const encodedMessage = encodeURIComponent(message);
     const whatsappLink = `https://wa.me/8218719347?text=${encodedMessage}`;
-    
+
     // Open the WhatsApp link in a new tab
     window.open(whatsappLink);
-    
+
     // Close the modal
     setShowModal(false);
+
+    // Reset form fields
+    reset();
   };
 
   if (isLoading) {
@@ -188,7 +226,9 @@ Phone: ${formData.phone}
 
         {/* Product Details */}
         <div className="w-full md:w-1/2 px-4 md:m-0 m-6">
-          <h2 className="md:text-4xl text-2xl font-bold mb-2">{product.name}</h2>
+          <h2 className="md:text-4xl text-2xl font-bold mb-2">
+            {product.name}
+          </h2>
           <p className="text-gray-600 mb-4">{product.category}</p>
           <div className="mb-4">
             <span className="text-2xl font-bold mr-2">{product.price}</span>
@@ -214,108 +254,138 @@ Phone: ${formData.phone}
           {/* Quantity Selector */}
           <div className="flex items-center space-x-2 p-4 pl-0">
             <button
-              onClick={() => setQuantity(prev => Math.max(prev - 1, 1))}
+              onClick={() => setQuantity((prev) => Math.max(prev - 1, 1))}
               className="bg-gray-300 text-gray-700  px-2 rounded-md "
             >
               -
             </button>
             <p>{quantity}</p>
             <button
-              onClick={() => setQuantity(prev => prev + 1)}
+              onClick={() => setQuantity((prev) => prev + 1)}
               className="bg-gray-300 text-gray-700 px-2 rounded-md "
             >
               +
             </button>
           </div>
 
-          <div className="flex space-x-4 mb-6 text-nowrap text-xs md:text-sm">
-            {/* Add to Cart Button */}
+          <div className="flex space-x-4 mb-6 text-nowrap text-sm sm:text-md">
             <button
               onClick={() => handleAddToCart(product)}
-              className="bg-gray-800 text-white py-2 px-4 rounded-md hover:bg-gray-700 transition-all"
+              className={`${
+                isProductInCart
+                  ? "bg-gray-500 cursor-not-allowed"
+                  : "bg-blue-500 hover:bg-blue-600"
+              } text-white rounded-md px-4 py-2 flex items-center space-x-2`}
+              disabled={isProductInCart}
             >
-              Add to Cart
-              <ShoppingCartIcon className="w-6 h-6 inline-block ml-2" />
+              <ShoppingCartIcon className="w-5 h-5" />
+              <span>Add to Cart</span>
             </button>
             <button
               onClick={handleBuyNow}
-              className="bg-green-500 flex gap-2 items-center text-white px-6 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:ring-1 focus:ring-green-500 focus:ring-offset-1"
+              className="bg-green-500 hover:bg-green-600 text-white rounded-md px-4 py-2 flex items-center space-x-2"
             >
-              <BiPurchaseTag className="w-6 h-6 inline-block" />
-              BUY NOW
+              <BiPurchaseTag className="w-5 h-5" />
+              <span>Buy Now</span>
             </button>
           </div>
+
+          {/* Success Notification */}
+          {notification && (
+            <p className="mt-2 text-sm text-green-500">{notification}</p>
+          )}
+
+          {/* Buy Now Modal */}
+          {showModal && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+              <div className="bg-white p-6 rounded-lg w-96 m-4 relative ">
+                {/* Close Button */}
+                <button
+                  onClick={() => setShowModal(false)}
+                  className="absolute top-2 right-3 text-3xl text-gray-500 hover:text-gray-700"
+                >
+                  &times;
+                </button>
+
+                <h3 className="text-xl font-bold mb-4">Complete Purchase</h3>
+
+                {/* Form */}
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium">Name</label>
+                    <Controller
+                      name="name"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          type="text"
+                          className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                          placeholder="Your name"
+                        />
+                      )}
+                    />
+                    {errors.name && (
+                      <p className="text-red-500 text-sm">
+                        {errors.name.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium">Email</label>
+                    <Controller
+                      name="email"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          type="email"
+                          className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                          placeholder="Your email"
+                        />
+                      )}
+                    />
+                    {errors.email && (
+                      <p className="text-red-500 text-sm">
+                        {errors.email.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium">Phone</label>
+                    <Controller
+                      name="phone"
+                      control={control}
+                      render={({ field }) => (
+                        <input
+                          {...field}
+                          type="text"
+                          className="w-full border border-gray-300 rounded-lg px-3 py-2"
+                          placeholder="Your phone number"
+                        />
+                      )}
+                    />
+                    {errors.phone && (
+                      <p className="text-red-500 text-sm">
+                        {errors.phone.message}
+                      </p>
+                    )}
+                  </div>
+
+                  <button
+                    type="submit"
+                    className="bg-green-500 hover:bg-green-600 text-white rounded-md px-4 py-2"
+                  >
+                    Complete Purchase
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
         </div>
       </main>
-
-      {/* Notification */}
-      {notification && (
-        <div className="fixed bottom-5 right-5 bg-green-500 text-white p-4 rounded-md shadow-md transition-opacity duration-300">
-          {notification}
-        </div>
-      )}
-
-      {/* Modal for form */}
-      {showModal && (
-        <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-md shadow-lg relative w-full max-w-md">
-            <button
-              onClick={() => setShowModal(false)}
-              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
-            >
-              &times;
-            </button>
-            <h2 className="text-xl font-bold mb-4">Complete Your Purchase</h2>
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleSubmit();
-              }}
-              className="flex flex-col space-y-4"
-            >
-              <div>
-                <label htmlFor="name" className="block mb-1">Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                  className="border border-gray-300 p-2 rounded-md w-full"
-                />
-              </div>
-              <div>
-                <label htmlFor="email" className="block mb-1">Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
-                  className="border border-gray-300 p-2 rounded-md w-full"
-                />
-              </div>
-              <div>
-                <label htmlFor="phone" className="block mb-1">Phone</label>
-                <input
-                  type="tel"
-                  id="phone"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  required
-                  className="border border-gray-300 p-2 rounded-md w-full"
-                />
-              </div>
-              <button
-                type="submit"
-                className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-              >
-                Send
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

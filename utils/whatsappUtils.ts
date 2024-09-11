@@ -30,6 +30,5 @@ Phone: ${formData.phone}
   `.trim();
 
   const encodedMessage = encodeURIComponent(message);
-
   return `${baseURL}${phoneNumber}?text=${encodedMessage}`;
 }
