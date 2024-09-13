@@ -24,6 +24,9 @@ const schema = yup.object().shape({
     .string()
     .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
     .required("Phone number is required"),
+  address: yup.string().required("Address is required"),
+  city: yup.string().required("City is required"),
+  postalCode: yup.string().required("Postal code is required"),
 });
 
 interface ProductDetailProps {
@@ -72,6 +75,9 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
       name: "",
       email: "",
       phone: "",
+      address: "",
+      city: "",
+      postalCode: "",
     },
     resolver: yupResolver(schema), // Yup schema for validation
   });
@@ -138,7 +144,14 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
     setShowModal(true);
   };
 
-  const onSubmit = (data: { name: string; email: string; phone: string }) => {
+  const onSubmit = (data: {
+    name: string;
+    email: string;
+    phone: string;
+    address: string;
+    city: string;
+    postalCode: string;
+  }) => {
     if (!product) return; // Ensure product details are available
 
     const productDetails = {
@@ -161,6 +174,9 @@ Description: ${productDetails.description}
 Name: ${data.name}
 Email: ${data.email}
 Phone: ${data.phone}
+Address: ${data.address}
+City: ${data.city}
+Postal Code: ${data.postalCode}
     `.trim();
 
     // Encode the message and create the WhatsApp link
@@ -261,131 +277,189 @@ Phone: ${data.phone}
             </button>
             <p>{quantity}</p>
             <button
-              onClick={() => setQuantity((prev) => prev + 1)}
-              className="bg-gray-300 text-gray-700 px-2 rounded-md "
+              onClick={() => setQuantity((                prev) => prev + 1)}
+              className="bg-gray-300 text-gray-700 px-2 rounded-md"
             >
               +
             </button>
           </div>
 
-          <div className="flex space-x-4 mb-6 text-nowrap text-sm sm:text-md">
+          {/* Add to Cart Button */}
+          <div className="flex flex-row space-x-4 my-4">
             <button
               onClick={() => handleAddToCart(product)}
-              className={`${
-                isProductInCart
-                  ? "bg-gray-500 cursor-not-allowed"
-                  : "bg-blue-500 hover:bg-blue-600"
-              } text-white rounded-md px-4 py-2 flex items-center space-x-2`}
-              disabled={isProductInCart}
+              className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md"
             >
               <ShoppingCartIcon className="w-5 h-5" />
               <span>Add to Cart</span>
             </button>
+
+            {/* Buy Now Button */}
             <button
               onClick={handleBuyNow}
-              className="bg-green-500 hover:bg-green-600 text-white rounded-md px-4 py-2 flex items-center space-x-2"
+              className="flex items-center space-x-2 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md"
             >
               <BiPurchaseTag className="w-5 h-5" />
               <span>Buy Now</span>
             </button>
           </div>
 
-          {/* Success Notification */}
+          {/* Notification for cart */}
           {notification && (
-            <p className="mt-2 text-sm text-green-500">{notification}</p>
-          )}
-
-          {/* Buy Now Modal */}
-          {showModal && (
-            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-              <div className="bg-white p-6 rounded-lg w-96 m-4 relative ">
-                {/* Close Button */}
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="absolute top-2 right-3 text-3xl text-gray-500 hover:text-gray-700"
-                >
-                  &times;
-                </button>
-
-                <h3 className="text-xl font-bold mb-4">Complete Purchase</h3>
-
-                {/* Form */}
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-                  <div>
-                    <label className="block text-sm font-medium">Name</label>
-                    <Controller
-                      name="name"
-                      control={control}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          type="text"
-                          className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                          placeholder="Your name"
-                        />
-                      )}
-                    />
-                    {errors.name && (
-                      <p className="text-red-500 text-sm">
-                        {errors.name.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium">Email</label>
-                    <Controller
-                      name="email"
-                      control={control}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          type="email"
-                          className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                          placeholder="Your email"
-                        />
-                      )}
-                    />
-                    {errors.email && (
-                      <p className="text-red-500 text-sm">
-                        {errors.email.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium">Phone</label>
-                    <Controller
-                      name="phone"
-                      control={control}
-                      render={({ field }) => (
-                        <input
-                          {...field}
-                          type="text"
-                          className="w-full border border-gray-300 rounded-lg px-3 py-2"
-                          placeholder="Your phone number"
-                        />
-                      )}
-                    />
-                    {errors.phone && (
-                      <p className="text-red-500 text-sm">
-                        {errors.phone.message}
-                      </p>
-                    )}
-                  </div>
-
-                  <button
-                    type="submit"
-                    className="bg-green-500 hover:bg-green-600 text-white rounded-md px-4 py-2"
-                  >
-                    Complete Purchase
-                  </button>
-                </form>
-              </div>
+            <div className="text-sm text-center text-green-600 mt-2">
+              {notification}
             </div>
           )}
         </div>
       </main>
+
+      {/* Modal for the form */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-md shadow-lg w-full max-w-lg">
+            <h2 className="text-2xl font-bold mb-4">Enter Your Details</h2>
+
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+              <div>
+                <label className="block font-semibold">Name</label>
+                <Controller
+                  name="name"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      {...field}
+                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                      placeholder="Your name"
+                    />
+                  )}
+                />
+                {errors.name && (
+                  <span className="text-red-500 text-sm">
+                    {errors.name.message}
+                  </span>
+                )}
+              </div>
+
+              <div>
+                <label className="block font-semibold">Email</label>
+                <Controller
+                  name="email"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      {...field}
+                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                      placeholder="Your email"
+                    />
+                  )}
+                />
+                {errors.email && (
+                  <span className="text-red-500 text-sm">
+                    {errors.email.message}
+                  </span>
+                )}
+              </div>
+
+              <div>
+                <label className="block font-semibold">Phone</label>
+                <Controller
+                  name="phone"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      {...field}
+                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                      placeholder="Your phone number"
+                    />
+                  )}
+                />
+                {errors.phone && (
+                  <span className="text-red-500 text-sm">
+                    {errors.phone.message}
+                  </span>
+                )}
+              </div>
+
+              <div>
+                <label className="block font-semibold">Address</label>
+                <Controller
+                  name="address"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      {...field}
+                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                      placeholder="Your address"
+                    />
+                  )}
+                />
+                {errors.address && (
+                  <span className="text-red-500 text-sm">
+                    {errors.address.message}
+                  </span>
+                )}
+              </div>
+
+              <div>
+                <label className="block font-semibold">City</label>
+                <Controller
+                  name="city"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      {...field}
+                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                      placeholder="Your city"
+                    />
+                  )}
+                />
+                {errors.city && (
+                  <span className="text-red-500 text-sm">
+                    {errors.city.message}
+                  </span>
+                )}
+              </div>
+
+              <div>
+                <label className="block font-semibold">Postal Code</label>
+                <Controller
+                  name="postalCode"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      {...field}
+                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                      placeholder="Your postal code"
+                    />
+                  )}
+                />
+                {errors.postalCode && (
+                  <span className="text-red-500 text-sm">
+                    {errors.postalCode.message}
+                  </span>
+                )}
+              </div>
+
+              <div className="flex justify-end space-x-4">
+                <button
+                  type="button"
+                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md"
+                  onClick={() => setShowModal(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
+

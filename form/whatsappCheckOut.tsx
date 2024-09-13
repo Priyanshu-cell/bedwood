@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { generateWhatsAppMessage } from '@/utils/whatsappUtils'; 
+import { generateWhatsAppMessage } from '@/utils/whatsappUtils';
 import { Product } from '@/types';
 
 interface WhatsAppCheckoutProps {
@@ -16,7 +16,11 @@ interface WhatsAppCheckoutProps {
 const schema = yup.object().shape({
   name: yup.string().required('Name is required'),
   email: yup.string().email('Invalid email format').required('Email is required'),
-  phone: yup.string().matches(/^\d{10}$/, 'Phone number must be exactly 10 digits').required('Phone number is required'),
+  phone: yup
+    .string()
+    .matches(/^\d{10}$/, 'Phone number must be exactly 10 digits')
+    .required('Phone number is required'),
+  address: yup.string().required('Address is required'), // Added address validation
 });
 
 export const WhatsAppCheckout: React.FC<WhatsAppCheckoutProps> = ({ cartItems, onCheckoutComplete }) => {
@@ -27,11 +31,12 @@ export const WhatsAppCheckout: React.FC<WhatsAppCheckoutProps> = ({ cartItems, o
       name: '',
       email: '',
       phone: '',
+      address: '', // Added address default value
     },
     resolver: yupResolver(schema),
   });
 
-  const handleCheckout = (data: { name: string; email: string; phone: string }) => {
+  const handleCheckout = (data: { name: string; email: string; phone: string; address: string }) => {
     // Generate the WhatsApp message link
     const whatsappLink = generateWhatsAppMessage(cartItems, data);
 
@@ -116,6 +121,22 @@ export const WhatsAppCheckout: React.FC<WhatsAppCheckoutProps> = ({ cartItems, o
                   )}
                 />
                 {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
+              </div>
+              <div>
+                <label htmlFor="address" className="block mb-1">Address</label>
+                <Controller
+                  name="address"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      type="text"
+                      id="address"
+                      {...field}
+                      className="border border-gray-300 p-2 rounded-md w-full"
+                    />
+                  )}
+                />
+                {errors.address && <p className="text-red-500 text-sm">{errors.address.message}</p>}
               </div>
               <button
                 type="submit"

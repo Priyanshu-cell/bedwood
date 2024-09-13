@@ -1,7 +1,9 @@
-// src/utils/whatsappUtils.ts
 import { Product } from "@/types";
 
-export function generateWhatsAppMessage(cartItems: { product: Product; quantity: number }[], formData: { name: string; email: string; phone: string }): string {
+export function generateWhatsAppMessage(
+  cartItems: { product: Product; quantity: number }[], 
+  formData: { name: string; email: string; phone: string; address: string } 
+): string {
   const baseURL = 'https://wa.me/';
   const phoneNumber = '8218719347'; 
 
@@ -27,6 +29,7 @@ ${productDetails}
 Name: ${formData.name}
 Email: ${formData.email}
 Phone: ${formData.phone}
+Address: ${formData.address}  // Add address to the message
   `.trim();
 
   const encodedMessage = encodeURIComponent(message);
