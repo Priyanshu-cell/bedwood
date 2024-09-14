@@ -36,7 +36,19 @@ export const ProductList: React.FC<ProductListProps> = ({
                   />
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold text-gray-800">{product.name}</h3>
-                    <p className="text-lg text-gray-600">{product.price}</p>
+
+                    {/* Display price with multiplication if quantity > 1 */}
+                    <p className="text-lg text-gray-600">
+                      {quantity > 1 ? (
+                        <>
+                          {product.price} x {quantity} = $
+                          {(parseFloat(product.price.slice(1)) * quantity).toFixed(2)}
+                        </>
+                      ) : (
+                        product.price
+                      )}
+                    </p>
+
                     <div className="flex items-center mt-3">
                       <button
                         onClick={() => onUpdateQuantity(product.id, quantity - 1)}
@@ -56,7 +68,7 @@ export const ProductList: React.FC<ProductListProps> = ({
                   </div>
                   <button
                     onClick={() => onRemoveFromCart(product.id)}
-                    className=" text-red-500 hover:text-red-600 text-sm"
+                    className="text-red-500 hover:text-red-600 text-sm"
                   >
                     <FaTrash />
                   </button>
@@ -65,20 +77,6 @@ export const ProductList: React.FC<ProductListProps> = ({
             ))}
           </div>
         )}
-      </div>
-
-      {/* Footer */}
-      <div className="sticky bottom-0 bg-white border-t py-4 mt-4">
-        <div className="flex justify-between">
-          <p className="font-bold text-2xl">Subtotal</p>
-          <p className="font-bold text-2xl">
-            ${cartItems.reduce(
-              (total, { product, quantity }) =>
-                total + parseFloat(product.price.slice(1)) * quantity,
-              0
-            ).toFixed(2)}
-          </p>
-        </div>
       </div>
     </div>
   );

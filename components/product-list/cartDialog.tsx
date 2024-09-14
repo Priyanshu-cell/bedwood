@@ -23,6 +23,7 @@ export const CartDialog: React.FC<CartDialogProps> = ({
   onRemoveFromCart,
   clearCart, 
 }) => {
+  // Calculate the subtotal for the cart
   const calculateSubtotal = () => {
     return cartItems
       .reduce(
@@ -33,6 +34,7 @@ export const CartDialog: React.FC<CartDialogProps> = ({
       .toFixed(2);
   };
 
+  // Handle checkout complete, clear cart and close the dialog
   const handleCheckoutComplete = () => {
     clearCart(); 
     onClose(); 
@@ -82,7 +84,17 @@ export const CartDialog: React.FC<CartDialogProps> = ({
                             <div className="flex-1 flex justify-between">
                               <div>
                                 <p className="text-sm font-medium text-gray-900">{product.name}</p>
-                                <p className="text-sm text-gray-500">{product.price}</p>
+                                <p className="text-sm text-gray-500">
+                                  {/* Show price with multiplication if quantity > 1 */}
+                                  {quantity > 1 ? (
+                                    <>
+                                      {product.price} x {quantity} = $
+                                      {(parseFloat(product.price.slice(1)) * quantity).toFixed(2)}
+                                    </>
+                                  ) : (
+                                    product.price
+                                  )}
+                                </p>
                                 <div className="mt-2">
                                   <div className="flex items-center space-x-2">
                                     <button
@@ -118,6 +130,7 @@ export const CartDialog: React.FC<CartDialogProps> = ({
                 <div className="border-t border-gray-200">
                   <div className="flex items-center justify-between px-4 py-6 sm:px-6">
                     <p className="text-lg font-medium text-gray-900">Subtotal</p>
+                    {/* Display the subtotal */}
                     <p className="text-lg font-medium text-gray-900">${calculateSubtotal()}</p>
                   </div>
                   <div className="w-fit bg-blue-500 text-white py-2 px-6 m-4 rounded-md hover:bg-blue-600">
