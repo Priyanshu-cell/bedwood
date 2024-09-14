@@ -23,11 +23,12 @@ export const ProductsPage: React.FC = () => {
   const [selectedSortOption, setSelectedSortOption] = useState(
     "Price (Low to High)"
   );
-  const [selectedLayout, setSelectedLayout] = useState("3x3");
+  const [selectedLayout, setSelectedLayout] = useState("2x2");
   const [openCart, setOpenCart] = useState(false);
-  const [cartItems, setCartItems] = useState<
-    { product: Product; quantity: number }[]
-  >([]);
+  const [cartItems, setCartItems] = useState<{
+    product: Product;
+    quantity: number;
+  }[]>([]);
   const [hasMore, setHasMore] = useState(true);
   const [cartItemCount, setCartItemCount] = useRecoilState(cartItemsCountState);
   const perPage = 8;
@@ -95,16 +96,12 @@ export const ProductsPage: React.FC = () => {
     setCartItems(getCartItems());
   };
 
-
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const storedItems = getCartItems();
       setCartItems(storedItems);
     }
   }, []);
-
-
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const clearCart = () => {
     setCartItems([]); // Clear the cart in Recoil
@@ -156,12 +153,14 @@ export const ProductsPage: React.FC = () => {
             className={`grid gap-6 my-10 px-4 lg:px-8 
             ${
               selectedLayout === "2x2"
-                ? "grid-cols-2 md:grid-cols-3"
+                ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3" // 2x2 for small, 3x3 for medium and large
                 : selectedLayout === "3x3"
-                ? "grid-cols-3 md:grid-cols-3"
+                ? "grid-cols-3 lg:grid-cols-3"
                 : selectedLayout === "4x4"
-                ? "grid-cols-4 md:grid-cols-4"
-                : "grid-cols-5 md:grid-cols-5"
+                ? "grid-cols-4 lg:grid-cols-4"
+                : selectedLayout === "5x5"
+                ? "grid-cols-5 lg:grid-cols-5"
+                : ""
             }`}
           >
             {filteredProducts.map((product) => (
