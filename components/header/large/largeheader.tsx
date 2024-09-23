@@ -1,14 +1,15 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { HeaderLink } from "../links/headerlink";
 import Link from "next/link";
-import { FaSearch, FaShoppingCart } from "react-icons/fa";
+import { FaSearch, FaShoppingCart, FaUserTie } from "react-icons/fa";
 import { HiOutlineArrowLongLeft } from "react-icons/hi2";
 import { MdMenu } from "react-icons/md";
 import { RiMapPinLine } from "react-icons/ri";
 import { IoMdHelpCircle } from "react-icons/io";
 import { useRecoilValue } from "recoil";
 import { cartItemsCountState } from "@/state/atoms/countCartState";
+import AssociateForm from "@/form/associate";
 
 interface LargeHeaderProps {
   isScrolled: boolean;
@@ -22,34 +23,28 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
   setIsSidebarOpen,
 }) => {
   const cartItemCount = useRecoilValue(cartItemsCountState);
+  const [isFormOpen, setIsFormOpen] = useState(false); // State for form visibility
 
-  // Manage body scroll when sidebar is open
+  // Manage body scroll when sidebar or form is open
   useEffect(() => {
-    if (isSidebarOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow =
+      isSidebarOpen || isFormOpen ? "hidden" : "auto";
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [isSidebarOpen]);
+  }, [isSidebarOpen, isFormOpen]);
 
   return (
-    <header className="w-full h-auto py-4 px-2 bg-gray-50">
+    <header className="w-full h-auto py-4 px-2 bg-white">
       {/* Desktop View */}
       <div className="hidden md:flex flex-col items-center">
         <div className="flex items-center justify-between w-full max-w-6xl mx-auto">
           {/* Logo */}
           <Link href="/">
-            <img
-              src="https://t4.ftcdn.net/jpg/01/33/48/03/360_F_133480376_PWlsZ1Bdr2SVnTRpb8jCtY59CyEBdoUt.jpg"
-              alt="Logo"
-              className="h-8"
-            />
+            <img src="/logo.png" alt="Logo" className="h-20" />
           </Link>
 
-          {/* Search Bar and Cart Button */}
+          {/* Search Bar and Cart & Agent Button */}
           <div className="flex items-center space-x-4 ml-4">
             <div className="relative flex-grow w-64">
               <input
@@ -65,19 +60,27 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
               className="relative flex flex-col items-center justify-center rounded-full"
               href="/cart"
             >
-              <FaShoppingCart className=" text-gray-600 text-xl mt-2" />
+              <FaShoppingCart className="text-gray-600 text-xl mt-2" />
               <span className="absolute -top-1 -right-2 text-xs text-red-500 mt-1">
-                {" "}
                 {cartItemCount}
               </span>
             </Link>
+
+            {/* Agent Icon */}
+            <button
+              className="relative flex flex-col items-center justify-center rounded-full"
+              onClick={() => setIsFormOpen(true)} // Open form on click
+            >
+              <FaUserTie className="text-gray-600 text-xl mt-2" />
+            </button>
           </div>
         </div>
+
         {/* Sticky Links Header */}
         <div
-          className={`${
+          className={`hidden md:block ${
             isScrolled ? "fixed top-0 left-0 w-full border-b bg-white z-40" : ""
-          } hidden md:block`}
+          }`}
         >
           <HeaderLink />
         </div>
@@ -97,25 +100,30 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
 
             {/* Logo */}
             <Link href="/">
-              <img
-                src="https://t4.ftcdn.net/jpg/01/33/48/03/360_F_133480376_PWlsZ1Bdr2SVnTRpb8jCtY59CyEBdoUt.jpg"
-                alt="Logo"
-                className="h-8"
-              />
+              <img src="/logo.png" alt="Logo" className="h-16" />
             </Link>
           </div>
 
-          {/* Cart Button */}
-          <Link
-            className="relative mr-2 flex flex-col items-center justify-center rounded-full"
-            href="/cart"
-          >
-            <FaShoppingCart className=" text-gray-600 text-xl mt-2" />
-            <span className="absolute -top-1 -right-2 text-xs text-red-500 mt-1">
-              {" "}
-              {cartItemCount}
-            </span>
-          </Link>
+          <div className="flex flex-row mr-2 space-x-4">
+            {/* Cart Button */}
+            <Link
+              className="relative flex flex-col items-center justify-center rounded-full"
+              href="/cart"
+            >
+              <FaShoppingCart className="text-gray-600 text-xl mt-2" />
+              <span className="absolute -top-1 -right-2 text-xs text-red-500 mt-1">
+                {cartItemCount}
+              </span>
+            </Link>
+
+            {/* Agent Icon */}
+            <button
+              className="relative flex flex-col items-center justify-center rounded-full"
+              onClick={() => setIsFormOpen(true)} // Open form on click
+            >
+              <FaUserTie className="text-gray-600 text-xl mt-2" />
+            </button>
+          </div>
         </div>
 
         {/* Search Bar */}
@@ -147,27 +155,31 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
 
             {/* Logo */}
             <Link href="/">
-              <img
-                src="https://t4.ftcdn.net/jpg/01/33/48/03/360_F_133480376_PWlsZ1Bdr2SVnTRpb8jCtY59CyEBdoUt.jpg"
-                alt="Logo"
-                className="h-8"
-              />
+              <img src="/logo.png" alt="Logo" className="h-16" />
             </Link>
           </div>
           <hr className="md:hidden border-t border-gray-300 w-full mt-10" />
           <HeaderLink setSideBarOpen={setIsSidebarOpen} />
 
-          {/* other content */}
+          {/* Other content */}
           <div className="flex flex-col font-semibold text-gray-700 text-sm mt-4 space-y-4 p-4">
-            <div className=" px-4 flex items-center space-x-4">
+            <button
+              className="px-4 flex items-center space-x-4"
+              onClick={() => setIsFormOpen(true)} // Open form on click
+            >
+              <FaUserTie className="text-gray-600 text-lg" />
+              <p>Company Associate</p>
+            </button>
+
+            <div className="px-4 flex items-center space-x-4">
               <RiMapPinLine className="text-gray-600 text-lg" />
               <p>+91-1111111111</p>
             </div>
-            <div className=" px-4 flex items-center space-x-4">
+            <div className="px-4 flex items-center space-x-4">
               <FaShoppingCart className="text-gray-600 text-lg" />
               <p>Track</p>
             </div>
-            <div className=" px-4 flex items-center space-x-4">
+            <div className="px-4 flex items-center space-x-4">
               <IoMdHelpCircle className="text-gray-600 text-lg" />
               <p>Help Center</p>
             </div>
@@ -182,6 +194,22 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
           />
         )}
       </div>
+
+      {/* Associate Form Popup */}
+      {isFormOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+          <div className="bg-white p-5 rounded-md shadow-lg relative">
+            <button
+              className="absolute top-2 right-2 text-gray-600"
+              onClick={() => setIsFormOpen(false)}
+              aria-label="Close form"
+            >
+              &times;
+            </button>
+            <AssociateForm onClose={() => setIsFormOpen(false)} />
+          </div>
+        </div>
+      )}
     </header>
   );
 };

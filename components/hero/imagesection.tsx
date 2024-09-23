@@ -7,10 +7,14 @@ import 'swiper/css/pagination';
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
 const images = [
-  'https://via.placeholder.com/800x400', 
-  'https://via.placeholder.com/800x401',
-  'https://via.placeholder.com/800x402',
-  'https://via.placeholder.com/800x403',
+  '/home/slide3.jpg', 
+  '/home/slide2.jpg',
+  '/home/slide1.jpg',
+];
+
+const sideImages = [
+  '/home/sideimg1.jpg',
+  '/home/sideimg2.jpg'
 ];
 
 export const ImageSection = () => {
@@ -38,11 +42,11 @@ export const ImageSection = () => {
       <div className="w-full md:w-2/5 h-full md:flex-col flex-row md:block hidden">
         {/* First Image */}
         <div className="w-full h-1/2 bg-gray-300 flex items-center justify-center">
-          <p>First Image Here</p>
+          <img src={sideImages[0]} alt="Side Image 1" className="w-full h-full object-cover" />
         </div>
         {/* Second Image */}
         <div className="w-full h-1/2 bg-gray-400 flex items-center justify-center">
-          <p>Second Image Here</p>
+          <img src={sideImages[1]} alt="Side Image 2" className="w-full h-full object-cover" />
         </div>
       </div>
     </section>
