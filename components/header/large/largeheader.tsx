@@ -173,7 +173,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
 
             <div className="px-4 flex items-center space-x-4">
               <RiMapPinLine className="text-gray-600 text-lg" />
-              <p>+91-1111111111</p>
+              <p>+91-8630715936 </p>
             </div>
             <div className="px-4 flex items-center space-x-4">
               <FaShoppingCart className="text-gray-600 text-lg" />

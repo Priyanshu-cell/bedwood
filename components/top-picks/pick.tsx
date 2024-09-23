@@ -1,102 +1,74 @@
 import React from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
 
 export const TopPicksSection = () => {
   const picks = [
     {
       id: 1,
-      href: "/sofa-sets",
-      src: "/images/home-new1/icon1.jpg",
+      src: "/toppicks/sofaset.jpg",
       alt: "Wooden Sofa Set Furniture",
       title: "Sofa set online",
       name: "Sofa Sets",
     },
     {
       id: 2,
-      href: "/beds",
-      src: "/images/home-new1/icon2.jpg",
+      src: "/toppicks/bed.jpg",
       alt: "Wooden Bed Furniture",
       title: "Wooden Bed",
       name: "Beds",
     },
     {
       id: 3,
-      href: "/dining-table-sets",
-      src: "/images/home-new1/icon3.jpg",
-      alt: "Wooden Dining Furniture",
+      src: "/toppicks/diningtable.jpg",
+      alt: "Dining Table Set",
       title: "Dining Table set",
       name: "Dining Table Sets",
     },
     {
       id: 4,
-      href: "/sofa-cum-beds",
-      src: "/images/home-new1/icon4.jpg",
-      alt: "Wooden Sofa Come Bed Furniture",
+      src: "/toppicks/sofacumbed.jpg",
+      alt: "Sofa Cum Bed Furniture",
       title: "Sofa cum bed online",
       name: "Sofa Cum Beds",
     },
     {
       id: 5,
-      href: "/tv-units",
-      src: "/images/home-new1/icon10.jpg",
-      alt: "Wooden Tv Unit Furniture",
-      title: "Wooden TV Unit",
-      name: "TV Units",
-    },
-    {
-      id: 6,
-      href: "/bookshelves",
-      src: "/images/home-new1/icon7.jpg",
-      alt: "Wooden Bookshelf Furniture Online",
+      src: "/toppicks/bookshelve.jpg",
+      alt: "Wooden Bookshelf Furniture",
       title: "Book Shelves online",
       name: "Book Shelves",
     },
     {
-      id: 7,
-      href: "/coffee-tables",
-      src: "/images/home-new1/icon8.jpg",
-      alt: "Buy Coffee Table for Home | Wooden Coffee Table Furniture",
+      id: 6,
+      src: "/toppicks/coffeetable.png",
+      alt: "Coffee Table Furniture",
       title: "Coffee Table Sets online",
       name: "Coffee Tables",
     },
     {
-      id: 8,
-      href: "/study-tables",
-      src: "/images/home-new1/icon6.jpg",
-      alt: "Wooden Study Table Furniture",
+      id: 7,
+      src: "/toppicks/studytable.jpg",
+      alt: "Study Table Furniture",
       title: "Study Table",
       name: "Study Tables",
     },
     {
-      id: 9,
-      href: "/home-decors",
-      src: "/images/home-new1/icon11.jpg",
+      id: 8,
+      src: "/toppicks/homedecor.png",
       alt: "Home Decor Items",
       title: "Decor Item",
       name: "Home Decor",
     },
     {
-      id: 10,
-      href: "/home-furnishing",
-      src: "/images/home-new1/icon9.jpg",
+      id: 9,
+      src: "/toppicks/homefurnishing.png",
       alt: "Home Furnishing Items",
       title: "Home Furnishing Online",
       name: "Home Furnishing",
     },
     {
-      id: 11,
-      href: "/lamps-and-lighting",
-      src: "/images/home-new1/icon12.jpg",
-      alt: "Lamp Lights Online in India",
-      title: "Lamp and Lighting",
-      name: "Lamps & Lightings",
-    },
-    {
-      id: 12,
-      href: "/furniture-sale",
-      src: "/images/home-new1/icon5.jpg",
-      alt: "Furniture Sale Online in India",
+      id: 10,
+      src: "https://images.unsplash.com/photo-1614254542478-3456749eb70b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDF8fGZ1cm5pdHVyZSUyMHNhbGV8ZW58MHx8fHwxNjI5NzY3MzEy&ixlib=rb-1.2.1&q=80&w=400",
+      alt: "Furniture Sale Online",
       title: "Wooden Online Sale",
       name: "Sale",
     },
@@ -111,7 +83,7 @@ export const TopPicksSection = () => {
       <div className="relative overflow-x-auto scrollbar-hidden">
         <div className="flex items-center space-x-4">
           {picks.map((pick) => (
-            <Link key={pick.id} href={pick.href} className="flex flex-col items-center">
+            <div key={pick.id} className="flex flex-col items-center">
               <div className="relative overflow-hidden rounded-full bg-gray-200 w-24 h-24 sm:w-32 sm:h-32 md:w-44 md:h-44">
                 <img
                   src={pick.src}
@@ -121,7 +93,7 @@ export const TopPicksSection = () => {
                 />
               </div>
               <p className="mt-2 text-center text-xs lg:text-base font-medium">{pick.name}</p>
-            </Link>
+            </div>
           ))}
         </div>
       </div>

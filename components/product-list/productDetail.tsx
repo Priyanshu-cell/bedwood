@@ -16,14 +16,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 // Form validation schema using Yup
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
-  email: yup
-    .string()
-    .email("Invalid email format")
-    .required("Email is required"),
-  phone: yup
-    .string()
-    .matches(/^\d{10}$/, "Phone number must be exactly 10 digits")
-    .required("Phone number is required"),
+  email: yup.string().email("Invalid email format").required("Email is required"),
+  phone: yup.string().matches(/^\d{10}$/, "Phone number must be exactly 10 digits").required("Phone number is required"),
   address: yup.string().required("Address is required"),
   city: yup.string().required("City is required"),
   postalCode: yup.string().required("Postal code is required"),
@@ -55,9 +49,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
   const [product, setProduct] = useState<Product | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [notification, setNotification] = useState<string | null>(null);
-  const [cartItems, setCartItems] = useState<
-    { product: Product; quantity: number }[]
-  >([]);
+  const [cartItems, setCartItems] = useState<{ product: Product; quantity: number }[]>([]);
   const [cartItemCount, setCartItemCount] = useRecoilState(cartItemsCountState);
   const [quantity, setQuantity] = useState(1);
   const [isMounted, setIsMounted] = useState(false);
@@ -65,12 +57,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
   const [showModal, setShowModal] = useState(false);
 
   // React Hook Form setup
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    reset,
-  } = useForm({
+  const { control, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
       name: "",
       email: "",
@@ -102,9 +89,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
       setCartItemCount(storedCartItems.length);
 
       // Check if the product is already in the cart
-      const productInCart = storedCartItems.some(
-        (item: { product: { id: number } }) => item.product.id === id
-      );
+      const productInCart = storedCartItems.some((item: { product: { id: number } }) => item.product.id === id);
       setIsProductInCart(productInCart);
     }
   }, [isMounted, setCartItemCount, id]);
@@ -122,16 +107,12 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
     }
   }, [cartItems, isMounted, setCartItemCount]);
 
-  const getRandomRating = (): number =>
-    Math.floor(Math.random() * (5 - 3 + 1)) + 3;
-
+  const getRandomRating = (): number => Math.floor(Math.random() * (5 - 3 + 1)) + 3;
   const rating = getRandomRating();
 
   const handleAddToCart = (product: Product) => {
     if (!isProductInCart) {
-      setCartItems((prevCart) => {
-        return [...prevCart, { product, quantity }];
-      });
+      setCartItems((prevCart) => [...prevCart, { product, quantity }]);
       setIsProductInCart(true);
       setNotification("Product added to cart!");
     } else {
@@ -144,14 +125,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
     setShowModal(true);
   };
 
-  const onSubmit = (data: {
-    name: string;
-    email: string;
-    phone: string;
-    address: string;
-    city: string;
-    postalCode: string;
-  }) => {
+  const onSubmit = (data: { name: string; email: string; phone: string; address: string; city: string; postalCode: string; }) => {
     if (!product) return; // Ensure product details are available
 
     const productDetails = {
@@ -181,7 +155,7 @@ Postal Code: ${data.postalCode}
 
     // Encode the message and create the WhatsApp link
     const encodedMessage = encodeURIComponent(message);
-    const whatsappLink = `https://wa.me/8218719347?text=${encodedMessage}`;
+    const whatsappLink = `https://wa.me/8630715936?text=${encodedMessage}`;
 
     // Open the WhatsApp link in a new tab
     window.open(whatsappLink);
@@ -203,22 +177,10 @@ Postal Code: ${data.postalCode}
 
   // Prepare images for the gallery
   const images = [
-    {
-      original: product.imageUrl,
-      thumbnail: product.imageUrl,
-    },
-    {
-      original: `${product.imageUrl}?random=1`,
-      thumbnail: `${product.imageUrl}?random=1`,
-    },
-    {
-      original: `${product.imageUrl}?random=2`,
-      thumbnail: `${product.imageUrl}?random=2`,
-    },
-    {
-      original: `${product.imageUrl}?random=3`,
-      thumbnail: `${product.imageUrl}?random=3`,
-    },
+    { original: product.imageUrl, thumbnail: product.imageUrl },
+    { original: `${product.imageUrl}?random=1`, thumbnail: `${product.imageUrl}?random=1` },
+    { original: `${product.imageUrl}?random=2`, thumbnail: `${product.imageUrl}?random=2` },
+    { original: `${product.imageUrl}?random=3`, thumbnail: `${product.imageUrl}?random=3` },
   ];
 
   return (
@@ -242,26 +204,20 @@ Postal Code: ${data.postalCode}
 
         {/* Product Details */}
         <div className="w-full md:w-1/2 px-4 md:m-0 m-6">
-          <h2 className="md:text-4xl text-2xl font-bold mb-2">
-            {product.name}
-          </h2>
+          <h2 className="md:text-4xl text-2xl font-bold mb-2">{product.name}</h2>
           <p className="text-gray-600 mb-4">{product.category}</p>
           <div className="mb-4">
             <span className="text-2xl font-bold mr-2">{product.price}</span>
           </div>
 
-          <p className="text-gray-700 mb-4 text-balance">
-            {product.description}
-          </p>
+          <p className="text-gray-700 mb-4 text-balance">{product.description}</p>
 
           {/* Rating */}
           <div className="flex items-center ">
             {Array.from({ length: 5 }, (_, index) => (
               <StarIcon
                 key={index}
-                className={`w-6 h-6 ${
-                  index < rating ? "text-yellow-400" : "text-gray-300"
-                }`}
+                className={`w-6 h-6 ${index < rating ? "text-yellow-400" : "text-gray-300"}`}
               />
             ))}
             <span className="ml-2 text-gray-500">({rating}/5)</span>
@@ -271,13 +227,13 @@ Postal Code: ${data.postalCode}
           <div className="flex items-center space-x-2 p-4 pl-0">
             <button
               onClick={() => setQuantity((prev) => Math.max(prev - 1, 1))}
-              className="bg-gray-300 text-gray-700  px-2 rounded-md "
+              className="bg-gray-300 text-gray-700 px-2 rounded-md"
             >
               -
             </button>
             <p>{quantity}</p>
             <button
-              onClick={() => setQuantity((                prev) => prev + 1)}
+              onClick={() => setQuantity((prev) => prev + 1)}
               className="bg-gray-300 text-gray-700 px-2 rounded-md"
             >
               +
@@ -303,15 +259,15 @@ Postal Code: ${data.postalCode}
               <span>Buy Now</span>
             </button>
           </div>
-
-          {/* Notification for cart */}
-          {notification && (
-            <div className="text-sm text-center text-green-600 mt-2">
-              {notification}
-            </div>
-          )}
         </div>
       </main>
+
+      {/* Notification for cart */}
+      {notification && (
+        <div className="fixed bottom-20 -right-20 transform -translate-x-1/2 bg-gray-50 border-t-4 border-green-500 p-4 rounded-md w-80">
+          <p className="text-sm text-green-600 text-center">{notification}</p>
+        </div>
+      )}
 
       {/* Modal for the form */}
       {showModal && (
@@ -333,11 +289,7 @@ Postal Code: ${data.postalCode}
                     />
                   )}
                 />
-                {errors.name && (
-                  <span className="text-red-500 text-sm">
-                    {errors.name.message}
-                  </span>
-                )}
+                {errors.name && <span className="text-red-500 text-sm">{errors.name.message}</span>}
               </div>
 
               <div>
@@ -353,11 +305,7 @@ Postal Code: ${data.postalCode}
                     />
                   )}
                 />
-                {errors.email && (
-                  <span className="text-red-500 text-sm">
-                    {errors.email.message}
-                  </span>
-                )}
+                {errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
               </div>
 
               <div>
@@ -373,11 +321,7 @@ Postal Code: ${data.postalCode}
                     />
                   )}
                 />
-                {errors.phone && (
-                  <span className="text-red-500 text-sm">
-                    {errors.phone.message}
-                  </span>
-                )}
+                {errors.phone && <span className="text-red-500 text-sm">{errors.phone.message}</span>}
               </div>
 
               <div>
@@ -393,11 +337,7 @@ Postal Code: ${data.postalCode}
                     />
                   )}
                 />
-                {errors.address && (
-                  <span className="text-red-500 text-sm">
-                    {errors.address.message}
-                  </span>
-                )}
+                {errors.address && <span className="text-red-500 text-sm">{errors.address.message}</span>}
               </div>
 
               <div>
@@ -413,11 +353,7 @@ Postal Code: ${data.postalCode}
                     />
                   )}
                 />
-                {errors.city && (
-                  <span className="text-red-500 text-sm">
-                    {errors.city.message}
-                  </span>
-                )}
+                {errors.city && <span className="text-red-500 text-sm">{errors.city.message}</span>}
               </div>
 
               <div>
@@ -433,11 +369,7 @@ Postal Code: ${data.postalCode}
                     />
                   )}
                 />
-                {errors.postalCode && (
-                  <span className="text-red-500 text-sm">
-                    {errors.postalCode.message}
-                  </span>
-                )}
+                {errors.postalCode && <span className="text-red-500 text-sm">{errors.postalCode.message}</span>}
               </div>
 
               <div className="flex justify-end space-x-4">
@@ -462,4 +394,3 @@ Postal Code: ${data.postalCode}
     </div>
   );
 };
-

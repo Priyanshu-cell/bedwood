@@ -5,7 +5,7 @@ export function generateWhatsAppMessage(
   formData: { name: string; email: string; phone: string; address: string } 
 ): string {
   const baseURL = 'https://wa.me/';
-  const phoneNumber = '8218719347'; 
+  const phoneNumber = '8630715936'; 
 
   const subtotal = cartItems.reduce(
     (total, { product, quantity }) =>
