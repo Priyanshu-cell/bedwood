@@ -30,7 +30,7 @@ export const ImageSection = () => {
           pagination={{ clickable: true }}
           autoplay={{ delay: 3000, disableOnInteraction: false }}
           loop={true}
-          className="h-[300px] md:h-[480px]" // Adjust height for mobile and desktop
+          className="h-[175px] md:h-[480px]" // Adjust height for mobile and desktop
         >
           {images.map((image, index) => (
             <SwiperSlide key={index}>

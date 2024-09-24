@@ -51,11 +51,11 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
-      <div className="bg-white p-4 rounded shadow-md md:w-1/2 w-full m-4 relative">
-        <button onClick={onClose} className="absolute top-2 right-2 text-gray-500 text-xl">
+      <div className="bg-white pt-4 pb-10 px-6 rounded-lg shadow-md md:w-1/2 w-full m-4 relative">
+        <button onClick={onClose} className="absolute top-0 right-2 text-gray-500 text-3xl">
           &times;
         </button>
-        <h2 className="text-lg font-semibold mb-4">Associate Form</h2>
+        <h2 className="text-lg font-semibold mb-4 text-center">Become a Company Associate!</h2>
         <form onSubmit={handleSubmit(onSubmit)} className="text-sm">
           <div className="mb-2">
             <label className="block mb-1">First Name</label>
@@ -165,7 +165,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             <p className="text-red-500 text-xs">{errors.country?.message}</p>
           </div>
 
-          <button type="submit" className="bg-blue-500 text-white p-2 rounded w-full text-sm">
+          <button type="submit" className="bg-blue-500 text-white p-2 rounded w-24 text-sm">
             Submit
           </button>
         </form>
