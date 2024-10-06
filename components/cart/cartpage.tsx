@@ -6,9 +6,10 @@ import { ProductList } from './productList';
 import { OrderSummary } from './orderSummary';
 import { getCartItems, addToCart, updateCartItemQuantity, removeCartItem, clearCartItems } from '@/utils/cartUtils'; // Import clearCartItems
 import Link from 'next/link';
+import { TProduct } from '@/services/product/product.type';
 
 export const CartPage = () => {
-  const [cartItems, setCartItems] = useState<{ product: Product; quantity: number }[]>([]);
+  const [cartItems, setCartItems] = useState<{ product: TProduct; quantity: number }[]>([]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -17,12 +18,12 @@ export const CartPage = () => {
     }
   }, []);
 
-  const handleUpdateQuantity = (productId: number, quantity: number) => {
+  const handleUpdateQuantity = (productId: string, quantity: number) => {
     updateCartItemQuantity(productId, quantity);
     setCartItems(getCartItems());
   };
 
-  const handleRemoveFromCart = (productId: number) => {
+  const handleRemoveFromCart = (productId: string) => {
     removeCartItem(productId);
     setCartItems(getCartItems());
   };

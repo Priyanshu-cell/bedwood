@@ -30,7 +30,7 @@ export const ProductList: React.FC<ProductListProps> = ({
               <div key={product._id} className="flex items-center justify-between border-b p-6 w-full max-w-4xl">
                 <div className="flex items-center space-x-6 w-full">
                   <img
-                    src={product.image}
+                    src={product.image[0]}
                     alt={product.name}
                     className="w-24 h-24 object-cover rounded-md"
                   />

@@ -86,7 +86,7 @@ export const CartDialog: React.FC<CartDialogProps> = ({
                             className="flex py-4 border-b border-gray-200"
                           >
                             <img
-                              src={product.image}
+                              src={product.image[0]}
                               alt={product.name}
                               className="w-20 h-20 object-cover mr-4"
                             />

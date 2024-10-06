@@ -72,7 +72,6 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
       setIsLoading(true);
       try {
         const productDetail = await getProduct(id); // Fetch product by ID
-        console.log('Product Detial in useeffect', productDetail)
         setProduct(productDetail || null);
       } catch (error) {
         console.error("Failed to fetch product:", error);
@@ -83,7 +82,6 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
 
     fetchProduct();
   }, [id]);
-  console.log('Product Detail', product)
 
   // Load cart items
   useEffect(() => {
@@ -129,17 +127,13 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
     },
   });
 
-
-
   const onSubmit = (data: { name: string; email: string; phone: string; address: string; }) => {
     if (!product) return; // Ensure product details are available
-    console.log("Product", product._id)
 
     const OrderProductDetail = [{
       "productId": product._id,
       "quantity": quantity
-    }]
-
+    }];
 
     const message = `
 *Product Details:*
@@ -163,7 +157,7 @@ Address: ${data.address}
     // Open the WhatsApp link in a new tab
     window.open(whatsappLink);
 
-    SendOrderData.mutateAsync({name: data.name, email: data.email, phone: data.phone, address: data.address, totalPrice: product.price, productDetails: OrderProductDetail})
+    SendOrderData.mutateAsync({name: data.name, email: data.email, phone: data.phone, address: data.address, totalPrice: product.price, productDetails: OrderProductDetail});
 
     // Close the modal
     setShowModal(false);
@@ -180,13 +174,11 @@ Address: ${data.address}
     return <p className="text-center font-semibold">Product not found</p>;
   }
 
-  // Prepare images for the gallery
-  const images = [
-    { original: product.image, thumbnail: product.image },
-    { original: `${product.image}?random=1`, thumbnail: `${product.image}?random=1` },
-    { original: `${product.image}?random=2`, thumbnail: `${product.image}?random=2` },
-    { original: `${product.image}?random=3`, thumbnail: `${product.image}?random=3` },
-  ];
+  // Prepare images for the gallery by mapping over product.image
+  const images = product.image.map((imgUrl) => ({
+    original: imgUrl,
+    thumbnail: imgUrl,
+  }));
 
   return (
     <div className="flex flex-col">
@@ -196,7 +188,7 @@ Address: ${data.address}
         <div className="md:w-1/2 w-full flex flex-col items-center">
           <div className="w-full md:w-auto px-4">
             <ImageGallery
-              items={images}
+              items={images} // Use mapped images here
               showNav={false}
               showFullscreenButton={false}
               showPlayButton={false}
@@ -247,17 +239,18 @@ Address: ${data.address}
           </div>
 
           {/* Add to Cart Button */}
-          <div className="flex space-x-2 mt-4">
+          <div className="flex items-center space-x-4">
             <button
               onClick={() => handleAddToCart(product)}
-              className="bg-blue-600 text-white py-2 px-4 rounded-md flex items-center"
+              disabled={isProductInCart}
+              className={`flex items-center px-4 py-2 text-white rounded-md ${isProductInCart ? "bg-gray-400" : "bg-green-600"}`}
             >
               <ShoppingCartIcon className="h-5 w-5 mr-2" />
               Add to Cart
             </button>
             <button
               onClick={handleBuyNow}
-              className="bg-green-600 text-white py-2 px-4 rounded-md flex items-center"
+              className="bg-blue-600 flex items-center px-4 py-2 text-white rounded-md"
             >
               <BiPurchaseTag className="h-5 w-5 mr-2" />
               Buy Now
@@ -266,86 +259,97 @@ Address: ${data.address}
         </div>
       </main>
 
-      {/* Notification Display */}
-      {notification && <div className="text-red-500 text-center my-4">{notification}</div>}
+      {/* Success Notification */}
+      {notification && (
+        <p className="text-green-500 mt-2 text-center">{notification}</p>
+      )}
 
-      {/* Modal for WhatsApp Order */}
+      {/* Order Form Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg p-6 w-96">
-            <h3 className="text-lg font-bold mb-4">Order Product</h3>
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black opacity-50"></div>
+          <div className="relative bg-white w-full max-w-md p-6 mx-auto rounded-lg shadow-lg">
+            <h2 className="text-xl font-bold mb-4">Buy Now</h2>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <Controller
-                name="name"
-                control={control}
-                render={({ field }) => (
-                  <input
-                    type="text"
-                    placeholder="Your Name"
-                    {...field}
-                    className="w-full border-2 border-gray-300 p-2 rounded mb-4"
-                  />
-                )}
-              />
-              <p className="text-red-500">{errors.name?.message}</p>
-
-              <Controller
-                name="email"
-                control={control}
-                render={({ field }) => (
-                  <input
-                    type="email"
-                    placeholder="Your Email"
-                    {...field}
-                    className="w-full border-2 border-gray-300 p-2 rounded mb-4"
-                  />
-                )}
-              />
-              <p className="text-red-500">{errors.email?.message}</p>
-
-              <Controller
-                name="phone"
-                control={control}
-                render={({ field }) => (
-                  <input
-                    type="tel"
-                    placeholder="Your Phone Number"
-                    {...field}
-                    className="w-full border-2 border-gray-300 p-2 rounded mb-4"
-                  />
-                )}
-              />
-              <p className="text-red-500">{errors.phone?.message}</p>
-
-              <Controller
-                name="address"
-                control={control}
-                render={({ field }) => (
-                  <input
-                    type="text"
-                    placeholder="Your Address"
-                    {...field}
-                    className="w-full border-2 border-gray-300 p-2 rounded mb-4"
-                  />
-                )}
-              />
-              <p className="text-red-500">{errors.address?.message}</p>
-
-              <div className="flex justify-between">
-                <button
-                  type="button"
-                  onClick={() => setShowModal(false)}
-                  className="bg-gray-300 text-gray-700 py-2 px-4 rounded-md"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-blue-600 text-white py-2 px-4 rounded-md"
-                >
-                  Send Order
-                </button>
+              {/* Name Input */}
+              <div className="mb-4">
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+                <Controller
+                  name="name"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      type="text"
+                      id="name"
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      {...field}
+                    />
+                  )}
+                />
+                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
               </div>
+
+              {/* Email Input */}
+              <div className="mb-4">
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                <Controller
+                  name="email"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      type="email"
+                      id="email"
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      {...field}
+                    />
+                  )}
+                />
+                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+              </div>
+
+              {/* Phone Input */}
+              <div className="mb-4">
+                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone</label>
+                <Controller
+                  name="phone"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      type="text"
+                      id="phone"
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      {...field}
+                    />
+                  )}
+                />
+                {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
+              </div>
+
+              {/* Address Input */}
+              <div className="mb-4">
+                <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
+                <Controller
+                  name="address"
+                  control={control}
+                  render={({ field }) => (
+                    <input
+                      type="text"
+                      id="address"
+                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                      {...field}
+                    />
+                  )}
+                />
+                {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>}
+              </div>
+
+              {/* Submit Button */}
+              <button
+                type="submit"
+                className="w-full bg-blue-600 text-white py-2 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              >
+                Confirm Purchase
+              </button>
             </form>
           </div>
         </div>

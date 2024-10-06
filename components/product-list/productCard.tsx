@@ -23,7 +23,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
         {/* Image Container */}
         <div className="w-full h-[250px] overflow-hidden relative cursor-pointer">
           <img
-            src={product.image}
+            src={product.image[0]}
             alt={product.name}
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
           />

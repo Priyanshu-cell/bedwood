@@ -7,9 +7,10 @@ import { HiOutlineArrowLeft } from "react-icons/hi2";
 import { MdMenu } from "react-icons/md";
 import { RiMapPinLine } from "react-icons/ri";
 import { IoMdHelpCircle } from "react-icons/io";
-import { useRecoilValue } from "recoil";
+import { useRecoilValue, useSetRecoilState } from "recoil";
 import { cartItemsCountState } from "@/state/atoms/countCartState";
 import AssociateForm from "@/form/assiociate";
+import { searchState } from "@/state/atoms/searchState"; // Import the search state
 
 interface LargeHeaderProps {
   isScrolled: boolean;
@@ -23,6 +24,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
   setIsSidebarOpen,
 }) => {
   const cartItemCount = useRecoilValue(cartItemsCountState);
+  const setSearchQuery = useSetRecoilState(searchState); // Set search query state
   const [isFormOpen, setIsFormOpen] = useState(false); // State for form visibility
   const whatsappNumber = "+91 96751 11719"; // Define your WhatsApp number
 
@@ -51,6 +53,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
               <input
                 type="text"
                 placeholder="Search..."
+                onChange={(e) => setSearchQuery(e.target.value)} // Update search query on input change
                 className="p-1 border border-gray-300 bg-white rounded-md w-full"
               />
               <FaSearch className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 text-2xl" />
@@ -83,7 +86,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
             isScrolled ? "fixed top-0 left-0 w-full border-b bg-white z-40" : ""
           }`}
         >
-          <HeaderLink  />
+          <HeaderLink />
         </div>
       </div>
 
@@ -133,6 +136,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
             <input
               type="text"
               placeholder="Search..."
+              onChange={(e) => setSearchQuery(e.target.value)} // Update search query on input change
               className="p-2 border border-gray-300 bg-white rounded-md w-full"
             />
             <FaSearch className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 text-2xl" />

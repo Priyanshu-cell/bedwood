@@ -1,11 +1,13 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { getProductCategories } from "@/services/category/category.type";
-import { HeaderLinkProps, LinkData } from "@/services/category";
+import { getProductCategories } from "@/services/category";
+import { HeaderLinkProps, LinkData } from "@/services/category/category.type";
 import { selectedCategoryState } from "@/state/atoms/filterstate";
 import { useRecoilState } from "recoil";
 import { useSearchParams, useRouter } from "next/navigation"; // Import useRouter
+
+
 
 export const HeaderLink: React.FC<HeaderLinkProps> = ({
   className,
@@ -39,9 +41,9 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
         console.log("Data", data);
         if (data.success) {
           const formattedData = data.data.map((item) => ({
-            _id: item._id,
+            _id: item._id ??"",
             name: item.name,
-            logo: "", // Assuming no logos from the API
+            logo: "", 
             children: item.children || [],
           }));
           setLinkData(formattedData);
