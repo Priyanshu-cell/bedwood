@@ -8,6 +8,7 @@ import {
     useQuery,
   } from '@tanstack/react-query'
 
+
   const QueryProvider = ({children}: {children:  React.ReactNode}) => {
     const queryClient = new QueryClient()
   return (
@@ -16,7 +17,7 @@ import {
 
         <QueryClientProvider client={queryClient}>
          {children}
-   
+        
       </QueryClientProvider>
     
         

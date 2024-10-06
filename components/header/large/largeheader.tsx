@@ -83,9 +83,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
             isScrolled ? "fixed top-0 left-0 w-full border-b bg-white z-40" : ""
           }`}
         >
-          <HeaderLink onCategoryChange={function (categoryId: string): void {
-            throw new Error("Function not implemented.");
-          } } />
+          <HeaderLink  />
         </div>
       </div>
 
@@ -162,9 +160,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
             </Link>
           </div>
           <hr className="md:hidden border-t border-gray-300 w-full mt-10" />
-          <HeaderLink setSideBarOpen={setIsSidebarOpen} onCategoryChange={function (categoryId: string): void {
-            throw new Error("Function not implemented.");
-          } }  />
+          <HeaderLink setSideBarOpen={setIsSidebarOpen} />
 
           {/* Other content */}
           <div className="flex flex-col font-semibold text-gray-700 text-sm mt-4 space-y-4 p-4">

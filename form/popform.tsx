@@ -38,18 +38,18 @@ export const PopUpForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
   return (
     <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
-      <div className="bg-white flex rounded shadow-md relative m-6" style={{ width: '80%', maxWidth: '800px', height: '400px' }}> {/* Set height to 400px */}
+      <div className="bg-white flex rounded shadow-md relative m-6" style={{ width: '80%', maxWidth: '800px', height: '400px', minHeight: '200px' }}>
         {/* Image on the left */}
-        <div className="w-1/2"> {/* Adjusted to 1/2 */}
+        <div className="md:block hidden w-1/2">
           <img
             src="/popup.png"
             alt="Descriptive Alt Text"
-            className="w-full h-full object-contain rounded-l"
+            className=" w-full h-full object-contain rounded-l"
           />
         </div>
 
         {/* Form on the right */}
-        <div className="w-1/2 p-4 overflow-hidden"> {/* Adjusted to 1/2, padding reduced, overflow hidden */}
+        <div className="w-1/2 p-4 overflow-hidden">
           {/* Close icon in the top right corner */}
           <button
             onClick={onClose}
@@ -68,68 +68,68 @@ export const PopUpForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           </button>
 
           <h2 className="text-lg font-bold mb-4">Welcome To Bedwood Furnitures</h2>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="mb-4">
-              <label className="block mb-2">
+          <form onSubmit={handleSubmit(onSubmit)} className='w-1/2'>
+            <div className="mb-2">
+              <label className="block mb-1 text-sm">
                 Name:
                 <Controller
                   name="name"
                   control={control}
                   defaultValue=""
                   render={({ field }) => (
-                    <input {...field} className="border rounded w-full p-1" />
+                    <input {...field} className="border rounded w-full p-1 text-sm" />
                   )}
                 />
               </label>
-              {errors.name && <p className="text-red-500">{errors.name.message}</p>}
+              {errors.name && <p className="text-red-500 text-xs">{errors.name.message}</p>}
             </div>
 
-            <div className="mb-4">
-              <label className="block mb-2">
+            <div className="mb-2">
+              <label className="block mb-1 text-sm">
                 Mobile No:
                 <Controller
                   name="mobileNo"
                   control={control}
                   defaultValue=""
                   render={({ field }) => (
-                    <input {...field} className="border rounded w-full p-1" />
+                    <input {...field} className="border rounded w-full p-1 text-sm" />
                   )}
                 />
               </label>
-              {errors.mobileNo && <p className="text-red-500">{errors.mobileNo.message}</p>}
+              {errors.mobileNo && <p className="text-red-500 text-xs">{errors.mobileNo.message}</p>}
             </div>
 
-            <div className="mb-4">
-              <label className="block mb-2">
+            <div className="mb-2">
+              <label className="block mb-1 text-sm">
                 Address:
                 <Controller
                   name="address"
                   control={control}
                   defaultValue=""
                   render={({ field }) => (
-                    <input {...field} className="border rounded w-full p-1" />
+                    <input {...field} className="border rounded w-full p-1 text-sm" />
                   )}
                 />
               </label>
-              {errors.address && <p className="text-red-500">{errors.address.message}</p>}
+              {errors.address && <p className="text-red-500 text-xs">{errors.address.message}</p>}
             </div>
 
-            <div className="mb-4">
-              <label className="block mb-2">
+            <div className="mb-2">
+              <label className="block mb-1 text-sm">
                 Email (optional):
                 <Controller
                   name="email"
                   control={control}
                   defaultValue=""
                   render={({ field }) => (
-                    <input {...field} type="email" className="border rounded w-full p-1" />
+                    <input {...field} type="email" className="border rounded w-full p-1 text-sm" />
                   )}
                 />
               </label>
-              {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+              {errors.email && <p className="text-red-500 text-xs">{errors.email.message}</p>}
             </div>
 
-            <button type="submit" className="bg-blue-500 text-white rounded px-2 py-1">Submit</button>
+            <button type="submit" className="bg-blue-500 text-sm text-white rounded px-2 py-1">Submit</button>
           </form>
         </div>
       </div>

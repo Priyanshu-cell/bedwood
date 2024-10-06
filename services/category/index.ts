@@ -13,6 +13,6 @@ export interface SubMenuItem {
   export interface HeaderLinkProps {
     className?: string;
     setSideBarOpen?: any;
-    onCategoryChange: (categoryId: string) => void; 
+   
     
   }

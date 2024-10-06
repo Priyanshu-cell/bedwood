@@ -1,15 +1,19 @@
-import React from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import React, { useState } from 'react';
+import { useProducts } from '@/hooks/useProducts'; // Adjust the path as necessary
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { refetchProductData } from '@/state/atoms/refetchdata';
+import { selectedCategoryState } from '@/state/atoms/filterstate';
 
 interface HeaderProps {
   selectedCategory: string;
-  onCategoryChange: (category: string) => void;
   selectedSortOption: string;
   onSortChange: (sortOption: string) => void;
   selectedLayout: string;
   onLayoutChange: (layout: string) => void;
 }
 
-const categories = ['All'];
+const categories = ['All']; // Keeping only "All" as the category
 const sortOptions = [
   { value: '1', label: 'Price (Low to High)' }, 
   { value: '-1', label: 'Price (High to Low)' }
@@ -19,12 +23,35 @@ const layoutOptionsDesktop = ['3x3', '4x4', '5x5'];
 
 export const Header: React.FC<HeaderProps> = ({
   selectedCategory,
-  onCategoryChange,
   selectedSortOption,
   onSortChange,
   selectedLayout,
   onLayoutChange
 }) => {
+  const queryClient = useQueryClient();
+  const { refetch } = useProducts(selectedSortOption); // Initial call without categoryId
+  const [refetchdata, setrefetchdata] = useRecoilState(refetchProductData);
+  const setSelectedCategory = useSetRecoilState(selectedCategoryState);
+
+
+  const handleCategoryChange = (category: string) => {
+    const params = new URLSearchParams(window.location.search);
+
+    if (category === 'All') {
+      setrefetchdata(true)
+      setSelectedCategory("")
+      params.delete("categoryId"); // Clear categoryId parameter
+      refetch(); // Refetch the products without category
+    } else {
+      params.set("categoryId", category); // Set categoryId for other categories
+      refetch();
+      setrefetchdata(false); // Refetch the products with the selected category
+    }
+
+    // Update the URL without refreshing
+    window.history.replaceState({}, "", `/productlist`);
+  };
+
   return (
     <div className="sticky md:top-14 top-0 bg-gray-50 shadow-xs shadow-slate-100 z-30">
       <div className="mx-auto max-w-8xl px-2 lg:px-8 py-4 flex flex-row justify-between items-center gap-4">
@@ -49,11 +76,11 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Filter Selection */}
-          <div className="hidden md:flex space-x-4">
+          <div className=" md:flex space-x-4">
             {categories.map((category) => (
               <button
                 key={category}
-                onClick={() => onCategoryChange(category)}
+                onClick={() => handleCategoryChange(category)} // Use the new handler
                 className={`px-4 py-2 rounded-lg ${selectedCategory === category ? 'bg-gray-300 text-black' : 'bg-gray-200 text-black'} text-sm md:text-base`}
               >
                 {category}
@@ -63,17 +90,7 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Mobile View */}
           <div className="md:hidden flex-row space-y-2">
-            <select
-              value={selectedCategory}
-              onChange={(e) => onCategoryChange(e.target.value)}
-              className="w-2/3 p-2 rounded-lg bg-gray-200 text-gray-800 text-sm"
-            >
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-            </select>
+           
             <select
               value={selectedSortOption}
               onChange={(e) => onSortChange(e.target.value)}

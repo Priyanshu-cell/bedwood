@@ -69,7 +69,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
           e.stopPropagation(); // Prevent the link from being triggered
           onAddToCart(product, quantity);
         }}
-        className="absolute bottom-4 right-4 bg-blue-600 text-white py-1 px-2 text-sm rounded-md hover:bg-blue-500 transition-colors duration-200 z-10"
+        className="absolute bottom-4 right-4 bg-blue-600 text-white py-1 px-2 text-sm rounded-md hover:bg-blue-500 transition-colors duration-200 "
       >
         <ShoppingCartIcon className="h-4 w-4 inline-block mr-1" />
         Add

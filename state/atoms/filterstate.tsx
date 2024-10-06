@@ -3,7 +3,7 @@ import { atom } from 'recoil';
 
 export const selectedCategoryState = atom<string>({
   key: 'selectedCategoryState',
-  default: 'All', // Default category
+  default: '', // Default category
 });
 
 export const selectedSortOptionState = atom<string>({
