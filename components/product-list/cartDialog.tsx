@@ -1,18 +1,23 @@
-'use client'
+"use client";
 import React from "react";
-import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from "@headlessui/react";
+import {
+  Dialog,
+  DialogBackdrop,
+  DialogPanel,
+  DialogTitle,
+} from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { FaTrash } from "react-icons/fa";
-import { Product } from "@/types";
+import { TProduct } from "@/services/product/product.type"; // Use TProduct instead of Product
 import { WhatsAppCheckout } from "@/form/whatsappCheckOut";
 
 interface CartDialogProps {
   open: boolean;
   onClose: () => void;
-  cartItems: { product: Product; quantity: number }[];
-  onUpdateQuantity: (productId: number, quantity: number) => void;
-  onRemoveFromCart: (productId: number) => void;
-  clearCart: () => void; 
+  cartItems: { product: TProduct; quantity: number }[]; // Changed to TProduct
+  onUpdateQuantity: (productId: string, quantity: number) => void; // Ensure productId is a string
+  onRemoveFromCart: (productId: string) => void;
+  clearCart: () => void;
 }
 
 export const CartDialog: React.FC<CartDialogProps> = ({
@@ -21,14 +26,13 @@ export const CartDialog: React.FC<CartDialogProps> = ({
   cartItems,
   onUpdateQuantity,
   onRemoveFromCart,
-  clearCart, 
+  clearCart,
 }) => {
   // Calculate the subtotal for the cart
   const calculateSubtotal = () => {
     return cartItems
       .reduce(
-        (total, { product, quantity }) =>
-          total + parseFloat(product.price.slice(1)) * quantity,
+        (total, { product, quantity }) => total + product.price * quantity, // Assuming price is a number now
         0
       )
       .toFixed(2);
@@ -36,8 +40,8 @@ export const CartDialog: React.FC<CartDialogProps> = ({
 
   // Handle checkout complete, clear cart and close the dialog
   const handleCheckoutComplete = () => {
-    clearCart(); 
-    onClose(); 
+    clearCart();
+    onClose();
   };
 
   return (
@@ -71,42 +75,62 @@ export const CartDialog: React.FC<CartDialogProps> = ({
                   </div>
                   <div className="mt-4">
                     {cartItems.length === 0 ? (
-                      <p className="text-center text-gray-500">Your cart is empty.</p>
+                      <p className="text-center text-gray-500">
+                        Your cart is empty.
+                      </p>
                     ) : (
                       <ul>
                         {cartItems.map(({ product, quantity }) => (
-                          <li key={product.id} className="flex py-4 border-b border-gray-200">
-                            <img 
-                              src={product.imageUrl} 
-                              alt={product.name} 
+                          <li
+                            key={product._id}
+                            className="flex py-4 border-b border-gray-200"
+                          >
+                            <img
+                              src={product.image}
+                              alt={product.name}
                               className="w-20 h-20 object-cover mr-4"
                             />
                             <div className="flex-1 flex justify-between">
                               <div>
-                                <p className="text-sm font-medium text-gray-900">{product.name}</p>
+                                <p className="text-sm font-medium text-gray-900">
+                                  {product.name}
+                                </p>
                                 <p className="text-sm text-gray-500">
-                                  {/* Show price with multiplication if quantity > 1 */}
                                   {quantity > 1 ? (
                                     <>
-                                      {product.price} x {quantity} = $
-                                      {(parseFloat(product.price.slice(1)) * quantity).toFixed(2)}
+                                      ${product.price} x {quantity} = $
+                                      {(product.price * quantity).toFixed(2)}
                                     </>
                                   ) : (
-                                    product.price
+                                    `$${product.price}`
                                   )}
                                 </p>
                                 <div className="mt-2">
                                   <div className="flex items-center space-x-2">
                                     <button
-                                      onClick={() => onUpdateQuantity(product.id, quantity - 1)}
+                                      onClick={() =>
+                                        product._id &&
+                                        onUpdateQuantity(
+                                          product._id,
+                                          quantity - 1
+                                        )
+                                      } // Check if _id is defined
                                       className="text-gray-500 hover:text-gray-700 px-2 bg-gray-200 rounded-md"
                                       disabled={quantity <= 1}
                                     >
                                       -
                                     </button>
-                                    <p className="text-sm text-gray-500">{quantity}</p>
+                                    <p className="text-sm text-gray-500">
+                                      {quantity}
+                                    </p>
                                     <button
-                                      onClick={() => onUpdateQuantity(product.id, quantity + 1)}
+                                      onClick={() =>
+                                        product._id &&
+                                        onUpdateQuantity(
+                                          product._id,
+                                          quantity + 1
+                                        )
+                                      } // Check if _id is defined
                                       className="text-gray-500 hover:text-gray-700 px-2 bg-gray-200 rounded-md"
                                     >
                                       +
@@ -115,7 +139,9 @@ export const CartDialog: React.FC<CartDialogProps> = ({
                                 </div>
                               </div>
                               <button
-                                onClick={() => onRemoveFromCart(product.id)}
+                                onClick={() =>
+                                  product._id && onRemoveFromCart(product._id)
+                                } // Check if _id is defined
                                 className="text-red-500 hover:text-red-700 flex items-center"
                               >
                                 <FaTrash />
@@ -129,15 +155,19 @@ export const CartDialog: React.FC<CartDialogProps> = ({
                 </div>
                 <div className="border-t border-gray-200">
                   <div className="flex items-center justify-between px-4 py-6 sm:px-6">
-                    <p className="text-lg font-medium text-gray-900">Subtotal</p>
+                    <p className="text-lg font-medium text-gray-900">
+                      Subtotal
+                    </p>
                     {/* Display the subtotal */}
-                    <p className="text-lg font-medium text-gray-900">${calculateSubtotal()}</p>
+                    <p className="text-lg font-medium text-gray-900">
+                      ${calculateSubtotal()}
+                    </p>
                   </div>
                   <div className="w-fit bg-blue-500 text-white py-2 px-6 m-4 rounded-md hover:bg-blue-600">
                     {/* WhatsAppCheckout Component with onCheckoutComplete */}
                     <WhatsAppCheckout
                       cartItems={cartItems}
-                      onCheckoutComplete={handleCheckoutComplete} 
+                      onCheckoutComplete={handleCheckoutComplete}
                     />
                   </div>
                 </div>

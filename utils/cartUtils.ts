@@ -1,8 +1,8 @@
-import { Product } from '@/types';
+import { TProduct } from "@/services/product/product.type";
 
 // Type for cart item
 interface CartItem {
-  product: Product;
+  product: TProduct;
   quantity: number;
 }
 
@@ -27,9 +27,9 @@ export const saveCartItems = (cartItems: CartItem[]) => {
 };
 
 // Add item to cart
-export const addToCart = (product: Product, quantity: number) => {
+export const addToCart = (product: TProduct, quantity: number) => {
   const cartItems = getCartItems();
-  const itemIndex = cartItems.findIndex(item => item.product.id === product.id);
+  const itemIndex = cartItems.findIndex(item => item.product._id === product._id);
 
   if (itemIndex >= 0) {
     cartItems[itemIndex].quantity += quantity;
@@ -41,9 +41,9 @@ export const addToCart = (product: Product, quantity: number) => {
 };
 
 // Update cart item quantity
-export const updateCartItemQuantity = (productId: number, quantity: number) => {
+export const updateCartItemQuantity = (productId: string, quantity: number) => {
   const cartItems = getCartItems();
-  const itemIndex = cartItems.findIndex(item => item.product.id === productId);
+  const itemIndex = cartItems.findIndex(item => item.product._id === productId);
 
   if (itemIndex >= 0) {
     if (quantity <= 0) {
@@ -56,13 +56,12 @@ export const updateCartItemQuantity = (productId: number, quantity: number) => {
 };
 
 // Remove item from cart
-export const removeCartItem = (productId: number) => {
-  const cartItems = getCartItems().filter(item => item.product.id !== productId);
+export const removeCartItem = (productId: string) => {
+  const cartItems = getCartItems().filter(item => item.product._id !== productId);
   saveCartItems(cartItems);
 };
 
-// Remove cartitem on checkout
+// Remove cart items on checkout
 export const clearCartItems = () => {
   localStorage.removeItem('cartItems'); // Clear the cart from localStorage
 };
-

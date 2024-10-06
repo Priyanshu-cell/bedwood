@@ -3,15 +3,17 @@
 import React, { useEffect, useState } from "react";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
-import { Product } from "@/types";
-import { getDummyProducts } from "@/utils/dummyData";
-import { ShoppingCartIcon, StarIcon } from "@heroicons/react/24/outline";
+import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { useRecoilState } from "recoil";
 import { cartItemsCountState } from "@/state/atoms/countCartState";
 import { BiPurchaseTag } from "react-icons/bi";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { TProduct } from "@/services/product/product.type"; // Importing the TProduct type
+import { getProduct } from "@/services/product"; // Importing the getProduct function
+import { useMutation } from "@tanstack/react-query";
+import { OrderPost } from "@/services/order";
 
 // Form validation schema using Yup
 const schema = yup.object().shape({
@@ -19,12 +21,10 @@ const schema = yup.object().shape({
   email: yup.string().email("Invalid email format").required("Email is required"),
   phone: yup.string().matches(/^\d{10}$/, "Phone number must be exactly 10 digits").required("Phone number is required"),
   address: yup.string().required("Address is required"),
-  city: yup.string().required("City is required"),
-  postalCode: yup.string().required("Postal code is required"),
 });
 
 interface ProductDetailProps {
-  id: number;
+  id: string; // Changed to string to match the _id type in TProduct
 }
 
 const loadCartItems = () => {
@@ -37,7 +37,7 @@ const loadCartItems = () => {
   }
 };
 
-const saveCartItems = (cartItems: { product: Product; quantity: number }[]) => {
+const saveCartItems = (cartItems: { product: TProduct; quantity: number }[]) => {
   try {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   } catch (error) {
@@ -46,13 +46,12 @@ const saveCartItems = (cartItems: { product: Product; quantity: number }[]) => {
 };
 
 export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
-  const [product, setProduct] = useState<Product | null>(null);
+  const [product, setProduct] = useState<TProduct | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [notification, setNotification] = useState<string | null>(null);
-  const [cartItems, setCartItems] = useState<{ product: Product; quantity: number }[]>([]);
+  const [cartItems, setCartItems] = useState<{ product: TProduct; quantity: number }[]>([]);
   const [cartItemCount, setCartItemCount] = useRecoilState(cartItemsCountState);
   const [quantity, setQuantity] = useState(1);
-  const [isMounted, setIsMounted] = useState(false);
   const [isProductInCart, setIsProductInCart] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
@@ -63,54 +62,47 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
       email: "",
       phone: "",
       address: "",
-      city: "",
-      postalCode: "",
     },
     resolver: yupResolver(schema), // Yup schema for validation
   });
 
-  // Fetch product data
+  // Fetch product data using getProduct
   useEffect(() => {
-    const fetchProduct = () => {
-      const products = getDummyProducts(100);
-      const product = products.find((p) => p.id === id);
-      setProduct(product || null);
-      setIsLoading(false);
+    const fetchProduct = async () => {
+      setIsLoading(true);
+      try {
+        const productDetail = await getProduct(id); // Fetch product by ID
+        console.log('Product Detial in useeffect', productDetail)
+        setProduct(productDetail || null);
+      } catch (error) {
+        console.error("Failed to fetch product:", error);
+      } finally {
+        setIsLoading(false);
+      }
     };
 
     fetchProduct();
   }, [id]);
+  console.log('Product Detail', product)
 
-  // Load cart items only after the component is mounted
+  // Load cart items
   useEffect(() => {
-    if (isMounted) {
-      const storedCartItems = loadCartItems();
-      setCartItems(storedCartItems);
-      setCartItemCount(storedCartItems.length);
+    const storedCartItems = loadCartItems();
+    setCartItems(storedCartItems);
+    setCartItemCount(storedCartItems.length);
 
-      // Check if the product is already in the cart
-      const productInCart = storedCartItems.some((item: { product: { id: number } }) => item.product.id === id);
-      setIsProductInCart(productInCart);
-    }
-  }, [isMounted, setCartItemCount, id]);
-
-  // Mark component as mounted after the first render
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+    // Check if the product is already in the cart
+    const productInCart = storedCartItems.some((item: { product: { _id: string; }; }) => item.product._id === id);
+    setIsProductInCart(productInCart);
+  }, [setCartItemCount, id]);
 
   // Save cart items to localStorage whenever they change
   useEffect(() => {
-    if (isMounted) {
-      saveCartItems(cartItems);
-      setCartItemCount(cartItems.length);
-    }
-  }, [cartItems, isMounted, setCartItemCount]);
+    saveCartItems(cartItems);
+    setCartItemCount(cartItems.length);
+  }, [cartItems, setCartItemCount]);
 
-  const getRandomRating = (): number => Math.floor(Math.random() * (5 - 3 + 1)) + 3;
-  const rating = getRandomRating();
-
-  const handleAddToCart = (product: Product) => {
+  const handleAddToCart = (product: TProduct) => {
     if (!isProductInCart) {
       setCartItems((prevCart) => [...prevCart, { product, quantity }]);
       setIsProductInCart(true);
@@ -125,32 +117,43 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
     setShowModal(true);
   };
 
-  const onSubmit = (data: { name: string; email: string; phone: string; address: string; city: string; postalCode: string; }) => {
-    if (!product) return; // Ensure product details are available
+  const SendOrderData = useMutation({
+    mutationFn: OrderPost,
+    onSuccess: (response) => {
+      console.log('Form Data submitted successfully', response);
+      
+    },
+    onError: (error) => {
+      console.error('Error saving data:', error);
+      // Handle the error appropriately
+    },
+  });
 
-    const productDetails = {
-      name: product.name,
-      category: product.category,
-      quantity,
-      price: product.price,
-      description: product.description,
-    };
+
+
+  const onSubmit = (data: { name: string; email: string; phone: string; address: string; }) => {
+    if (!product) return; // Ensure product details are available
+    console.log("Product", product._id)
+
+    const OrderProductDetail = [{
+      "productId": product._id,
+      "quantity": quantity
+    }]
+
 
     const message = `
 *Product Details:*
-Name: ${productDetails.name}
-Category: ${productDetails.category}
+Name: ${product.name}
+Category: ${product.category}
 Quantity: ${quantity}
-Price: ${productDetails.price}
-Description: ${productDetails.description}
+Price: ${product.price}
+Description: ${product.descriptions}
 
 *User Info:*
 Name: ${data.name}
 Email: ${data.email}
 Phone: ${data.phone}
 Address: ${data.address}
-City: ${data.city}
-Postal Code: ${data.postalCode}
     `.trim();
 
     // Encode the message and create the WhatsApp link
@@ -159,6 +162,8 @@ Postal Code: ${data.postalCode}
 
     // Open the WhatsApp link in a new tab
     window.open(whatsappLink);
+
+    SendOrderData.mutateAsync({name: data.name, email: data.email, phone: data.phone, address: data.address, totalPrice: product.price, productDetails: OrderProductDetail})
 
     // Close the modal
     setShowModal(false);
@@ -177,10 +182,10 @@ Postal Code: ${data.postalCode}
 
   // Prepare images for the gallery
   const images = [
-    { original: product.imageUrl, thumbnail: product.imageUrl },
-    { original: `${product.imageUrl}?random=1`, thumbnail: `${product.imageUrl}?random=1` },
-    { original: `${product.imageUrl}?random=2`, thumbnail: `${product.imageUrl}?random=2` },
-    { original: `${product.imageUrl}?random=3`, thumbnail: `${product.imageUrl}?random=3` },
+    { original: product.image, thumbnail: product.image },
+    { original: `${product.image}?random=1`, thumbnail: `${product.image}?random=1` },
+    { original: `${product.image}?random=2`, thumbnail: `${product.image}?random=2` },
+    { original: `${product.image}?random=3`, thumbnail: `${product.image}?random=3` },
   ];
 
   return (
@@ -205,23 +210,24 @@ Postal Code: ${data.postalCode}
         {/* Product Details */}
         <div className="w-full md:w-1/2 px-4 md:m-0 m-6">
           <h2 className="md:text-4xl text-2xl font-bold mb-2">{product.name}</h2>
-          <p className="text-gray-600 mb-4">{product.category}</p>
+          <p className="text-gray-600 mb-4">{product.category}</p> {/* Updated to use category */}
           <div className="mb-4">
             <span className="text-2xl font-bold mr-2">{product.price}</span>
           </div>
 
-          <p className="text-gray-700 mb-4 text-balance">{product.description}</p>
+          <p className="text-gray-700 mb-4 text-balance">{product.descriptions}</p>
 
-          {/* Rating */}
-          <div className="flex items-center ">
-            {Array.from({ length: 5 }, (_, index) => (
-              <StarIcon
-                key={index}
-                className={`w-6 h-6 ${index < rating ? "text-yellow-400" : "text-gray-300"}`}
-              />
-            ))}
-            <span className="ml-2 text-gray-500">({rating}/5)</span>
-          </div>
+          {/* Variation Section */}
+          {product.variations && product.variations.length > 0 && (
+            <div className="mb-4">
+              <h4 className="text-lg font-semibold mb-2">Variations</h4>
+              <ul className="list-disc pl-5">
+                {product.variations.map((variation, index) => (
+                  <li key={index} className="text-gray-700">{variation.type}: {variation.value}</li>
+                ))}
+              </ul>
+            </div>
+          )}
 
           {/* Quantity Selector */}
           <div className="flex items-center space-x-2 p-4 pl-0">
@@ -241,150 +247,103 @@ Postal Code: ${data.postalCode}
           </div>
 
           {/* Add to Cart Button */}
-          <div className="flex flex-row space-x-4 my-4">
+          <div className="flex space-x-2 mt-4">
             <button
               onClick={() => handleAddToCart(product)}
-              className="flex items-center space-x-2 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md"
+              className="bg-blue-600 text-white py-2 px-4 rounded-md flex items-center"
             >
-              <ShoppingCartIcon className="w-5 h-5" />
-              <span>Add to Cart</span>
+              <ShoppingCartIcon className="h-5 w-5 mr-2" />
+              Add to Cart
             </button>
-
-            {/* Buy Now Button */}
             <button
               onClick={handleBuyNow}
-              className="flex items-center space-x-2 bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-md"
+              className="bg-green-600 text-white py-2 px-4 rounded-md flex items-center"
             >
-              <BiPurchaseTag className="w-5 h-5" />
-              <span>Buy Now</span>
+              <BiPurchaseTag className="h-5 w-5 mr-2" />
+              Buy Now
             </button>
           </div>
         </div>
       </main>
 
-      {/* Notification for cart */}
-      {notification && (
-        <div className="fixed bottom-20 -right-20 transform -translate-x-1/2 bg-gray-50 border-t-4 border-green-500 p-4 rounded-md w-80">
-          <p className="text-sm text-green-600 text-center">{notification}</p>
-        </div>
-      )}
+      {/* Notification Display */}
+      {notification && <div className="text-red-500 text-center my-4">{notification}</div>}
 
-      {/* Modal for the form */}
+      {/* Modal for WhatsApp Order */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-md shadow-lg w-full max-w-lg">
-            <h2 className="text-2xl font-bold mb-4">Enter Your Details</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg p-6 w-96">
+            <h3 className="text-lg font-bold mb-4">Order Product</h3>
+            <form onSubmit={handleSubmit(onSubmit)}>
+              <Controller
+                name="name"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    type="text"
+                    placeholder="Your Name"
+                    {...field}
+                    className="w-full border-2 border-gray-300 p-2 rounded mb-4"
+                  />
+                )}
+              />
+              <p className="text-red-500">{errors.name?.message}</p>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <div>
-                <label className="block font-semibold">Name</label>
-                <Controller
-                  name="name"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                      placeholder="Your name"
-                    />
-                  )}
-                />
-                {errors.name && <span className="text-red-500 text-sm">{errors.name.message}</span>}
-              </div>
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    type="email"
+                    placeholder="Your Email"
+                    {...field}
+                    className="w-full border-2 border-gray-300 p-2 rounded mb-4"
+                  />
+                )}
+              />
+              <p className="text-red-500">{errors.email?.message}</p>
 
-              <div>
-                <label className="block font-semibold">Email</label>
-                <Controller
-                  name="email"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                      placeholder="Your email"
-                    />
-                  )}
-                />
-                {errors.email && <span className="text-red-500 text-sm">{errors.email.message}</span>}
-              </div>
+              <Controller
+                name="phone"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    type="tel"
+                    placeholder="Your Phone Number"
+                    {...field}
+                    className="w-full border-2 border-gray-300 p-2 rounded mb-4"
+                  />
+                )}
+              />
+              <p className="text-red-500">{errors.phone?.message}</p>
 
-              <div>
-                <label className="block font-semibold">Phone</label>
-                <Controller
-                  name="phone"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                      placeholder="Your phone number"
-                    />
-                  )}
-                />
-                {errors.phone && <span className="text-red-500 text-sm">{errors.phone.message}</span>}
-              </div>
+              <Controller
+                name="address"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    type="text"
+                    placeholder="Your Address"
+                    {...field}
+                    className="w-full border-2 border-gray-300 p-2 rounded mb-4"
+                  />
+                )}
+              />
+              <p className="text-red-500">{errors.address?.message}</p>
 
-              <div>
-                <label className="block font-semibold">Address</label>
-                <Controller
-                  name="address"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                      placeholder="Your address"
-                    />
-                  )}
-                />
-                {errors.address && <span className="text-red-500 text-sm">{errors.address.message}</span>}
-              </div>
-
-              <div>
-                <label className="block font-semibold">City</label>
-                <Controller
-                  name="city"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                      placeholder="Your city"
-                    />
-                  )}
-                />
-                {errors.city && <span className="text-red-500 text-sm">{errors.city.message}</span>}
-              </div>
-
-              <div>
-                <label className="block font-semibold">Postal Code</label>
-                <Controller
-                  name="postalCode"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      {...field}
-                      className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
-                      placeholder="Your postal code"
-                    />
-                  )}
-                />
-                {errors.postalCode && <span className="text-red-500 text-sm">{errors.postalCode.message}</span>}
-              </div>
-
-              <div className="flex justify-end space-x-4">
+              <div className="flex justify-between">
                 <button
                   type="button"
-                  className="px-4 py-2 bg-gray-300 text-gray-700 rounded-md"
                   onClick={() => setShowModal(false)}
+                  className="bg-gray-300 text-gray-700 py-2 px-4 rounded-md"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                  className="bg-blue-600 text-white py-2 px-4 rounded-md"
                 >
-                  Submit
+                  Send Order
                 </button>
               </div>
             </form>

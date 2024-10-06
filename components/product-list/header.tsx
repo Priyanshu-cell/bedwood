@@ -9,8 +9,11 @@ interface HeaderProps {
   onLayoutChange: (layout: string) => void;
 }
 
-const categories = ['All', 'Sofa', 'Bed', 'Tables'];
-const sortOptions = [' (Low to High)', ' (High to Low)'];
+const categories = ['All'];
+const sortOptions = [
+  { value: '1', label: 'Price (Low to High)' }, 
+  { value: '-1', label: 'Price (High to Low)' }
+];
 const layoutOptionsMobile = ['2x2', '3x3'];
 const layoutOptionsDesktop = ['3x3', '4x4', '5x5'];
 
@@ -30,7 +33,7 @@ export const Header: React.FC<HeaderProps> = ({
         <div className="flex flex-row items-center gap-4">
           {/* Sort Selection */}
           <div className="hidden md:flex items-center space-x-2">
-            <label htmlFor="sort" className="text-gray-600 text-sm md:text-base">Price:</label>
+            <label htmlFor="sort" className="text-gray-600 text-sm md:text-base">Sort by:</label>
             <select
               id="sort"
               value={selectedSortOption}
@@ -38,8 +41,8 @@ export const Header: React.FC<HeaderProps> = ({
               className="px-4 py-2 rounded-lg bg-gray-200 text-gray-800 text-sm md:text-base"
             >
               {sortOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
+                <option key={option.value} value={option.value}>
+                  {option.label}
                 </option>
               ))}
             </select>
@@ -51,7 +54,7 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 key={category}
                 onClick={() => onCategoryChange(category)}
-                className={` px-4 py-2 rounded-lg ${selectedCategory === category ? 'bg-gray-300 text-black' : 'bg-gray-200 text-black'} text-sm md:text-base`}
+                className={`px-4 py-2 rounded-lg ${selectedCategory === category ? 'bg-gray-300 text-black' : 'bg-gray-200 text-black'} text-sm md:text-base`}
               >
                 {category}
               </button>
@@ -77,8 +80,8 @@ export const Header: React.FC<HeaderProps> = ({
               className="w-2/3 p-2 rounded-lg bg-gray-200 text-gray-800 text-sm"
             >
               {sortOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
+                <option key={option.value} value={option.value}>
+                  {option.label}
                 </option>
               ))}
             </select>

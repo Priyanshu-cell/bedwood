@@ -5,10 +5,12 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { generateWhatsAppMessage } from '@/utils/whatsappUtils';
-import { Product } from '@/types';
+import { TProduct } from "@/services/product/product.type"; // Correct import path
+import { OrderPost } from '@/services/order';
+import { useMutation } from '@tanstack/react-query';
 
 interface WhatsAppCheckoutProps {
-  cartItems: { product: Product; quantity: number }[];
+  cartItems: { product: TProduct; quantity: number }[]; // Use TProduct instead of Product
   onCheckoutComplete: () => void; // Callback when checkout is complete
 }
 
@@ -36,19 +38,43 @@ export const WhatsAppCheckout: React.FC<WhatsAppCheckoutProps> = ({ cartItems, o
     resolver: yupResolver(schema),
   });
 
+  const SendOrderData = useMutation({
+    mutationFn: OrderPost,
+    onSuccess: (response) => {
+      console.log('Form Data submitted successfully', response);
+      
+    },
+    onError: (error) => {
+      console.error('Error saving data:', error);
+      // Handle the error appropriately
+    },
+  });
+
   const handleCheckout = (data: { name: string; email: string; phone: string; address: string }) => {
     // Generate the WhatsApp message link
     const whatsappLink = generateWhatsAppMessage(cartItems, data);
+    console.log('cart items', cartItems);
+
+    // Create an array of objects for OrderProductDetail
+    const OrderProductDetail = cartItems.map(({ product, quantity }) => ({
+        productId: product._id, // Use the product's _id
+        quantity, // Use the quantity
+    }));
+
+    console.log('OrderProductDetail', OrderProductDetail); // Log the details for verification
 
     // Open WhatsApp in a new tab
     window.open(whatsappLink);
+
+    SendOrderData.mutateAsync({name: data.name, email: data.email, phone: data.phone, address: data.address, totalPrice: 50 , productDetails: OrderProductDetail})
 
     // Clear cart items by calling onCheckoutComplete
     if (onCheckoutComplete) onCheckoutComplete();
 
     // Close the modal after sending the message
     setShowModal(false);
-  };
+};
+
 
   return (
     <>
@@ -84,12 +110,15 @@ export const WhatsAppCheckout: React.FC<WhatsAppCheckoutProps> = ({ cartItems, o
                       type="text"
                       id="name"
                       {...field}
-                      className="border border-gray-300 p-2 rounded-md w-full"
+                      className={`border ${
+                        errors.name ? 'border-red-500' : 'border-gray-300'
+                      } p-2 rounded w-full`}
                     />
                   )}
                 />
-                {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+                {errors.name && <p className="text-red-500">{errors.name.message}</p>}
               </div>
+
               <div>
                 <label htmlFor="email" className="block mb-1">Email</label>
                 <Controller
@@ -100,12 +129,15 @@ export const WhatsAppCheckout: React.FC<WhatsAppCheckoutProps> = ({ cartItems, o
                       type="email"
                       id="email"
                       {...field}
-                      className="border border-gray-300 p-2 rounded-md w-full"
+                      className={`border ${
+                        errors.email ? 'border-red-500' : 'border-gray-300'
+                      } p-2 rounded w-full`}
                     />
                   )}
                 />
-                {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+                {errors.email && <p className="text-red-500">{errors.email.message}</p>}
               </div>
+
               <div>
                 <label htmlFor="phone" className="block mb-1">Phone</label>
                 <Controller
@@ -116,12 +148,15 @@ export const WhatsAppCheckout: React.FC<WhatsAppCheckoutProps> = ({ cartItems, o
                       type="tel"
                       id="phone"
                       {...field}
-                      className="border border-gray-300 p-2 rounded-md w-full"
+                      className={`border ${
+                        errors.phone ? 'border-red-500' : 'border-gray-300'
+                      } p-2 rounded w-full`}
                     />
                   )}
                 />
-                {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
+                {errors.phone && <p className="text-red-500">{errors.phone.message}</p>}
               </div>
+
               <div>
                 <label htmlFor="address" className="block mb-1">Address</label>
                 <Controller
@@ -132,17 +167,20 @@ export const WhatsAppCheckout: React.FC<WhatsAppCheckoutProps> = ({ cartItems, o
                       type="text"
                       id="address"
                       {...field}
-                      className="border border-gray-300 p-2 rounded-md w-full"
+                      className={`border ${
+                        errors.address ? 'border-red-500' : 'border-gray-300'
+                      } p-2 rounded w-full`}
                     />
                   )}
                 />
-                {errors.address && <p className="text-red-500 text-sm">{errors.address.message}</p>}
+                {errors.address && <p className="text-red-500">{errors.address.message}</p>}
               </div>
+
               <button
                 type="submit"
-                className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+                className="bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
               >
-                Send
+                Send Order via WhatsApp
               </button>
             </form>
           </div>

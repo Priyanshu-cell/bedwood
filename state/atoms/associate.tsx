@@ -1,29 +1,17 @@
 import { atom } from 'recoil';
+import { TAssociate } from '@/services/assiociate/assiociate.type';
 
-
-interface AssociateForm {
-  firstName: string;
-  lastName: string;
-  contactNumber: string;
-  gmail: string;
-  qualification: string;
-  age: number;
-  occupation: string;
-  address: string;
-  country: string;
-}
-
-export const associateAtom = atom<AssociateForm>({
-  key: 'associateFormState',
-  default: {
-    firstName: '',
-    lastName: '',
-    contactNumber: '',
-    gmail: '',
-    qualification: '',
-    age: 0,
-    occupation: '',
-    address: '',
-    country: '',
-  },
+export const associateAtom = atom<TAssociate>({
+    key: 'associateFormState',
+    default: {
+        firstName: '',
+        lastName: '',
+        phone: '', 
+        email: '', 
+        qualification: '',
+        age: 0,
+        occupation: '',
+        address: '',
+        country: '',
+    },
 });

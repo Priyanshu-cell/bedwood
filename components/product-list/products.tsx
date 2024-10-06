@@ -1,126 +1,80 @@
-"use client";
+'use client'
 import React, { useEffect, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { ProductCard } from "./productCard";
 import { Header } from "./header";
 import { CartDialog } from "./cartDialog";
-import { getDummyProducts } from "@/utils/dummyData";
-import { Product } from "@/types";
+import { TProduct } from "@/services/product/product.type";
 import { CartButton } from "./cartButton";
 import { cartItemsCountState } from "@/state/atoms/countCartState";
 import { useRecoilState } from "recoil";
-import {
-  addToCart,
-  updateCartItemQuantity,
-  removeCartItem,
-  getCartItems,
-} from "@/utils/cartUtils";
+import { addToCart, updateCartItemQuantity, removeCartItem, getCartItems } from "@/utils/cartUtils";
+import { useProducts } from "@/hooks/useProducts";
 
 export const ProductsPage: React.FC = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
+  const [sortValue, setSortValue] = useState<string>('1'); // Default to low to high
+  const { data, isLoading, isError } = useProducts(sortValue);
+  
+  // Extract products from response data
+  const products = data?.data || [];
+
   const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedSortOption, setSelectedSortOption] = useState(
-    "Price (Low to High)"
-  );
   const [selectedLayout, setSelectedLayout] = useState("2x2");
   const [openCart, setOpenCart] = useState(false);
-  const [cartItems, setCartItems] = useState<{
-    product: Product;
-    quantity: number;
-  }[]>([]);
-  const [hasMore, setHasMore] = useState(true);
+  const [cartItems, setCartItems] = useState<{ product: TProduct; quantity: number; }[]>([]);
   const [cartItemCount, setCartItemCount] = useRecoilState(cartItemsCountState);
-  const perPage = 8;
 
+  // Load cart items from localStorage on component mount
   useEffect(() => {
-    const initialProducts = getDummyProducts(100);
-    setProducts(initialProducts);
-    setFilteredProducts(initialProducts);
+    const storedItems = getCartItems();
+    setCartItems(storedItems);
   }, []);
 
+  // Update cart item count whenever cartItems state changes
   useEffect(() => {
     setCartItemCount(cartItems.length);
   }, [cartItems, setCartItemCount]);
 
-  useEffect(() => {
-    let filtered =
-      selectedCategory === "All"
-        ? [...products]
-        : products.filter((product) => product.category === selectedCategory);
-
-    const convertPriceToNumber = (price: string) =>
-      parseFloat(price.replace("$", ""));
-
-    if (selectedSortOption === "Price (Low to High)") {
-      filtered.sort(
-        (a, b) => convertPriceToNumber(a.price) - convertPriceToNumber(b.price)
-      );
-    } else if (selectedSortOption === "Price (High to Low)") {
-      filtered.sort(
-        (a, b) => convertPriceToNumber(b.price) - convertPriceToNumber(a.price)
-      );
-    }
-
-    setFilteredProducts(filtered);
-  }, [selectedCategory, selectedSortOption, products]);
-
-  const fetchMoreData = () => {
-    setTimeout(() => {
-      setFilteredProducts((prev) => [
-        ...prev,
-        ...getDummyProducts(prev.length + perPage),
-      ]);
-    }, 500);
-  };
-
+  // Handle category change
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
-    setFilteredProducts(
-      products.filter(
-        (product) => category === "All" || product.category === category
-      )
-    );
   };
 
+  // Handle sorting changes
   const handleSortChange = (sortOption: string) => {
-    setSelectedSortOption(sortOption);
+    setSortValue(sortOption); // Update this line to change sorting based on selected option
   };
 
+  // Handle layout change
   const handleLayoutChange = (layout: string) => {
     setSelectedLayout(layout);
   };
 
-  const handleAddToCart = (product: Product, quantity: number) => {
+  // Add product to cart
+  const handleAddToCart = (product: TProduct, quantity: number) => {
     addToCart(product, quantity);
     setCartItems(getCartItems());
   };
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedItems = getCartItems();
-      setCartItems(storedItems);
-    }
-  }, []);
-
-  const clearCart = () => {
-    setCartItems([]); // Clear the cart in Recoil
-    localStorage.removeItem('cartItems'); // Clear the cart in localStorage
-  };
-
-  const handleUpdateQuantity = (productId: number, quantity: number) => {
+  // Update product quantity in cart
+  const handleUpdateQuantity = (productId: string, quantity: number) => {
     updateCartItemQuantity(productId, quantity);
     setCartItems(getCartItems());
   };
 
-  const handleRemoveFromCart = (productId: number) => {
+  // Remove product from cart
+  const handleRemoveFromCart = (productId: string) => {
     removeCartItem(productId);
     setCartItems(getCartItems());
   };
 
-  const openCartDialog = () => {
-    setOpenCart(true);
+  // Clear the cart
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem("cartItems");
   };
+
+  if (isLoading) return <div className="text-center">Loading products...</div>;
+  if (isError) return <div className="text-center">Error fetching products!</div>;
 
   return (
     <section className="pb-12 bg-gray-100 min-h-screen">
@@ -128,55 +82,37 @@ export const ProductsPage: React.FC = () => {
         <Header
           selectedCategory={selectedCategory}
           onCategoryChange={handleCategoryChange}
-          selectedSortOption={selectedSortOption}
           onSortChange={handleSortChange}
           onLayoutChange={handleLayoutChange}
           selectedLayout={selectedLayout}
+          selectedSortOption={sortValue}
         />
 
-        <InfiniteScroll
-          dataLength={filteredProducts.length}
-          next={fetchMoreData}
-          hasMore={hasMore}
-          loader={
-            <h4 className="text-center md:text-xl text-sm font-semibold">
-              Loading...
-            </h4>
-          }
-          endMessage={
-            <p className="md:text-xl text-sm text-center font-semibold">
-              No more products
-            </p>
+        {/* Product Grid Layout */}
+        <div
+          className={`grid gap-6 my-10 px-4 lg:px-8 
+          ${selectedLayout === "2x2" ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3" : 
+            selectedLayout === "3x3" ? "grid-cols-3 lg:grid-cols-3" : 
+            selectedLayout === "4x4" ? "grid-cols-4 lg:grid-cols-4" : 
+            selectedLayout === "5x5" ? "grid-cols-5 lg:grid-cols-5" : ""}`
           }
         >
-          <div
-            className={`grid gap-6 my-10 px-4 lg:px-8 
-            ${
-              selectedLayout === "2x2"
-                ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3" // 2x2 for small, 3x3 for medium and large
-                : selectedLayout === "3x3"
-                ? "grid-cols-3 lg:grid-cols-3"
-                : selectedLayout === "4x4"
-                ? "grid-cols-4 lg:grid-cols-4"
-                : selectedLayout === "5x5"
-                ? "grid-cols-5 lg:grid-cols-5"
-                : ""
-            }`}
-          >
-            {filteredProducts.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onAddToCart={handleAddToCart}
-              />
-            ))}
-          </div>
-        </InfiniteScroll>
-
-        <div className="fixed md:bottom-8 md:right-8 bottom-12 right-4">
-          <CartButton onClick={openCartDialog} itemCount={cartItemCount} />
+          {/* Render Product Cards */}
+          {products.map((product: TProduct) => (
+            <ProductCard
+              key={product._id}
+              product={product}
+              onAddToCart={handleAddToCart}
+            />
+          ))}
         </div>
 
+        {/* Cart Button */}
+        <div className="fixed md:bottom-8 md:right-8 bottom-12 right-4">
+          <CartButton onClick={() => setOpenCart(true)} itemCount={cartItemCount} />
+        </div>
+
+        {/* Cart Dialog */}
         <CartDialog
           open={openCart}
           onClose={() => setOpenCart(false)}

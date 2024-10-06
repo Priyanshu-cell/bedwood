@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaUserTie } from 'react-icons/fa';
-import AssociateForm from '@/form/associate';
+import AssociateForm from '@/form/assiociate';
 
 export function Footer() {
   const [isFormOpen, setIsFormOpen] = useState(false); // State for form visibility

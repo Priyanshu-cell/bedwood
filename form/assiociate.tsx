@@ -4,20 +4,22 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useRecoilState } from 'recoil';
 import { associateAtom } from '@/state';
-import axios from 'axios'; // Assuming you are using axios for API calls
+import { useMutation } from '@tanstack/react-query';
+import { TAssociate } from '@/services/assiociate/assiociate.type';
+import { associatePost } from '@/services/assiociate';
 
 // Yup schema for form validation
 const schema = yup.object().shape({
   firstName: yup.string().required('First name is required'),
   lastName: yup.string().required('Last name is required'),
-  contactNumber: yup
+  phone: yup
     .string()
     .matches(/^\d{10}$/, 'Must be exactly 10 digits')
-    .required('Contact number is required'),
-  gmail: yup
+    .required('Phone number is required'),
+  email: yup
     .string()
-    .email('Invalid Gmail address')
-    .required('Gmail ID is required'),
+    .email('Invalid email address')
+    .required('Email is required'),
   qualification: yup.string().required('Qualification is required'),
   age: yup
     .number()
@@ -30,23 +32,29 @@ const schema = yup.object().shape({
 });
 
 const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const { control, handleSubmit, formState: { errors } } = useForm<TAssociate>({
     resolver: yupResolver(schema),
   });
 
   const [associateData, setAssociateData] = useRecoilState(associateAtom);
 
-  const onSubmit = async (data: any) => {
-    setAssociateData(data);
-    try {
-      // Replace with your actual backend API endpoint
-      await axios.post('/api/associate', data);
-      console.log('Form Data:', data);
-      // You can add a success message or redirect here
-    } catch (error) {
+  // Define the mutation using TanStack Query
+  const mutation = useMutation({
+    mutationFn: associatePost,
+    onSuccess: () => {
+      console.log('Form Data submitted successfully');
+      onClose(); // Close the form upon success
+    },
+    onError: (error) => {
       console.error('Error saving data:', error);
       // Handle the error appropriately
-    }
+    },
+  });
+
+  // Ensure onSubmit does not return anything
+  const onSubmit = async (data: TAssociate): Promise<void> => {
+    setAssociateData(data);
+    await mutation.mutateAsync(data); // Ensure mutateAsync is awaited for better handling
   };
 
   return (
@@ -82,27 +90,27 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           </div>
 
           <div className="mb-2">
-            <label className="block mb-1">Contact Number</label>
+            <label className="block mb-1">Phone Number</label>
             <Controller
-              name="contactNumber"
+              name="phone"
               control={control}
               render={({ field }) => (
                 <input type="text" {...field} className="border rounded p-1 w-full text-sm" />
               )}
             />
-            <p className="text-red-500 text-xs">{errors.contactNumber?.message}</p>
+            <p className="text-red-500 text-xs">{errors.phone?.message}</p>
           </div>
 
           <div className="mb-2">
-            <label className="block mb-1">Gmail ID</label>
+            <label className="block mb-1">Email</label>
             <Controller
-              name="gmail"
+              name="email"
               control={control}
               render={({ field }) => (
                 <input type="email" {...field} className="border rounded p-1 w-full text-sm" />
               )}
             />
-            <p className="text-red-500 text-xs">{errors.gmail?.message}</p>
+            <p className="text-red-500 text-xs">{errors.email?.message}</p>
           </div>
 
           <div className="mb-2">

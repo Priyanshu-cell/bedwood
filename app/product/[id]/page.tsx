@@ -8,11 +8,11 @@ interface ProductDetailPageProps {
 }
 
 export default function ProductDetailPage({ params }: ProductDetailPageProps) {
-  const id = parseInt(params.id, 10);
+  const id = params.id;
 
   return (
     <div>
-      <Header/>
+      <Header />
       <ProductDetail id={id} />
     </div>
   );

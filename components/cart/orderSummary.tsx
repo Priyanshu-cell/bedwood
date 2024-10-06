@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Product } from '@/types';
+
 import { WhatsAppCheckout } from '@/form/whatsappCheckOut'; // Import WhatsAppCheckout component
+import { TProduct } from '@/services/product/product.type';
 
 interface OrderSummaryProps {
-  cartItems: { product: Product; quantity: number }[];
+  cartItems: { product: TProduct; quantity: number }[];
   onCheckout: () => void; // Add onCheckout prop
 }
 
@@ -12,7 +13,7 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({ cartItems, onCheckou
 
   // Calculate the subtotal
   const subtotal = cartItems
-    .reduce((total, { product, quantity }) => total + parseFloat(product.price.slice(1)) * quantity, 0)
+    .reduce((total, { product, quantity }) => total + product.price * quantity, 0)
     .toFixed(2);
 
   // Calculate the total number of distinct products (not including their quantity)

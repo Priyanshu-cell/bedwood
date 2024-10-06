@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 import { HeaderLink } from "../links/headerlink";
 import Link from "next/link";
 import { FaSearch, FaShoppingCart, FaUserTie } from "react-icons/fa";
-import { HiOutlineArrowLongLeft } from "react-icons/hi2";
+import { HiOutlineArrowLeft } from "react-icons/hi2";
 import { MdMenu } from "react-icons/md";
 import { RiMapPinLine } from "react-icons/ri";
 import { IoMdHelpCircle } from "react-icons/io";
 import { useRecoilValue } from "recoil";
 import { cartItemsCountState } from "@/state/atoms/countCartState";
-import AssociateForm from "@/form/associate";
+import AssociateForm from "@/form/assiociate";
 
 interface LargeHeaderProps {
   isScrolled: boolean;
@@ -24,6 +24,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
 }) => {
   const cartItemCount = useRecoilValue(cartItemsCountState);
   const [isFormOpen, setIsFormOpen] = useState(false); // State for form visibility
+  const whatsappNumber = "+91 96751 11719"; // Define your WhatsApp number
 
   // Manage body scroll when sidebar or form is open
   useEffect(() => {
@@ -82,7 +83,9 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
             isScrolled ? "fixed top-0 left-0 w-full border-b bg-white z-40" : ""
           }`}
         >
-          <HeaderLink />
+          <HeaderLink onCategoryChange={function (categoryId: string): void {
+            throw new Error("Function not implemented.");
+          } } />
         </div>
       </div>
 
@@ -144,22 +147,24 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           } transition-transform duration-500 ease-in-out z-50`}
         >
-          <div className="flex items-center py-2 bg-white">
+          <div className="flex items-center justify-center py-2 bg-white">
             {/* Arrow Icon for closing */}
             <button
-              className="flex items-center px-4"
+              className="flex items-center absolute left-0 px-2"
               onClick={() => setIsSidebarOpen(false)}
             >
-              <HiOutlineArrowLongLeft className="text-gray-600 text-3xl" />
+              <HiOutlineArrowLeft className="text-gray-600 text-2xl" />
             </button>
 
             {/* Logo */}
-            <Link href="/">
+            <Link href="/" className="">
               <img src="/logo.png" alt="Logo" className="h-16" />
             </Link>
           </div>
           <hr className="md:hidden border-t border-gray-300 w-full mt-10" />
-          <HeaderLink setSideBarOpen={setIsSidebarOpen} />
+          <HeaderLink setSideBarOpen={setIsSidebarOpen} onCategoryChange={function (categoryId: string): void {
+            throw new Error("Function not implemented.");
+          } }  />
 
           {/* Other content */}
           <div className="flex flex-col font-semibold text-gray-700 text-sm mt-4 space-y-4 p-4">
@@ -176,12 +181,15 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
               <p>+91-8630715936 </p>
             </div>
             <div className="px-4 flex items-center space-x-4">
-              <FaShoppingCart className="text-gray-600 text-lg" />
-              <p>Track</p>
-            </div>
-            <div className="px-4 flex items-center space-x-4">
               <IoMdHelpCircle className="text-gray-600 text-lg" />
-              <p>Help Center</p>
+              <a
+                href={`https://wa.me/${whatsappNumber.replace(/\s+/g, '')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600"
+              >
+                <p>Help Center</p>
+              </a>
             </div>
           </div>
         </div>
