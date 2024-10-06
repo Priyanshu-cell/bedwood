@@ -1,7 +1,7 @@
 
 'use client';
 
-import { CartHeader, CartPage } from '@/components';
+import { CartHeader, CartPage } from '@/src/components';
 
 
 export default function CartCom ()  {

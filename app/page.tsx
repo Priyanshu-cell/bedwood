@@ -1,5 +1,6 @@
+import { HomePage } from "@/src/screens";
 
-import { HomePage } from "@/screens";
+
 
 
 export default function Home() {

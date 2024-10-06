@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from "react";
-import { Header, ProductsPage } from "@/components";
+import { Header, ProductsPage } from "@/src/components";
 import { ArrowUpIcon } from "@heroicons/react/24/solid"; // Using Heroicons for the up arrow icon
 
 export default function ProductListPage() {

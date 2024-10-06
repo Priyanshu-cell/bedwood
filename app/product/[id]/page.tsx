@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, ProductDetail } from '@/components';
+import { Header, ProductDetail } from '@/src/components';
 
 interface ProductDetailPageProps {
   params: {
