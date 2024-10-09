@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { HeaderLink } from "../links/headerlink";
 import Link from "next/link";
-import { FaSearch, FaShoppingCart, FaUserTie } from "react-icons/fa";
+import { FaSearch, FaShoppingCart, FaUserTie, FaTimes } from "react-icons/fa";
 import { HiOutlineArrowLeft } from "react-icons/hi2";
 import { MdMenu, MdMobileFriendly } from "react-icons/md";
 import { RiMapPinLine } from "react-icons/ri";
@@ -10,7 +10,9 @@ import { IoMdHelpCircle } from "react-icons/io";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { cartItemsCountState } from "@/src/state/atoms/countCartState";
 import AssociateForm from "@/src/form/assiociate";
-import { searchState } from "@/src/state/atoms/searchState"; // Import the search state
+import { searchState } from "@/src/state/atoms/searchState"; 
+import { getProductsList } from "@/src/services/product"; 
+import { TProduct } from "@/src/services/product/product.type";
 
 interface LargeHeaderProps {
   isScrolled: boolean;
@@ -24,8 +26,11 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
   setIsSidebarOpen,
 }) => {
   const cartItemCount = useRecoilValue(cartItemsCountState);
-  const setSearchQuery = useSetRecoilState(searchState); // Set search query state
-  const [isFormOpen, setIsFormOpen] = useState(false); // State for form visibility
+  const setSearchQuery = useSetRecoilState(searchState);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [suggestions, setSuggestions] = useState<TProduct[]>([]);
+  const [noResults, setNoResults] = useState(false); // State for no results
   const whatsappNumber = "+91 96751 11719"; // Define your WhatsApp number
 
   // Manage body scroll when sidebar or form is open
@@ -36,6 +41,36 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
       document.body.style.overflow = "auto";
     };
   }, [isSidebarOpen, isFormOpen]);
+
+  // Fetch product suggestions based on the search input
+  useEffect(() => {
+    const fetchSuggestions = async () => {
+      if (searchValue) {
+        const products = await getProductsList(); // Fetch all products or add filtering here
+        const filteredSuggestions = products.data.filter(product =>
+          product.name.toLowerCase().includes(searchValue.toLowerCase())
+        );
+
+        setSuggestions(filteredSuggestions);
+        setNoResults(filteredSuggestions.length === 0); // Set no results state
+      } else {
+        setSuggestions([]);
+        setNoResults(false); // Reset no results state
+      }
+    };
+
+    fetchSuggestions();
+  }, [searchValue]);
+
+  const handleSearch = () => {
+    setSearchQuery(searchValue); // Set the search query in state
+    setSearchValue(""); // Clear search input after search
+    setSuggestions([]); // Clear suggestions after search
+    // Navigate to the product list page with the search query
+    if (searchValue) {
+      window.location.href = `/productlist?query=${encodeURIComponent(searchValue)}`;
+    }
+  };
 
   return (
     <header className="w-full h-auto py-4 px-2 bg-white">
@@ -49,19 +84,54 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
 
           {/* Search Bar and Cart & Agent Button */}
           <div className="flex items-center space-x-4 ml-4">
-            <div className="relative flex-grow w-64">
+            <div className="relative flex-grow w-64 ">
               <input
                 type="text"
                 placeholder="Search..."
-                onChange={(e) => setSearchQuery(e.target.value)} // Update search query on input change
-                className="p-1 border border-gray-300 bg-white rounded-md w-full"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                className="p-1 border border-gray-300  bg-gray-50 rounded-md w-full"
               />
-              <FaSearch className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 text-2xl" />
+              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-2">
+                {searchValue && (
+                  <FaTimes 
+                    className="text-gray-600 text-lg cursor-pointer"
+                    onClick={() => setSearchValue("")}
+                  />
+                )}
+                <FaSearch 
+                  className="text-gray-600 text-xl cursor-pointer" 
+                  onClick={handleSearch} 
+                />
+              </div>
+              {suggestions.length > 0 ? (
+                <div className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 max-h-60 overflow-auto z-50">
+                  {suggestions.map((suggestion) => (
+                    <div
+                      key={suggestion._id}
+                      onClick={() => {
+                        setSearchValue(""); // Clear the search value
+                        setSuggestions([]); // Clear suggestions after selection
+                        // Navigate to the product list page with the search query
+                        window.location.href = `/productlist?query=${encodeURIComponent(suggestion.name)}`;
+                      }} // Navigate on click
+                    >
+                      <div className="p-2 hover:bg-gray-200 cursor-pointer">
+                        {suggestion.name}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : noResults ? (
+                <div className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 max-h-60 overflow-auto z-50">
+                  <div className="p-2 text-gray-600">No results found</div>
+                </div>
+              ) : null}
             </div>
 
             {/* Cart Button */}
             <Link
-              className="relative flex flex-col items-center justify-center rounded-full"
+              className="relative flex flex-col items-center justify-center rounded-full pb-2"
               href="/cart"
             >
               <FaShoppingCart className="text-gray-600 text-xl mt-2" />
@@ -72,7 +142,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
 
             {/* Agent Icon */}
             <button
-              className="relative flex flex-col items-center justify-center rounded-full"
+              className="relative flex flex-col items-center justify-center rounded-full pb-2"
               onClick={() => setIsFormOpen(true)} // Open form on click
             >
               <FaUserTie className="text-gray-600 text-xl mt-2" />
@@ -81,11 +151,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
         </div>
 
         {/* Sticky Links Header */}
-        <div
-          className={`hidden md:block ${
-            isScrolled ? "fixed top-0 left-0 w-full border-b bg-white z-40" : ""
-          }`}
-        >
+        <div className={`hidden md:block ${isScrolled ? "fixed top-0 left-0 w-full border-b bg-white z-40" : ""}`}>
           <HeaderLink />
         </div>
       </div>
@@ -136,87 +202,104 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
             <input
               type="text"
               placeholder="Search..."
-              onChange={(e) => setSearchQuery(e.target.value)} // Update search query on input change
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
               className="p-2 border border-gray-300 bg-white rounded-md w-full"
             />
-            <FaSearch className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-600 text-2xl" />
+            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-2">
+              {searchValue && (
+                <FaTimes 
+                  className="text-gray-600 text-lg cursor-pointer"
+                  onClick={() => setSearchValue("")}
+                />
+              )}
+              <FaSearch 
+                className="text-gray-600 text-xl cursor-pointer" 
+                onClick={handleSearch} 
+              />
+            </div>
+            {suggestions.length > 0 ? (
+              <div className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 max-h-60 overflow-auto z-50">
+                {suggestions.map((suggestion) => (
+                  <div
+                    key={suggestion._id}
+                    onClick={() => {
+                      setSearchValue(""); // Clear the search value
+                      setSuggestions([]); // Clear suggestions after selection
+                      // Navigate to the product list page with the search query
+                      window.location.href = `/productlist?query=${encodeURIComponent(suggestion.name)}`;
+                    }} // Navigate on click
+                  >
+                    <div className="p-2 hover:bg-gray-200 cursor-pointer">
+                      {suggestion.name}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : noResults ? (
+              <div className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 max-h-60 overflow-auto z-50">
+                <div className="p-2 text-gray-600">No results found</div>
+              </div>
+            ) : null}
           </div>
         </div>
-
         {/* Sidebar */}
-        <div
-          className={`fixed inset-0 bg-gray-200 transform overflow-y-auto pb-10 scroll-smooth ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } transition-transform duration-500 ease-in-out z-50`}
+    <div
+      className={`fixed inset-0 bg-gray-200 transform overflow-y-auto pb-10 scroll-smooth ${
+        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+      } transition-transform duration-500 ease-in-out z-50`}
+    >
+      <div className="flex items-center justify-center py-2 bg-white">
+        {/* Arrow Icon for closing */}
+        <button
+          className="flex items-center absolute left-0 px-2"
+          onClick={() => setIsSidebarOpen(false)}
         >
-          <div className="flex items-center justify-center py-2 bg-white">
-            {/* Arrow Icon for closing */}
-            <button
-              className="flex items-center absolute left-0 px-2"
-              onClick={() => setIsSidebarOpen(false)}
-            >
-              <HiOutlineArrowLeft className="text-gray-600 text-2xl" />
-            </button>
+          <HiOutlineArrowLeft className="text-gray-600 text-2xl" />
+        </button>
 
-            {/* Logo */}
-            <Link href="/" className="">
-              <img src="/logo.png" alt="Logo" className="h-16" />
-            </Link>
-          </div>
-          <hr className="md:hidden border-t border-gray-300 w-full mt-10" />
-          <HeaderLink setSideBarOpen={setIsSidebarOpen} />
-
-          {/* Other content */}
-          <div className="flex flex-col font-semibold text-gray-700 text-sm mt-4 space-y-4 p-4">
-            <button
-              className="px-4 flex items-center space-x-4"
-              onClick={() => setIsFormOpen(true)} // Open form on click
-            >
-              <FaUserTie className="text-gray-600 text-lg" />
-              <p>Company Associate</p>
-            </button>
-
-            <div className="px-4 flex items-center space-x-4">
-              <MdMobileFriendly className="text-gray-600 text-lg" />
-              <p>+91-8630715936 </p>
-            </div>
-            <div className="px-4 flex items-center space-x-4">
-              <IoMdHelpCircle className="text-gray-600 text-lg" />
-              <a
-                href={`https://wa.me/${whatsappNumber.replace(/\s+/g, '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-600"
-              >
-                <p>Help Center</p>
-              </a>
-            </div>
-          </div>
-        </div>
-
-        {/* Overlay to prevent scrolling */}
-        {isSidebarOpen && (
-          <div
-            className="fixed inset-0 bg-black opacity-50 z-40"
-            onClick={() => setIsSidebarOpen(false)}
-          />
-        )}
+        {/* Logo */}
+        <Link href="/" className="flex flex-col items-center">
+          <img src="/logo.png" alt="Logo" className="h-12" />
+        </Link>
       </div>
 
-      {/* Associate Form Popup */}
-      {isFormOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-          <div className="bg-white p-5 rounded-md shadow-lg relative">
-            <button
-              className="absolute top-2 right-2 text-gray-600"
-              onClick={() => setIsFormOpen(false)}
-              aria-label="Close form"
-            >
-              &times;
-            </button>
-            <AssociateForm onClose={() => setIsFormOpen(false)} />
-          </div>
+      <HeaderLink />
+      
+      {/* Sidebar Content */}
+      <div className="flex flex-col font-semibold text-gray-700 text-sm mt-4 space-y-4 p-4">
+        <button
+          className="px-4 flex items-center space-x-4"
+          onClick={() => setIsFormOpen(true)}
+        >
+          <FaUserTie className="text-gray-600 text-lg" />
+          <p>Company Associate</p>
+        </button>
+
+        <div className="px-4 flex items-center space-x-4">
+          <MdMobileFriendly className="text-gray-600 text-lg" />
+          <p>+91-8630715936</p>
         </div>
+
+        <div className="px-4 flex items-center space-x-4">
+          <IoMdHelpCircle className="text-gray-600 text-lg" />
+          <a
+            href={`https://wa.me/${whatsappNumber.replace(/\s+/g, '')}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-600"
+          >
+            <p>Help Center</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+   
+
+      {/* Associate Form */}
+      {isFormOpen && (
+        <AssociateForm onClose={() => setIsFormOpen(false)} />
       )}
     </header>
   );

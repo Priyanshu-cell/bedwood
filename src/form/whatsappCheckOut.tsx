@@ -29,7 +29,7 @@ const schema = yup.object().shape({
 export const WhatsAppCheckout: React.FC<WhatsAppCheckoutProps> = ({ cartItems, onCheckoutComplete }) => {
   const [showModal, setShowModal] = useState(false);
 
-  const { control, handleSubmit, formState: { errors } } = useForm({
+  const { control, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
       name: '',
       email: '',
@@ -111,7 +111,7 @@ export const WhatsAppCheckout: React.FC<WhatsAppCheckoutProps> = ({ cartItems, o
                         type="text"
                         id="name"
                         {...field}
-                        className={`border ${
+                        className={`border-2 ${
                           errors.name ? 'border-red-500' : 'border-gray-300'
                         } p-2 rounded w-full`}
                       />
@@ -129,7 +129,7 @@ export const WhatsAppCheckout: React.FC<WhatsAppCheckoutProps> = ({ cartItems, o
                         type="tel"
                         id="phone"
                         {...field}
-                        className={`border ${
+                        className={`border-2 ${
                           errors.phone ? 'border-red-500' : 'border-gray-300'
                         } p-2 rounded w-full`}
                       />
@@ -149,7 +149,7 @@ export const WhatsAppCheckout: React.FC<WhatsAppCheckoutProps> = ({ cartItems, o
                       type="email"
                       id="email"
                       {...field}
-                      className={`border ${
+                      className={`border-2 ${
                         errors.email ? 'border-red-500' : 'border-gray-300'
                       } p-2 rounded w-full`}
                     />
@@ -168,7 +168,7 @@ export const WhatsAppCheckout: React.FC<WhatsAppCheckoutProps> = ({ cartItems, o
                       id="address"
                       rows={3}
                       {...field}
-                      className={`border ${
+                      className={`border-2 ${
                         errors.address ? 'border-red-500' : 'border-gray-300'
                       } p-2 rounded w-full`}
                     />
@@ -187,7 +187,10 @@ export const WhatsAppCheckout: React.FC<WhatsAppCheckoutProps> = ({ cartItems, o
                 </button>
                 <button
                   type="button"
-                  onClick={() => setShowModal(false)}
+                  onClick={() => {
+                    setShowModal(false);
+                    reset(); // Reset the form fields
+                  }}
                   className="bg-red-500 text-white text-sm p-2 rounded hover:bg-red-600"
                 >
                   Cancel Order

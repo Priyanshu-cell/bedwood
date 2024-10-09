@@ -1,6 +1,7 @@
 export type TProductDetail = {
     productId: string;
     quantity: number;
+    variationId: string | null;
   };
   
   export type TOrder = {
@@ -10,4 +11,5 @@ export type TProductDetail = {
     address: string;
     totalPrice: number;
     productDetails: TProductDetail[];
+     
   };

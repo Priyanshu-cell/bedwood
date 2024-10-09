@@ -7,14 +7,14 @@ import { Navigation } from 'swiper/modules';
 import { Card } from '../index';
 
 const bestSellers = [
-  { image: 'https://via.placeholder.com/300', title: 'Best Seller 1', paragraph: 'Description 1' },
-  { image: 'https://via.placeholder.com/300', title: 'Best Seller 2', paragraph: 'Description 2' },
-  { image: 'https://via.placeholder.com/300', title: 'Best Seller 3', paragraph: 'Description 3' },
-  { image: 'https://via.placeholder.com/300', title: 'Best Seller 4', paragraph: 'Description 4' },
-  { image: 'https://via.placeholder.com/300', title: 'Best Seller 5', paragraph: 'Description 5' },
-  { image: 'https://via.placeholder.com/300', title: 'Best Seller 6', paragraph: 'Description 6' },
-  { image: 'https://via.placeholder.com/300', title: 'Best Seller 7', paragraph: 'Description 7' },
-  { image: 'https://via.placeholder.com/300', title: 'Best Seller 8', paragraph: 'Description 8' }
+  { image: '/bestsellerof/1.png', title: '', paragraph: 'Description 1' },
+  { image: '/bestsellerof/2.png', title: '', paragraph: 'Description 2' },
+  { image: '/bestsellerof/3.png', title: '', paragraph: 'Description 3' },
+  { image: '/bestsellerof/4.png', title: '', paragraph: 'Description 4' },
+  { image: '/bestsellerof/5.png', title: '', paragraph: 'Description 5' },
+  { image: '/bestsellerof/6.png', title: '', paragraph: 'Description 6' },
+  { image: '/bestsellerof/7.png', title: '', paragraph: 'Description 7' },
+  { image: '/bestsellerof/8.png', title: '', paragraph: 'Description 8' }
 ];
 
 export const BestSellerSection = () => {

@@ -3,34 +3,34 @@ import { Card } from './card';
 
 const cardData = [
   {
-    image: 'https://via.placeholder.com/300',
-    title: 'Card 1',
-    paragraph: 'This is a description for card 1.',
+    image: '/furniture/1.png',
+    title: '',
+    paragraph: '',
   },
   {
-    image: 'https://via.placeholder.com/300',
-    title: 'Card 2',
-    paragraph: 'This is a description for card 2.',
+    image: '/furniture/2.png',
+    title: '',
+    paragraph: '',
   },
   {
-    image: 'https://via.placeholder.com/300',
-    title: 'Card 3',
-    paragraph: 'This is a description for card 3.',
+    image: '/furniture/3.png',
+    title: '',
+    paragraph: '',
   },
   {
-    image: 'https://via.placeholder.com/300',
-    title: 'Card 4',
-    paragraph: 'This is a description for card 4.',
+    image: '/furniture/4.png',
+    title: '',
+    paragraph: '',
   },
   {
-    image: 'https://via.placeholder.com/300',
-    title: 'Card 5',
-    paragraph: 'This is a description for card 5.',
+    image: '/furniture/5.png',
+    title: '',
+    paragraph: '',
   },
   {
-    image: 'https://via.placeholder.com/300',
-    title: 'Card 6',
-    paragraph: 'This is a description for card 6.',
+    image: '/furniture/6.png',
+    title: '',
+    paragraph: '',
   },
 ];
 

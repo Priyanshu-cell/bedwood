@@ -7,7 +7,7 @@ export const SmallHeader = () => {
   const whatsappNumber = "+91 96751 11719"; // Define your WhatsApp number
 
   return (
-    <header className="w-full h-auto p-4 md:px-44 bg-orange-100 flex flex-col md:flex-row md:items-center justify-between">
+    <header className="w-full h-auto p-4 md:px-44 bg-inherit flex flex-col md:flex-row md:items-center justify-between">
       {/* Location Section with Icon */}
       <div className="flex flex-row items-center text-base text-gray-800">
         {/* Location Marker Heroicon */}

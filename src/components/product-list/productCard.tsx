@@ -34,7 +34,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
       <div className="relative mt-4">
         <h3 className="text-lg font-extrabold text-gray-800 mb-1">{product.name}</h3>
         <p className="text-gray-600 text-sm mb-1">{product.descriptions}</p>
-        <h4 className="text-lg text-gray-800 font-bold mb-2">${product.price}</h4>
+        <h4 className="text-lg text-gray-800 font-bold mb-2">₹{product.price}</h4>
 
         {/* Quantity Selector */}
         <div className="flex items-center mb-2 z-10"> {/* Added z-10 to the quantity selector */}

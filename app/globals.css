@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root{
+  background-color: #fffcf6;
+}
+
 
 .swiperButtonPrev, .swiperButtonNext {
   width: 30px; /* Smaller width */

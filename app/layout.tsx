@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "@/src/provider";
+import Head from "next/head";
+
 
 
 
@@ -19,6 +21,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Pangram+Regular&display=swap"
+          rel="stylesheet"
+        />
+      </Head>
       <body className={inter.className}>
         <Providers>
         {children}

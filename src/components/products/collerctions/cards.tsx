@@ -7,14 +7,14 @@ import { Navigation } from 'swiper/modules';
 import { Card } from '../index';
 
 const collections = [
-  { image: 'https://via.placeholder.com/300', title: 'Collection 1', paragraph: 'Description 1' },
-  { image: 'https://via.placeholder.com/300', title: 'Collection 2', paragraph: 'Description 2' },
-  { image: 'https://via.placeholder.com/300', title: 'Collection 3', paragraph: 'Description 3' },
-  { image: 'https://via.placeholder.com/300', title: 'Collection 4', paragraph: 'Description 4' },
-  { image: 'https://via.placeholder.com/300', title: 'Collection 5', paragraph: 'Description 5' },
-  { image: 'https://via.placeholder.com/300', title: 'Collection 6', paragraph: 'Description 6' },
-  { image: 'https://via.placeholder.com/300', title: 'Collection 7', paragraph: 'Description 7' },
-  { image: 'https://via.placeholder.com/300', title: 'Collection 8', paragraph: 'Description 8' }
+  { image: '/collections/1.png', title: '', paragraph: 'Comfortable sofas for your living room' },
+  { image: '/collections/2.png', title: '', paragraph: 'Stylish dining table for family meals' },
+  { image: '/collections/3.png', title: '', paragraph: 'Cozy beds for good night sleep' },
+  { image: '/collections/4.png', title: '', paragraph: 'Functional office desk for productivity' },
+  { image: '/collections/5.png', title: '', paragraph: 'Elegent lamp for brightening up the room ' },
+  { image: '/collections/6.png', title: '', paragraph: 'Perfect Study tables for productivity  ' },
+  { image: '/collections/7.png', title: '', paragraph: 'Comfortable bed for restfull sleep' },
+  { image: '/collections/8.png', title: '', paragraph: 'Outdoor Furniture' }
 ];
 
 export const CollectionsSection = () => {

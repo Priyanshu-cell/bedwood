@@ -9,8 +9,8 @@ export function Footer() {
   const [isFormOpen, setIsFormOpen] = useState(false); // State for form visibility
 
   return (
-    <footer className="bg-white">
-      <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
+    <footer className="bg-inherit">
+      <div className="w-full max-w-screen-xl mx-auto">
         {/* Flex container for desktop layout */}
         <div className="flex flex-col md:flex-row items-start justify-between">
           
@@ -57,8 +57,8 @@ export function Footer() {
           </div>
         </div>
 
-        <hr className="my-6 border-gray-200 sm:mx-auto lg:my-8" />
-        <span className="block text-sm text-gray-700 sm:text-center">
+        <hr className="my-4 border-gray-400 sm:mx-auto lg:my-8" />
+        <span className="block text-sm text-gray-700 sm:text-center md:pb-6">
           © 2024{' '}
           <Link href="" className="hover:underline">
             BedWood™

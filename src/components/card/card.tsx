@@ -19,7 +19,7 @@ export const Card: React.FC<CardProps> = ({ image, title, paragraph }) => {
       </div>
       {/* Paragraph below the image */}
       <div className="py-1">
-        <p className="text-sm">{paragraph}</p>
+        <p className="text-base font-medium font-sans">{paragraph}</p>
       </div>
     </div>
   );

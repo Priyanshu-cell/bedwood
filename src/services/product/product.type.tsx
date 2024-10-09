@@ -3,7 +3,7 @@ export type  TProduct  = {
     _id: string;
     id?: string;
     description?:string;
-    variations?: { value: string; type: string }[] | undefined;
+    variations?: { value: string; type: string; _id: string}[] | undefined;
     name: string;
     category: string;
     categoryId: string;

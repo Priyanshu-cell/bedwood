@@ -7,6 +7,7 @@ import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { useRecoilState } from "recoil";
 import { cartItemsCountState } from "@/src/state/atoms/countCartState";
 import { BiPurchaseTag } from "react-icons/bi";
+import { FiMessageSquare } from "react-icons/fi"; // Import WhatsApp icon
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -54,6 +55,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
   const [quantity, setQuantity] = useState(1);
   const [isProductInCart, setIsProductInCart] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [selectedVariation, setSelectedVariation] = useState<string | null>(null); // State to store selected variation
 
   const { control, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
@@ -125,7 +127,8 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
 
     const OrderProductDetail = [{
       "productId": product._id,
-      "quantity": quantity
+      "quantity": quantity,
+      "variationId": selectedVariation 
     }];
 
     const message = `
@@ -133,6 +136,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
 Name: ${product.name}
 Category: ${product.category}
 Quantity: ${quantity}
+Variation: ${selectedVariation} 
 Price: ${product.price}
 Description: ${product.descriptions}
 
@@ -196,11 +200,22 @@ Address: ${data.address}
           {product.variations && product.variations.length > 0 && (
             <div className="mb-4">
               <h4 className="text-lg font-semibold mb-2">Variations</h4>
-              <ul className="list-disc pl-5">
-                {product.variations.map((variation, index) => (
-                  <li key={index} className="text-gray-700">{variation.type}: {variation.value}</li>
-                ))}
-              </ul>
+              {product.variations.map((variation, index) => (
+                <div key={index} className="flex items-center">
+                  <input
+                    type="radio"
+                    id={`variation-${index}`}
+                    name="variation"
+                    value={variation.value}
+                    checked={selectedVariation === variation.value}
+                    onChange={() => setSelectedVariation(variation.value)} // Update selected variation on change
+                    className="mr-2"
+                  />
+                  <label htmlFor={`variation-${index}`} className="cursor-pointer">
+                    {variation.type}: {variation.value}
+                  </label>
+                </div>
+              ))}
             </div>
           )}
 
@@ -227,29 +242,27 @@ Address: ${data.address}
               className={`flex items-center px-4 py-2 text-white rounded-md ${isProductInCart ? "bg-gray-400" : "bg-green-600"}`}
             >
               <ShoppingCartIcon className="h-5 w-5 mr-2" />
-              Add to Cart
+              {isProductInCart ? "Added to Cart" : "Add to Cart"}
             </button>
             <button
               onClick={handleBuyNow}
-              className="bg-blue-600 flex items-center px-4 py-2 text-white rounded-md"
+              className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md"
             >
-              <BiPurchaseTag className="h-5 w-5 mr-2" />
+              <FiMessageSquare className="h-5 w-5 mr-2" /> {/* WhatsApp Icon */}
               Buy Now
             </button>
           </div>
-        </div>
-      </main>
 
-      {notification && (
-        <p className="text-green-500 mt-2 text-center">{notification}</p>
-      )}
+          {notification && <p className="text-red-500 mt-2">{notification}</p>}
 
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/3">
-            <h3 className="text-xl font-semibold mb-4">Order Form</h3>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <div className="flex space-x-4 mb-4">
+          {showModal && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+            <form
+              onSubmit={handleSubmit(onSubmit)}
+              className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md"
+            >
+              <h3 className="text-lg font-bold mb-4">Complete Your Order</h3>
+              <div className="flex mb-4 space-x-4">
                 <div className="flex-1">
                   <label className="block mb-1" htmlFor="name">Name</label>
                   <Controller
@@ -257,30 +270,31 @@ Address: ${data.address}
                     control={control}
                     render={({ field }) => (
                       <input
-                        {...field}
                         type="text"
-                        className={`border rounded-md w-full p-2 ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
+                        {...field}
+                        className="border-2 rounded-md w-full p-2"
                       />
                     )}
                   />
-                  {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+                  {errors.name && <p className="text-red-500">{errors.name.message}</p>}
                 </div>
                 <div className="flex-1">
-                  <label className="block mb-1" htmlFor="phone">Mobile Number</label>
+                  <label className="block mb-1" htmlFor="phone">Mobile No</label>
                   <Controller
                     name="phone"
                     control={control}
                     render={({ field }) => (
                       <input
-                        {...field}
                         type="text"
-                        className={`border rounded-md w-full p-2 ${errors.phone ? 'border-red-500' : 'border-gray-300'}`}
+                        {...field}
+                        className="border-2 rounded-md w-full p-2"
                       />
                     )}
                   />
-                  {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
+                  {errors.phone && <p className="text-red-500">{errors.phone.message}</p>}
                 </div>
               </div>
+
               <div className="mb-4">
                 <label className="block mb-1" htmlFor="email">Email</label>
                 <Controller
@@ -288,14 +302,15 @@ Address: ${data.address}
                   control={control}
                   render={({ field }) => (
                     <input
-                      {...field}
                       type="email"
-                      className={`border rounded-md w-full p-2 ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+                      {...field}
+                      className="border-2 rounded-md w-full p-2"
                     />
                   )}
                 />
-                {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+                {errors.email && <p className="text-red-500">{errors.email.message}</p>}
               </div>
+
               <div className="mb-4">
                 <label className="block mb-1" htmlFor="address">Address</label>
                 <Controller
@@ -304,20 +319,20 @@ Address: ${data.address}
                   render={({ field }) => (
                     <textarea
                       {...field}
-                      rows={3} // Set the height to 3 rows
-                      className={`border rounded-md w-full p-2 ${errors.address ? 'border-red-500' : 'border-gray-300'}`}
+                      className="border-2 rounded-md w-full p-2"
+                      rows={3}
                     />
                   )}
                 />
-                {errors.address && <p className="text-red-500 text-sm">{errors.address.message}</p>}
+                {errors.address && <p className="text-red-500">{errors.address.message}</p>}
               </div>
 
               <div className="flex justify-start space-x-2">
               <button
                   type="submit"
-                  className="bg-blue-600 text-white px-4 py-2 rounded-md"
+                  className="bg-green-600 text-white px-4 py-2 rounded-md"
                 >
-                  Submit Order
+                  Submit
                 </button>
                 <button
                   type="button"
@@ -330,8 +345,11 @@ Address: ${data.address}
               </div>
             </form>
           </div>
+        )}
         </div>
-      )}
+      </main>
     </div>
   );
 };
+
+export default ProductDetail;

@@ -14,6 +14,8 @@ import {
   ModulersSection,
   ReviewSection,
   Footer,
+  BedwoodFaq,
+  
 } from "@/src/components";
 import { PopUpForm } from '@/src/form/popform';
 
@@ -55,13 +57,12 @@ export const HomePage = () => {
       <TopPicksSection />
       <BrandSection />
       <BestSellerSection />
-      <OfferSection />
+      
       <EssentialsSection />
       <CollectionsSection />
-      <FurnishingSection />
-      <NewArrivalsSection />
-      <ModulersSection />
+      
       <ReviewSection />
+      <BedwoodFaq/>
       <Footer />
 
       {isPopUpVisible && <PopUpForm onClose={handleClosePopUp} />}

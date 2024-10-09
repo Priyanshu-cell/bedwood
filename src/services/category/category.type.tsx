@@ -16,15 +16,16 @@ export interface SubMenuItem {
   }
 
 
-export type TCategory  = {
-   
-   parentId?: string;
-   _id?: string 
+  export type TCategory = {
+    parentId?: string;
+    _id?: string;
     name: string;
+    image?: string; // Add this line for the image URL
     success: boolean;
     message: string;
     children?: SubMenuItem[];
-}
+};
+
 
 
 export type TCatgeoryApiResponse = {

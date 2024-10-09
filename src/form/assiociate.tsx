@@ -72,7 +72,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         <form onSubmit={handleSubmit(onSubmit)} className="text-sm space-y-4">
           <div className="flex gap-4">
             <div className="w-1/2">
-              <label htmlFor="firstName" className="block text-gray-700 mb-1 font-bold">
+              <label htmlFor="firstName" className="block text-gray-700 mb-1 font-semibold">
                 First Name
               </label>
               <Controller
@@ -83,14 +83,14 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     id="firstName"
                     type="text"
                     {...field}
-                    className="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                    className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
                   />
                 )}
               />
               <p className="text-red-500 text-xs">{errors.firstName?.message}</p>
             </div>
             <div className="w-1/2">
-              <label htmlFor="lastName" className="block text-gray-700 mb-1 font-bold">
+              <label htmlFor="lastName" className="block text-gray-700 mb-1 font-semibold">
                 Last Name
               </label>
               <Controller
@@ -101,7 +101,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     id="lastName"
                     type="text"
                     {...field}
-                    className="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                    className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
                   />
                 )}
               />
@@ -111,7 +111,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
           <div className="flex gap-4">
             <div className="w-1/2">
-              <label htmlFor="phone" className="block text-gray-700 mb-1 font-bold">
+              <label htmlFor="phone" className="block text-gray-700 mb-1 font-semibold">
                 Phone Number
               </label>
               <Controller
@@ -122,14 +122,14 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     id="phone"
                     type="text"
                     {...field}
-                    className="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                    className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
                   />
                 )}
               />
               <p className="text-red-500 text-xs">{errors.phone?.message}</p>
             </div>
             <div className="w-1/2">
-              <label htmlFor="email" className="block text-gray-700 mb-1 font-bold">
+              <label htmlFor="email" className="block text-gray-700 mb-1 font-semibold">
                 Email
               </label>
               <Controller
@@ -140,7 +140,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     id="email"
                     type="email"
                     {...field}
-                    className="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                    className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
                   />
                 )}
               />
@@ -149,7 +149,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           </div>
 
           <div>
-            <label htmlFor="qualification" className="block text-gray-700 mb-1 font-bold">
+            <label htmlFor="qualification" className="block text-gray-700 mb-1 font-semibold">
               Qualification
             </label>
             <Controller
@@ -160,7 +160,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   id="qualification"
                   type="text"
                   {...field}
-                  className="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                  className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
                 />
               )}
             />
@@ -169,7 +169,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
           <div className="flex gap-4">
             <div className="w-1/2">
-              <label htmlFor="age" className="block text-gray-700 mb-1 font-bold">
+              <label htmlFor="age" className="block text-gray-700 mb-1 font-semibold">
                 Age
               </label>
               <Controller
@@ -180,14 +180,14 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     id="age"
                     type="number"
                     {...field}
-                    className="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                    className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
                   />
                 )}
               />
               <p className="text-red-500 text-xs">{errors.age?.message}</p>
             </div>
             <div className="w-1/2">
-              <label htmlFor="occupation" className="block text-gray-700 mb-1 font-bold">
+              <label htmlFor="occupation" className="block text-gray-700 mb-1 font-semibold">
                 Occupation
               </label>
               <Controller
@@ -198,7 +198,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     id="occupation"
                     type="text"
                     {...field}
-                    className="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                    className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
                   />
                 )}
               />
@@ -207,7 +207,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           </div>
 
           <div>
-            <label htmlFor="address" className="block text-gray-700 mb-1 font-bold">
+            <label htmlFor="address" className="block text-gray-700 mb-1 font-semibold">
               Address
             </label>
             <Controller
@@ -218,7 +218,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   id="address"
                   type="text"
                   {...field}
-                  className="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                  className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
                 />
               )}
             />
@@ -226,7 +226,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           </div>
 
           <div>
-            <label htmlFor="country" className="block text-gray-700 mb-1 font-bold">
+            <label htmlFor="country" className="block text-gray-700 mb-1 font-semibold">
               Country
             </label>
             <Controller
@@ -237,7 +237,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   id="country"
                   type="text"
                   {...field}
-                  className="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                  className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
                 />
               )}
             />
