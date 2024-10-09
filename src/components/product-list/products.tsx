@@ -19,18 +19,20 @@ import { refetchProductData } from "@/src/state/atoms/refetchdata";
 
 export const ProductsPage: React.FC = () => {
   const [sortValue, setSortValue] = useState<string>("1"); // Default to low to high
-  const categoryId = useRecoilValue(selectedCategoryState)
-  const { data, isLoading, isError, refetch } = useProducts(sortValue, categoryId );
-  const refetchdata = useRecoilValue(refetchProductData)
+  const categoryId = useRecoilValue(selectedCategoryState);
+  const { data, isLoading, isError, refetch } = useProducts(
+    sortValue,
+    categoryId
+  );
+  const refetchdata = useRecoilValue(refetchProductData);
 
-  if (refetchdata ){
-    refetch()
-    console.log("Refetch Data", refetchdata)
+  if (refetchdata) {
+    refetch();
+    console.log("Refetch Data", refetchdata);
   }
-  
 
-  useEffect( () => {
-    refetch()
+  useEffect(() => {
+    refetch();
   }, [refetchdata]);
 
   // Extract products from response data
@@ -42,19 +44,17 @@ export const ProductsPage: React.FC = () => {
   const [selectedLayout, setSelectedLayout] = useState("2x2");
   const [openCart, setOpenCart] = useState(false);
   const [cartItems, setCartItems] = useState<
-    { product: TProduct; quantity: number; variation?: string; }[]
+    { product: TProduct; quantity: number; variation?: string }[]
   >([]);
   const [cartItemCount, setCartItemCount] = useRecoilState(cartItemsCountState);
 
-
-
-// // Filter Products
-//   const filteredProducts = selectedCategory === 'All' 
-//   ? products 
-//   : products.filter(product => product.categoryId === selectedCategory);
- console.log("Products Category", products)
-//  console.log('Filtered Products', filteredProducts)
- console.log('Selected category', selectedCategory)
+  // // Filter Products
+  //   const filteredProducts = selectedCategory === 'All'
+  //   ? products
+  //   : products.filter(product => product.categoryId === selectedCategory);
+  console.log("Products Category", products);
+  //  console.log('Filtered Products', filteredProducts)
+  console.log("Selected category", selectedCategory);
 
   // Load cart items from localStorage on component mount
   useEffect(() => {
@@ -83,13 +83,21 @@ export const ProductsPage: React.FC = () => {
   };
 
   // Add product to cart
-  const handleAddToCart = (product: TProduct, quantity: number, variationId?: string) => {
+  const handleAddToCart = (
+    product: TProduct,
+    quantity: number,
+    variationId?: string
+  ) => {
     addToCart(product, quantity, variationId);
     setCartItems(getCartItems());
   };
 
   // Update product quantity in cart
-  const handleUpdateQuantity = (productId: string, quantity: number, variationId?: string) => {
+  const handleUpdateQuantity = (
+    productId: string,
+    quantity: number,
+    variationId?: string
+  ) => {
     updateCartItemQuantity(productId, quantity, variationId);
     setCartItems(getCartItems());
   };
@@ -106,7 +114,7 @@ export const ProductsPage: React.FC = () => {
     localStorage.removeItem("cartItems");
   };
 
-  console.log("Products in list", products)
+  console.log("Products in list", products);
 
   if (isLoading) return <div className="text-center">Loading products...</div>;
   if (isError)
@@ -126,26 +134,24 @@ export const ProductsPage: React.FC = () => {
         {/* Product Grid Layout */}
         <div
           className={`grid gap-6 my-10 px-4 lg:px-8 
-          ${
-            selectedLayout === "2x2"
-              ? "grid-cols-2 sm:grid-cols-3 lg:grid-cols-3"
-              : selectedLayout === "3x3"
-              ? "grid-cols-3 lg:grid-cols-3"
-              : selectedLayout === "4x4"
-              ? "grid-cols-4 lg:grid-cols-4"
-              : selectedLayout === "5x5"
-              ? "grid-cols-5 lg:grid-cols-5"
-              : ""
-          }`}
+  ${
+    selectedLayout === "2x2"
+      ? "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
+      : selectedLayout === "1x1"
+      ? "grid-cols-1" // Mobile default for 1x1
+      : // 2x2 for mobile, 3 columns for large screens
+      selectedLayout === "4x4"
+      ? "grid-cols-4 lg:grid-cols-4"
+      : selectedLayout === "5x5"
+      ? "grid-cols-5 lg:grid-cols-5"
+      : "grid-cols-1" // Fallback to 1x1 if no layout is selected
+  }`}
         >
-          
           {/* Render Product Cards */}
           {products.map((product: TProduct) => (
-            
             <ProductCard
               key={product._id}
               product={product}
-              
               onAddToCart={handleAddToCart}
             />
           ))}

@@ -18,8 +18,8 @@ const sortOptions = [
   { value: '1', label: 'Price (Low to High)' }, 
   { value: '-1', label: 'Price (High to Low)' }
 ];
-const layoutOptionsMobile = ['2x2', '3x3'];
-const layoutOptionsDesktop = ['3x3', '4x4', '5x5'];
+const layoutOptionsMobile = ['1x1', '2x2']; // Updated for mobile
+const layoutOptionsDesktop = [ '4x4', '5x5']; // Desktop layouts
 
 export const Header: React.FC<HeaderProps> = ({
   selectedCategory,
