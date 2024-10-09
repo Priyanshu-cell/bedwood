@@ -65,7 +65,7 @@ export const FAQ: React.FC<BedwoodProps> = ({
 
       <h2 className="text-xl font-semibold mt-8 mb-4">{productsTitle}</h2>
       <p className="text-base mb-6">
-        BedWood Furnishing houses an extensive range of home furniture and furnishings in various designs to meet everyone's taste in home decor.
+        BedWood Furnishing houses an extensive range of home furniture and furnishings in various designs to meet everyone&apos;s taste in home decor.
       </p>
 
       <h2 className="text-xl font-semibold mt-8 mb-4">{careTitle}</h2>
