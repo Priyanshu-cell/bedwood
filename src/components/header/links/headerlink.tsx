@@ -41,7 +41,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
           const formattedData = data.data.map((item) => ({
             _id: item._id ?? "",
             name: item.name,
-            logo: "",
+            logo: item.image || "", // Map the image URL to the 'logo' field
             children: item.children || [],
           }));
           setLinkData(formattedData);
@@ -89,10 +89,11 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
             onClick={() => isMobile && handleMobileMenuClick(index)}
             className="flex justify-between items-center w-full cursor-pointer px-2"
           >
-            <div className="flex flex-row">
+            <div className="flex flex-row items-center">
+              {/* Display the category image */}
               <img
-                src={link.logo}
-                className="block md:hidden h-6 w-6 mr-2 rounded-full"
+                src={link.logo} // Use the logo field to display the category image
+                className="block md:hidden h-8 w-8 mr-2 rounded-full" // Adjust size as needed
                 alt={`${link.name} logo`}
               />
               <p
