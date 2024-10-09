@@ -7,8 +7,6 @@ import { selectedCategoryState } from "@/src/state/atoms/filterstate";
 import { useRecoilState } from "recoil";
 import { useSearchParams, useRouter } from "next/navigation"; // Import useRouter
 
-
-
 export const HeaderLink: React.FC<HeaderLinkProps> = ({
   className,
   setSideBarOpen,
@@ -41,9 +39,9 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
         console.log("Data", data);
         if (data.success) {
           const formattedData = data.data.map((item) => ({
-            _id: item._id ??"",
+            _id: item._id ?? "",
             name: item.name,
-            logo: "", 
+            logo: "",
             children: item.children || [],
           }));
           setLinkData(formattedData);
@@ -99,7 +97,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
               />
               <p
                 className="block text-left px-2 md:px-0 md:hover:underline md:hover:underline-offset-8"
-                onClick={() => handleCategoryClick(link._id)}
+                onClick={() => handleCategoryClick(link._id)} // Category click handler
               >
                 {link.name}
               </p>
@@ -119,6 +117,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
             )}
           </div>
 
+          {/* Dropdown for Desktop View */}
           {link.children && !isMobile && (
             <div
               className={`absolute z-50 top-5 left-0 w-48 bg-white shadow-lg border border-gray-300 rounded-md scale-95 transform transition-transform duration-300 ease-in-out ${
@@ -128,9 +127,9 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
               {link.children.map((subLink, subIndex) => (
                 <Link
                   key={subIndex}
-                  href="/productlist"
+                  href={`/productlist?categoryId=${link._id}&subcategoryId=${subLink._id}`} // Directly link to subcategory
                   className="block px-4 py-2 text-gray-700 hover:bg-gray-200 transition-colors duration-200 ease-in-out"
-                  onClick={() => handleCategoryClick(subLink._id)}
+                  onClick={() => setSideBarOpen(false)} // Close sidebar on click
                 >
                   {subLink.name}
                 </Link>
@@ -138,13 +137,14 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
             </div>
           )}
 
+          {/* Dropdown for Mobile View */}
           {link.children && isMobile && openMobileSubMenu === index && (
             <div className="w-full bg-inherit divide-y-2 mt-2 flex flex-col rounded-md transition-all duration-300 ease-in-out">
               {link.children.map((subLink, subIndex) => (
                 <Link
                   key={subIndex}
-                  href="/productlist"
-                  onClick={() => setSideBarOpen(false)}
+                  href={`/productlist?categoryId=${link._id}&subcategoryId=${subLink._id}`} // Directly link to subcategory
+                  onClick={() => setSideBarOpen(false)} // Close sidebar on click
                   className="block px-2 text-sm py-2 text-gray-700 hover:bg-gray-200 transition-colors duration-200 ease-in-out"
                 >
                   {subLink.name}

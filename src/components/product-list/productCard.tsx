@@ -16,6 +16,14 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
     setQuantity(prev => Math.max(1, prev + change));
   };
 
+  // Use a fallback image if product image is not available
+  const productImage = Array.isArray(product.image) && product.image.length > 0 
+    ? `http://${product.image[0]}` // Include full URL
+    : 'https://placehold.co/250x250.png'; // Fallback image
+
+  // Log the image source for debugging
+  console.log('Product Image:', productImage);
+
   return (
     <div className="bg-inherit relative group p-4 border rounded-lg shadow-lg transition-transform duration-200 hover:scale-105">
       {/* Image Link */}
@@ -23,9 +31,13 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
         {/* Image Container */}
         <div className="w-full h-[250px] overflow-hidden relative cursor-pointer">
           <img
-            src={product.image[0]}
+            src={productImage} // Use the full URL here
             alt={product.name}
             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+            onError={(e) => {
+              // If the image fails to load, use the placeholder
+              e.currentTarget.src = 'https://placehold.co/250x250.png';
+            }}
           />
         </div>
       </Link>
@@ -37,7 +49,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
         <h4 className="text-lg text-gray-800 font-bold mb-2">₹{product.price}</h4>
 
         {/* Quantity Selector */}
-        <div className="flex items-center mb-2 z-10"> {/* Added z-10 to the quantity selector */}
+        <div className="flex items-center mb-2 z-10">
           <button
             type="button"
             onClick={(e) => {
@@ -69,7 +81,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
           e.stopPropagation(); // Prevent the link from being triggered
           onAddToCart(product, quantity);
         }}
-        className="absolute bottom-4 right-4 bg-blue-600 text-white py-1 px-2 text-sm rounded-md hover:bg-blue-500 transition-colors duration-200 "
+        className="absolute bottom-4 right-4 bg-blue-600 text-white py-1 px-2 text-sm rounded-md hover:bg-blue-500 transition-colors duration-200"
       >
         <ShoppingCartIcon className="h-4 w-4 inline-block mr-1" />
         Add

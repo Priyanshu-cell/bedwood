@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import React, { useEffect, useState } from "react";
 import ImageGallery from "react-image-gallery";
@@ -166,29 +166,34 @@ Address: ${data.address}
     return <p className="text-center font-semibold">Product not found</p>;
   }
 
-  const images = product.image.map((imgUrl) => ({
-    original: imgUrl,
-    thumbnail: imgUrl,
-  }));
+  const images = Array.isArray(product?.image) && product.image.length > 0 
+  ? product.image.map((imgUrl) => ({
+      original: imgUrl.startsWith('http') ? imgUrl : `http://${imgUrl}`,
+      thumbnail: imgUrl.startsWith('http') ? imgUrl : `http://${imgUrl}`,
+    })) 
+  : [{ original: 'https://placehold.co/600x400.png', thumbnail: 'https://placehold.co/600x400.png' }];
+
 
   return (
     <div className="flex flex-col">
-      <main className="flex flex-col md:flex-row items-center pt-4 md:pt-6">
-        <div className="md:w-1/2 w-full flex flex-col items-center">
-          <div className="w-full md:w-auto px-4">
+      <main className="flex flex-col md:flex-row items-center pt-4 md:pt-6 md:pl-32">
+      <div className="md:w-1/2 w-full flex flex-col items-center">
+          <div className="w-full md:w-auto px-4 flex justify-center"> {/* Center the image */}
             <ImageGallery
-              items={images} 
+              items={images}
               showNav={false}
               showFullscreenButton={false}
               showPlayButton={false}
               disableSwipe={false}
               showThumbnails={true}
               showBullets={false}
+             
+              
             />
           </div>
         </div>
 
-        <div className="w-full md:w-1/2 px-4 md:m-0 m-6">
+        <div className="w-full md:w-1/2 px-4 md:m-0 m-6 flex flex-col justify-center"> {/* Align text to the right */}
           <h2 className="md:text-4xl text-2xl font-bold mb-2">{product.name}</h2>
           <p className="text-gray-600 mb-4">{product.category}</p>
           <div className="mb-4">
@@ -208,7 +213,7 @@ Address: ${data.address}
                     name="variation"
                     value={variation.value}
                     checked={selectedVariation === variation.value}
-                    onChange={() => setSelectedVariation(variation.value)} // Update selected variation on change
+                    onChange={() => setSelectedVariation(variation.value)}
                     className="mr-2"
                   />
                   <label htmlFor={`variation-${index}`} className="cursor-pointer">
