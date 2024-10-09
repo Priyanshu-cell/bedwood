@@ -35,7 +35,7 @@ export const CartPage = () => {
   };
 
   return (
-    <div className="container mx-auto pb-12">
+    <div className="container mx-auto pb-10">
       <div className="sm:flex ">
         <div className="md:w-4/6 bg-white px-10 py-10 overflow-hidden">
           <div className="h-[calc(100vh-200px)] overflow-y-auto scrollbar-hide"> {/* Adjust the height as needed */}

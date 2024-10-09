@@ -4,7 +4,7 @@ import { HeaderLink } from "../links/headerlink";
 import Link from "next/link";
 import { FaSearch, FaShoppingCart, FaUserTie } from "react-icons/fa";
 import { HiOutlineArrowLeft } from "react-icons/hi2";
-import { MdMenu } from "react-icons/md";
+import { MdMenu, MdMobileFriendly } from "react-icons/md";
 import { RiMapPinLine } from "react-icons/ri";
 import { IoMdHelpCircle } from "react-icons/io";
 import { useRecoilValue, useSetRecoilState } from "recoil";
@@ -177,7 +177,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
             </button>
 
             <div className="px-4 flex items-center space-x-4">
-              <RiMapPinLine className="text-gray-600 text-lg" />
+              <MdMobileFriendly className="text-gray-600 text-lg" />
               <p>+91-8630715936 </p>
             </div>
             <div className="px-4 flex items-center space-x-4">

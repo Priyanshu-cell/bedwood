@@ -1,5 +1,7 @@
 import React from 'react';
 import { MapPinIcon } from '@heroicons/react/24/outline'; // Import the Heroicon
+import { IoMdHelpCircle } from 'react-icons/io';
+import { MdMobileFriendly } from 'react-icons/md';
 
 export const SmallHeader = () => {
   const whatsappNumber = "+91 96751 11719"; // Define your WhatsApp number
@@ -16,17 +18,23 @@ export const SmallHeader = () => {
 
       {/* Contact and Info Section */}
       <div className="flex flex-col md:flex-row text-gray-600 text-sm mt-2 md:mt-0 space-y-2 md:space-y-0 md:divide-x-2 divide-gray-600">
-        <p className="md:px-2 px-6">+91-8630715936 </p>
-        <p className="md:px-2 px-6">
-          <a
-            href={`https://wa.me/${whatsappNumber.replace(/\s+/g, '')}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-600 hover:underline"
-          >
-            Help Center
-          </a>
-        </p>
+      <div className="px-4 flex items-center space-x-2">
+              <MdMobileFriendly className="text-gray-600 text-lg" />
+              <p>+91-8630715936 </p>
+            </div>
+        <div className="md:px-2 px-6">
+        <div className="flex items-center space-x-2">
+              <IoMdHelpCircle className="text-gray-600 text-lg" />
+              <a
+                href={`https://wa.me/${whatsappNumber.replace(/\s+/g, '')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600"
+              >
+                <p>Help Center</p>
+              </a>
+            </div>
+        </div>
       </div>
     </header>
   );

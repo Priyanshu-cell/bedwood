@@ -47,7 +47,6 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
     },
     onError: (error) => {
       console.error('Error saving data:', error);
-      // Handle the error appropriately
     },
   });
 
@@ -58,122 +57,197 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-50">
-      <div className="bg-white pt-4 pb-10 px-6 rounded-lg shadow-md md:w-1/2 w-full m-4 relative">
-        <button onClick={onClose} className="absolute top-0 right-2 text-gray-500 text-3xl">
+    <div className="fixed inset-0 flex items-center justify-center z-50 bg-gray-900 bg-opacity-50">
+      <div className="bg-white pt-6 pb-12 px-8 rounded-md shadow-lg md:w-1/3 w-full m-2 relative transition-transform transform scale-95 hover:scale-100 duration-300 ease-out">
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-4 text-gray-400 hover:text-gray-600 text-2xl transition-colors"
+          aria-label="Close"
+        >
           &times;
         </button>
-        <h2 className="text-lg font-semibold mb-4 text-center">Become a Company Associate!</h2>
-        <form onSubmit={handleSubmit(onSubmit)} className="text-sm">
-          <div className="mb-2">
-            <label className="block mb-1">First Name</label>
-            <Controller
-              name="firstName"
-              control={control}
-              render={({ field }) => (
-                <input type="text" {...field} className="border rounded p-1 w-full text-sm" />
-              )}
-            />
-            <p className="text-red-500 text-xs">{errors.firstName?.message}</p>
+        <h2 className="text-lg font-semibold mb-6 text-center text-indigo-600">
+          Become a Company Associate!
+        </h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="text-sm space-y-4">
+          <div className="flex gap-4">
+            <div className="w-1/2">
+              <label htmlFor="firstName" className="block text-gray-700 mb-1 font-bold">
+                First Name
+              </label>
+              <Controller
+                name="firstName"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    id="firstName"
+                    type="text"
+                    {...field}
+                    className="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                  />
+                )}
+              />
+              <p className="text-red-500 text-xs">{errors.firstName?.message}</p>
+            </div>
+            <div className="w-1/2">
+              <label htmlFor="lastName" className="block text-gray-700 mb-1 font-bold">
+                Last Name
+              </label>
+              <Controller
+                name="lastName"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    id="lastName"
+                    type="text"
+                    {...field}
+                    className="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                  />
+                )}
+              />
+              <p className="text-red-500 text-xs">{errors.lastName?.message}</p>
+            </div>
           </div>
 
-          <div className="mb-2">
-            <label className="block mb-1">Last Name</label>
-            <Controller
-              name="lastName"
-              control={control}
-              render={({ field }) => (
-                <input type="text" {...field} className="border rounded p-1 w-full text-sm" />
-              )}
-            />
-            <p className="text-red-500 text-xs">{errors.lastName?.message}</p>
+          <div className="flex gap-4">
+            <div className="w-1/2">
+              <label htmlFor="phone" className="block text-gray-700 mb-1 font-bold">
+                Phone Number
+              </label>
+              <Controller
+                name="phone"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    id="phone"
+                    type="text"
+                    {...field}
+                    className="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                  />
+                )}
+              />
+              <p className="text-red-500 text-xs">{errors.phone?.message}</p>
+            </div>
+            <div className="w-1/2">
+              <label htmlFor="email" className="block text-gray-700 mb-1 font-bold">
+                Email
+              </label>
+              <Controller
+                name="email"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    id="email"
+                    type="email"
+                    {...field}
+                    className="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                  />
+                )}
+              />
+              <p className="text-red-500 text-xs">{errors.email?.message}</p>
+            </div>
           </div>
 
-          <div className="mb-2">
-            <label className="block mb-1">Phone Number</label>
-            <Controller
-              name="phone"
-              control={control}
-              render={({ field }) => (
-                <input type="text" {...field} className="border rounded p-1 w-full text-sm" />
-              )}
-            />
-            <p className="text-red-500 text-xs">{errors.phone?.message}</p>
-          </div>
-
-          <div className="mb-2">
-            <label className="block mb-1">Email</label>
-            <Controller
-              name="email"
-              control={control}
-              render={({ field }) => (
-                <input type="email" {...field} className="border rounded p-1 w-full text-sm" />
-              )}
-            />
-            <p className="text-red-500 text-xs">{errors.email?.message}</p>
-          </div>
-
-          <div className="mb-2">
-            <label className="block mb-1">Qualification</label>
+          <div>
+            <label htmlFor="qualification" className="block text-gray-700 mb-1 font-bold">
+              Qualification
+            </label>
             <Controller
               name="qualification"
               control={control}
               render={({ field }) => (
-                <input type="text" {...field} className="border rounded p-1 w-full text-sm" />
+                <input
+                  id="qualification"
+                  type="text"
+                  {...field}
+                  className="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                />
               )}
             />
             <p className="text-red-500 text-xs">{errors.qualification?.message}</p>
           </div>
 
-          <div className="mb-2">
-            <label className="block mb-1">Age</label>
-            <Controller
-              name="age"
-              control={control}
-              render={({ field }) => (
-                <input type="number" {...field} className="border rounded p-1 w-full text-sm" />
-              )}
-            />
-            <p className="text-red-500 text-xs">{errors.age?.message}</p>
+          <div className="flex gap-4">
+            <div className="w-1/2">
+              <label htmlFor="age" className="block text-gray-700 mb-1 font-bold">
+                Age
+              </label>
+              <Controller
+                name="age"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    id="age"
+                    type="number"
+                    {...field}
+                    className="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                  />
+                )}
+              />
+              <p className="text-red-500 text-xs">{errors.age?.message}</p>
+            </div>
+            <div className="w-1/2">
+              <label htmlFor="occupation" className="block text-gray-700 mb-1 font-bold">
+                Occupation
+              </label>
+              <Controller
+                name="occupation"
+                control={control}
+                render={({ field }) => (
+                  <input
+                    id="occupation"
+                    type="text"
+                    {...field}
+                    className="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                  />
+                )}
+              />
+              <p className="text-red-500 text-xs">{errors.occupation?.message}</p>
+            </div>
           </div>
 
-          <div className="mb-2">
-            <label className="block mb-1">Occupation</label>
-            <Controller
-              name="occupation"
-              control={control}
-              render={({ field }) => (
-                <input type="text" {...field} className="border rounded p-1 w-full text-sm" />
-              )}
-            />
-            <p className="text-red-500 text-xs">{errors.occupation?.message}</p>
-          </div>
-
-          <div className="mb-2">
-            <label className="block mb-1">Address</label>
+          <div>
+            <label htmlFor="address" className="block text-gray-700 mb-1 font-bold">
+              Address
+            </label>
             <Controller
               name="address"
               control={control}
               render={({ field }) => (
-                <input type="text" {...field} className="border rounded p-1 w-full text-sm" />
+                <input
+                  id="address"
+                  type="text"
+                  {...field}
+                  className="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                />
               )}
             />
             <p className="text-red-500 text-xs">{errors.address?.message}</p>
           </div>
 
-          <div className="mb-2">
-            <label className="block mb-1">Country</label>
+          <div>
+            <label htmlFor="country" className="block text-gray-700 mb-1 font-bold">
+              Country
+            </label>
             <Controller
               name="country"
               control={control}
               render={({ field }) => (
-                <input type="text" {...field} className="border rounded p-1 w-full text-sm" />
+                <input
+                  id="country"
+                  type="text"
+                  {...field}
+                  className="border border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                />
               )}
             />
             <p className="text-red-500 text-xs">{errors.country?.message}</p>
           </div>
 
-          <button type="submit" className="bg-blue-500 text-white p-2 rounded w-24 text-sm">
+          <button
+            type="submit"
+            className="bg-indigo-600 text-white w-full p-2 rounded-md hover:bg-indigo-700 transition-colors"
+          >
             Submit
           </button>
         </form>

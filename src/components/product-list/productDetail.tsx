@@ -10,8 +10,8 @@ import { BiPurchaseTag } from "react-icons/bi";
 import { useForm, Controller } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { TProduct } from "@/src/services/product/product.type"; // Importing the TProduct type
-import { getProduct } from "@/src/services/product"; // Importing the getProduct function
+import { TProduct } from "@/src/services/product/product.type"; 
+import { getProduct } from "@/src/services/product"; 
 import { useMutation } from "@tanstack/react-query";
 import { OrderPost } from "@/src/services/order";
 
@@ -24,7 +24,7 @@ const schema = yup.object().shape({
 });
 
 interface ProductDetailProps {
-  id: string; // Changed to string to match the _id type in TProduct
+  id: string; 
 }
 
 const loadCartItems = () => {
@@ -55,7 +55,6 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
   const [isProductInCart, setIsProductInCart] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
-  // React Hook Form setup
   const { control, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
       name: "",
@@ -63,15 +62,14 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
       phone: "",
       address: "",
     },
-    resolver: yupResolver(schema), // Yup schema for validation
+    resolver: yupResolver(schema), 
   });
 
-  // Fetch product data using getProduct
   useEffect(() => {
     const fetchProduct = async () => {
       setIsLoading(true);
       try {
-        const productDetail = await getProduct(id); // Fetch product by ID
+        const productDetail = await getProduct(id); 
         setProduct(productDetail || null);
       } catch (error) {
         console.error("Failed to fetch product:", error);
@@ -83,18 +81,15 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
     fetchProduct();
   }, [id]);
 
-  // Load cart items
   useEffect(() => {
     const storedCartItems = loadCartItems();
     setCartItems(storedCartItems);
     setCartItemCount(storedCartItems.length);
 
-    // Check if the product is already in the cart
     const productInCart = storedCartItems.some((item: { product: { _id: string; }; }) => item.product._id === id);
     setIsProductInCart(productInCart);
   }, [setCartItemCount, id]);
 
-  // Save cart items to localStorage whenever they change
   useEffect(() => {
     saveCartItems(cartItems);
     setCartItemCount(cartItems.length);
@@ -119,16 +114,14 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
     mutationFn: OrderPost,
     onSuccess: (response) => {
       console.log('Form Data submitted successfully', response);
-      
     },
     onError: (error) => {
       console.error('Error saving data:', error);
-      // Handle the error appropriately
     },
   });
 
   const onSubmit = (data: { name: string; email: string; phone: string; address: string; }) => {
-    if (!product) return; // Ensure product details are available
+    if (!product) return; 
 
     const OrderProductDetail = [{
       "productId": product._id,
@@ -150,19 +143,14 @@ Phone: ${data.phone}
 Address: ${data.address}
     `.trim();
 
-    // Encode the message and create the WhatsApp link
     const encodedMessage = encodeURIComponent(message);
     const whatsappLink = `https://wa.me/8630715936?text=${encodedMessage}`;
 
-    // Open the WhatsApp link in a new tab
     window.open(whatsappLink);
 
     SendOrderData.mutateAsync({name: data.name, email: data.email, phone: data.phone, address: data.address, totalPrice: product.price, productDetails: OrderProductDetail});
 
-    // Close the modal
     setShowModal(false);
-
-    // Reset form fields
     reset();
   };
 
@@ -174,7 +162,6 @@ Address: ${data.address}
     return <p className="text-center font-semibold">Product not found</p>;
   }
 
-  // Prepare images for the gallery by mapping over product.image
   const images = product.image.map((imgUrl) => ({
     original: imgUrl,
     thumbnail: imgUrl,
@@ -182,13 +169,11 @@ Address: ${data.address}
 
   return (
     <div className="flex flex-col">
-      {/* Main Content */}
       <main className="flex flex-col md:flex-row items-center pt-4 md:pt-6">
-        {/* Product Image Gallery */}
         <div className="md:w-1/2 w-full flex flex-col items-center">
           <div className="w-full md:w-auto px-4">
             <ImageGallery
-              items={images} // Use mapped images here
+              items={images} 
               showNav={false}
               showFullscreenButton={false}
               showPlayButton={false}
@@ -199,17 +184,15 @@ Address: ${data.address}
           </div>
         </div>
 
-        {/* Product Details */}
         <div className="w-full md:w-1/2 px-4 md:m-0 m-6">
           <h2 className="md:text-4xl text-2xl font-bold mb-2">{product.name}</h2>
-          <p className="text-gray-600 mb-4">{product.category}</p> {/* Updated to use category */}
+          <p className="text-gray-600 mb-4">{product.category}</p>
           <div className="mb-4">
             <span className="text-2xl font-bold mr-2">{product.price}</span>
           </div>
 
           <p className="text-gray-700 mb-4 text-balance">{product.descriptions}</p>
 
-          {/* Variation Section */}
           {product.variations && product.variations.length > 0 && (
             <div className="mb-4">
               <h4 className="text-lg font-semibold mb-2">Variations</h4>
@@ -221,7 +204,6 @@ Address: ${data.address}
             </div>
           )}
 
-          {/* Quantity Selector */}
           <div className="flex items-center space-x-2 p-4 pl-0">
             <button
               onClick={() => setQuantity((prev) => Math.max(prev - 1, 1))}
@@ -238,7 +220,6 @@ Address: ${data.address}
             </button>
           </div>
 
-          {/* Add to Cart Button */}
           <div className="flex items-center space-x-4">
             <button
               onClick={() => handleAddToCart(product)}
@@ -259,97 +240,94 @@ Address: ${data.address}
         </div>
       </main>
 
-      {/* Success Notification */}
       {notification && (
         <p className="text-green-500 mt-2 text-center">{notification}</p>
       )}
 
-      {/* Order Form Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
-          <div className="absolute inset-0 bg-black opacity-50"></div>
-          <div className="relative bg-white w-full max-w-md p-6 mx-auto rounded-lg shadow-lg">
-            <h2 className="text-xl font-bold mb-4">Buy Now</h2>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-11/12 md:w-1/3">
+            <h3 className="text-xl font-semibold mb-4">Order Form</h3>
             <form onSubmit={handleSubmit(onSubmit)}>
-              {/* Name Input */}
-              <div className="mb-4">
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
-                <Controller
-                  name="name"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      type="text"
-                      id="name"
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                      {...field}
-                    />
-                  )}
-                />
-                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>}
+              <div className="flex space-x-4 mb-4">
+                <div className="flex-1">
+                  <label className="block mb-1" htmlFor="name">Name</label>
+                  <Controller
+                    name="name"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        type="text"
+                        className={`border rounded-md w-full p-2 ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
+                      />
+                    )}
+                  />
+                  {errors.name && <p className="text-red-500 text-sm">{errors.name.message}</p>}
+                </div>
+                <div className="flex-1">
+                  <label className="block mb-1" htmlFor="phone">Mobile Number</label>
+                  <Controller
+                    name="phone"
+                    control={control}
+                    render={({ field }) => (
+                      <input
+                        {...field}
+                        type="text"
+                        className={`border rounded-md w-full p-2 ${errors.phone ? 'border-red-500' : 'border-gray-300'}`}
+                      />
+                    )}
+                  />
+                  {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
+                </div>
               </div>
-
-              {/* Email Input */}
               <div className="mb-4">
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+                <label className="block mb-1" htmlFor="email">Email</label>
                 <Controller
                   name="email"
                   control={control}
                   render={({ field }) => (
                     <input
+                      {...field}
                       type="email"
-                      id="email"
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                      {...field}
+                      className={`border rounded-md w-full p-2 ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
                     />
                   )}
                 />
-                {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
+                {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
               </div>
-
-              {/* Phone Input */}
               <div className="mb-4">
-                <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone</label>
-                <Controller
-                  name="phone"
-                  control={control}
-                  render={({ field }) => (
-                    <input
-                      type="text"
-                      id="phone"
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-                      {...field}
-                    />
-                  )}
-                />
-                {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>}
-              </div>
-
-              {/* Address Input */}
-              <div className="mb-4">
-                <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
+                <label className="block mb-1" htmlFor="address">Address</label>
                 <Controller
                   name="address"
                   control={control}
                   render={({ field }) => (
-                    <input
-                      type="text"
-                      id="address"
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    <textarea
                       {...field}
+                      rows={3} // Set the height to 3 rows
+                      className={`border rounded-md w-full p-2 ${errors.address ? 'border-red-500' : 'border-gray-300'}`}
                     />
                   )}
                 />
-                {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address.message}</p>}
+                {errors.address && <p className="text-red-500 text-sm">{errors.address.message}</p>}
               </div>
 
-              {/* Submit Button */}
+              <div className="flex justify-start space-x-2">
               <button
-                type="submit"
-                className="w-full bg-blue-600 text-white py-2 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
-              >
-                Confirm Purchase
-              </button>
+                  type="submit"
+                  className="bg-blue-600 text-white px-4 py-2 rounded-md"
+                >
+                  Submit Order
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setShowModal(false)}
+                  className="bg-red-500 text-white px-4 py-2 rounded-md"
+                >
+                  Cancel
+                </button>
+                
+              </div>
             </form>
           </div>
         </div>
