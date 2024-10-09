@@ -14,8 +14,8 @@ import { WhatsAppCheckout } from "@/src/form/whatsappCheckOut";
 interface CartDialogProps {
   open: boolean;
   onClose: () => void;
-  cartItems: { product: TProduct; quantity: number }[]; // Changed to TProduct
-  onUpdateQuantity: (productId: string, quantity: number) => void; // Ensure productId is a string
+  cartItems: { product: TProduct; quantity: number, variationId?: string   }[]; 
+  onUpdateQuantity: (productId: string, quantity: number, variationId?: string) => void; 
   onRemoveFromCart: (productId: string) => void;
   clearCart: () => void;
 }
@@ -80,7 +80,7 @@ export const CartDialog: React.FC<CartDialogProps> = ({
                       </p>
                     ) : (
                       <ul>
-                        {cartItems.map(({ product, quantity }) => (
+                        {cartItems.map(({ product, quantity, variationId}) => (
                           <li
                             key={product._id}
                             className="flex py-4 border-b border-gray-200"
@@ -112,7 +112,8 @@ export const CartDialog: React.FC<CartDialogProps> = ({
                                         product._id &&
                                         onUpdateQuantity(
                                           product._id,
-                                          quantity - 1
+                                          quantity - 1,
+                                          variationId
                                         )
                                       } // Check if _id is defined
                                       className="text-gray-500 hover:text-gray-700 px-2 bg-gray-200 rounded-md"
@@ -128,7 +129,8 @@ export const CartDialog: React.FC<CartDialogProps> = ({
                                         product._id &&
                                         onUpdateQuantity(
                                           product._id,
-                                          quantity + 1
+                                          quantity + 1,
+                                          variationId
                                         )
                                       } // Check if _id is defined
                                       className="text-gray-500 hover:text-gray-700 px-2 bg-gray-200 rounded-md"

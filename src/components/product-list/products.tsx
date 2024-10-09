@@ -42,7 +42,7 @@ export const ProductsPage: React.FC = () => {
   const [selectedLayout, setSelectedLayout] = useState("2x2");
   const [openCart, setOpenCart] = useState(false);
   const [cartItems, setCartItems] = useState<
-    { product: TProduct; quantity: number }[]
+    { product: TProduct; quantity: number; variation?: string; }[]
   >([]);
   const [cartItemCount, setCartItemCount] = useRecoilState(cartItemsCountState);
 
@@ -83,14 +83,14 @@ export const ProductsPage: React.FC = () => {
   };
 
   // Add product to cart
-  const handleAddToCart = (product: TProduct, quantity: number) => {
-    addToCart(product, quantity);
+  const handleAddToCart = (product: TProduct, quantity: number, variationId?: string) => {
+    addToCart(product, quantity, variationId);
     setCartItems(getCartItems());
   };
 
   // Update product quantity in cart
-  const handleUpdateQuantity = (productId: string, quantity: number) => {
-    updateCartItemQuantity(productId, quantity);
+  const handleUpdateQuantity = (productId: string, quantity: number, variationId?: string) => {
+    updateCartItemQuantity(productId, quantity, variationId);
     setCartItems(getCartItems());
   };
 

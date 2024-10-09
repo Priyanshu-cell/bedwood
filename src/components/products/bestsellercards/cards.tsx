@@ -7,14 +7,14 @@ import { Navigation } from 'swiper/modules';
 import { Card } from '../index';
 
 const bestSellers = [
-  { image: '/bestsellerof/1.png', title: '', paragraph: 'Description 1' },
-  { image: '/bestsellerof/2.png', title: '', paragraph: 'Description 2' },
-  { image: '/bestsellerof/3.png', title: '', paragraph: 'Description 3' },
-  { image: '/bestsellerof/4.png', title: '', paragraph: 'Description 4' },
-  { image: '/bestsellerof/5.png', title: '', paragraph: 'Description 5' },
-  { image: '/bestsellerof/6.png', title: '', paragraph: 'Description 6' },
-  { image: '/bestsellerof/7.png', title: '', paragraph: 'Description 7' },
-  { image: '/bestsellerof/8.png', title: '', paragraph: 'Description 8' }
+  { image: '/bestsellerof/1.png', title: '', paragraph: '' },
+  { image: '/bestsellerof/2.png', title: '', paragraph: '' },
+  { image: '/bestsellerof/3.png', title: '', paragraph: '' },
+  { image: '/bestsellerof/4.png', title: '', paragraph: '' },
+  { image: '/bestsellerof/5.png', title: '', paragraph: '' },
+  { image: '/bestsellerof/6.png', title: '', paragraph: '' },
+  { image: '/bestsellerof/7.png', title: '', paragraph: '' },
+  { image: '/bestsellerof/8.png', title: '', paragraph: '' }
 ];
 
 export const BestSellerSection = () => {

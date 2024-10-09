@@ -55,7 +55,7 @@ export const ProductDetail: React.FC<ProductDetailProps> = ({ id }) => {
   const [quantity, setQuantity] = useState(1);
   const [isProductInCart, setIsProductInCart] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [selectedVariation, setSelectedVariation] = useState<string | null>(null); // State to store selected variation
+  const [selectedVariation, setSelectedVariation] = useState<string | undefined>(); // State to store selected variation
 
   const { control, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: {
@@ -147,6 +147,8 @@ Phone: ${data.phone}
 Address: ${data.address}
     `.trim();
 
+    console.log('selected variation', selectedVariation)
+
     const encodedMessage = encodeURIComponent(message);
     const whatsappLink = `https://wa.me/8630715936?text=${encodedMessage}`;
 
@@ -212,8 +214,8 @@ Address: ${data.address}
                     id={`variation-${index}`}
                     name="variation"
                     value={variation.value}
-                    checked={selectedVariation === variation.value}
-                    onChange={() => setSelectedVariation(variation.value)}
+                    checked={selectedVariation === variation._id}
+                    onChange={() => setSelectedVariation(variation._id)}
                     className="mr-2"
                   />
                   <label htmlFor={`variation-${index}`} className="cursor-pointer">

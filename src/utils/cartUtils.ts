@@ -4,6 +4,7 @@ import { TProduct } from "@/src/services/product/product.type";
 interface CartItem {
   product: TProduct;
   quantity: number;
+  variationId: string;
 }
 
 // Load cart items from localStorage
@@ -27,21 +28,22 @@ export const saveCartItems = (cartItems: CartItem[]) => {
 };
 
 // Add item to cart
-export const addToCart = (product: TProduct, quantity: number) => {
+export const addToCart = (product: TProduct, quantity: number, variationId?: any) => {
   const cartItems = getCartItems();
   const itemIndex = cartItems.findIndex(item => item.product._id === product._id);
 
   if (itemIndex >= 0) {
     cartItems[itemIndex].quantity += quantity;
   } else {
-    cartItems.push({ product, quantity });
+    cartItems.push({ product, quantity, variationId: variationId || null }); // Assign null if variationId is not provided
   }
 
   saveCartItems(cartItems);
 };
 
+
 // Update cart item quantity
-export const updateCartItemQuantity = (productId: string, quantity: number) => {
+export const updateCartItemQuantity = (productId: string, quantity: number, variationId?: string) => {
   const cartItems = getCartItems();
   const itemIndex = cartItems.findIndex(item => item.product._id === productId);
 

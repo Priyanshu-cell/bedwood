@@ -22,7 +22,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
     : 'https://placehold.co/250x250.png'; // Fallback image
 
   // Log the image source for debugging
-  console.log('Product Image:', productImage);
+  console.log('Product:', product);
 
   return (
     <div className="bg-inherit relative group p-4 border rounded-lg shadow-lg transition-transform duration-200 hover:scale-105">
@@ -47,6 +47,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
         <h3 className="text-lg font-extrabold text-gray-800 mb-1">{product.name}</h3>
         <p className="text-gray-600 text-sm mb-1">{product.descriptions}</p>
         <h4 className="text-lg text-gray-800 font-bold mb-2">₹{product.price}</h4>
+        
 
         {/* Quantity Selector */}
         <div className="flex items-center mb-2 z-10">

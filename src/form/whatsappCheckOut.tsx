@@ -11,7 +11,7 @@ import { useMutation } from '@tanstack/react-query';
 import { FaWhatsapp } from 'react-icons/fa'; // Import WhatsApp icon
 
 interface WhatsAppCheckoutProps {
-  cartItems: { product: TProduct; quantity: number }[]; // Use TProduct instead of Product
+  cartItems: { product: TProduct; quantity: number; variationId?: string }[]; // Use TProduct instead of Product
   onCheckoutComplete: () => void; // Callback when checkout is complete
 }
 
@@ -56,9 +56,10 @@ export const WhatsAppCheckout: React.FC<WhatsAppCheckoutProps> = ({ cartItems, o
     console.log('cart items', cartItems);
 
     // Create an array of objects for OrderProductDetail
-    const OrderProductDetail = cartItems.map(({ product, quantity }) => ({
+    const OrderProductDetail = cartItems.map(({ product, quantity, variationId }) => ({
       productId: product._id, // Use the product's _id
       quantity, // Use the quantity
+      variationId: variationId,
     }));
 
     console.log('OrderProductDetail', OrderProductDetail); // Log the details for verification
@@ -74,6 +75,8 @@ export const WhatsAppCheckout: React.FC<WhatsAppCheckoutProps> = ({ cartItems, o
       totalPrice: 50,
       productDetails: OrderProductDetail
     });
+
+    console.log('Order Product detail', OrderProductDetail)
 
     // Clear cart items by calling onCheckoutComplete
     if (onCheckoutComplete) onCheckoutComplete();
