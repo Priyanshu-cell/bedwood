@@ -18,7 +18,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
 
   // Use a fallback image if product image is not available
   const productImage = Array.isArray(product.image) && product.image.length > 0 
-    ? `http://${product.image[0]}` // Include full URL
+    ? `${product.image[0]}` // Include full URL
     : 'https://placehold.co/250x250.png'; // Fallback image
 
   // Log the image source for debugging
