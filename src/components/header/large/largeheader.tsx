@@ -154,6 +154,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
         <div className={`hidden md:block ${isScrolled ? "fixed top-0 left-0 w-full border-b bg-white z-40" : ""}`}>
           <HeaderLink />
         </div>
+        <hr className="w-full border bg-slate-300"/>
       </div>
 
       {/* Mobile View */}

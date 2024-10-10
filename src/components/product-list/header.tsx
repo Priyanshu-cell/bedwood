@@ -19,7 +19,7 @@ const sortOptions = [
   { value: '-1', label: 'Price (High to Low)' }
 ];
 const layoutOptionsMobile = ['1x1', '2x2']; // Updated for mobile
-const layoutOptionsDesktop = [ '4x4', '5x5']; // Desktop layouts
+const layoutOptionsDesktop = ['3x3', '4x4']; // Desktop layouts
 
 export const Header: React.FC<HeaderProps> = ({
   selectedCategory,
@@ -32,7 +32,6 @@ export const Header: React.FC<HeaderProps> = ({
   const { refetch } = useProducts(selectedSortOption); // Initial call without categoryId
   const [refetchdata, setrefetchdata] = useRecoilState(refetchProductData);
   const setSelectedCategory = useSetRecoilState(selectedCategoryState);
-
 
   const handleCategoryChange = (category: string) => {
     const params = new URLSearchParams(window.location.search);
@@ -76,7 +75,7 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Filter Selection */}
-          <div className=" md:flex space-x-4">
+          <div className="md:flex space-x-4">
             {categories.map((category) => (
               <button
                 key={category}
@@ -90,7 +89,6 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Mobile View */}
           <div className="md:hidden flex-row space-y-2">
-           
             <select
               value={selectedSortOption}
               onChange={(e) => onSortChange(e.target.value)}

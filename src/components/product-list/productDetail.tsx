@@ -195,7 +195,7 @@ Address: ${data.address}
           </div>
         </div>
 
-        <div className="w-full md:w-1/2 px-4 md:m-0 m-6 flex flex-col justify-center"> {/* Align text to the right */}
+        <div className="w-full md:w-1/2 px-4 md:m-0 m-6  flex flex-col justify-center"> {/* Align text to the right */}
           <h2 className="md:text-4xl text-2xl font-bold mb-2">{product.name}</h2>
           <p className="text-gray-600 mb-4">{product.category}</p>
           <div className="mb-4">

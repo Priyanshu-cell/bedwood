@@ -77,17 +77,19 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
   };
 
   return (
-    <nav className={`md:p-4 flex flex-col md:flex-row md:justify-center md:items-center text-md font-medium w-full max-w-7xl mx-auto ${className}`}>
+    <nav
+      className={`md:p-4 flex flex-col md:flex-row md:justify-center md:items-center text-md font-medium w-full max-w-7xl mx-auto ${className}`}
+    >
       {linkData.map((link, index) => (
         <div
           key={index}
-          className="relative flex flex-col md:flex-row md:items-center md:pl-0 pl-4 pt-4 pb-2 md:py-0 md:px-12 text-gray-700 bg-inherit md:hover:bg-inherit hover:bg-gray-100 hover:text-gray-900 whitespace-nowrap md:space-x-4 md:border-0 border-b border-gray-300 transition-all duration-300 ease-in-out"
-          onMouseEnter={() => !isMobile && setActiveMenu(index)}
-          onMouseLeave={() => !isMobile && setActiveMenu(null)}
+          className="relative flex flex-col md:flex-row md:items-center md:pl-0 pt-4 pb-2 md:py-0 md:px-12 text-gray-700 bg-inherit md:hover:bg-inherit hover:bg-gray-100 hover:text-gray-900 whitespace-nowrap md:space-x-4 md:border-0 border-b border-gray-300 transition-all duration-300 ease-in-out"
+          onMouseEnter={() => !isMobile && setActiveMenu(index)} // Open submenu on hover for desktop
+          onMouseLeave={() => !isMobile && activeMenu === index && setActiveMenu(null)} // Close submenu when cursor leaves if it's not active
         >
           <div
-            onClick={() => isMobile && handleMobileMenuClick(index)}
-            className="flex justify-between items-center w-full cursor-pointer px-2"
+            onClick={() => isMobile && handleMobileMenuClick(index)} // Open on click for mobile
+            className="flex justify-between items-center w-full cursor-pointer pl-4"
           >
             <div className="flex flex-row items-center">
               {/* Display the category image */}
@@ -97,7 +99,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
                 alt={`${link.name} logo`}
               />
               <p
-                className="block text-left px-2 md:px-0 md:hover:underline md:hover:underline-offset-8"
+                className="block text-left px-2 md:px-0 "
                 onClick={() => handleCategoryClick(link._id)} // Category click handler
               >
                 {link.name}
@@ -118,18 +120,17 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
             )}
           </div>
 
-          {/* Dropdown for Desktop View */}
-          {link.children && !isMobile && (
+           {/* Dropdown for Desktop View */}
+           {link.children && activeMenu === index && ( // Only show if activeMenu matches
             <div
-              className={`absolute z-50 top-5 left-0 w-48 bg-white shadow-lg border border-gray-300 rounded-md scale-95 transform transition-transform duration-300 ease-in-out ${
-                activeMenu === index ? "block" : "hidden"
-              }`}
+              className={`absolute z-50 left-0 w-auto  bg-slate-50 shadow-lg  overflow-hidden transition-all duration-300 ease-in-out`}
+              style={{ top: '165%', maxHeight: '300px', overflowY: 'auto', width: '200%' }}
             >
               {link.children.map((subLink, subIndex) => (
                 <Link
                   key={subIndex}
                   href={`/productlist?categoryId=${link._id}&subcategoryId=${subLink._id}`} // Directly link to subcategory
-                  className="block px-4 py-2 text-gray-700 hover:bg-gray-200 transition-colors duration-200 ease-in-out"
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 transition-colors duration-200 ease-in-out"
                   onClick={() => setSideBarOpen(false)} // Close sidebar on click
                 >
                   {subLink.name}
@@ -146,7 +147,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
                   key={subIndex}
                   href={`/productlist?categoryId=${link._id}&subcategoryId=${subLink._id}`} // Directly link to subcategory
                   onClick={() => setSideBarOpen(false)} // Close sidebar on click
-                  className="block px-2 text-sm py-2 text-gray-700 hover:bg-gray-200 transition-colors duration-200 ease-in-out"
+                  className="block pl-14 px-2 text-sm py-2 text-gray-700 hover:bg-gray-200 transition-colors duration-200 ease-in-out"
                 >
                   {subLink.name}
                 </Link>

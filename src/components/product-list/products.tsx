@@ -132,30 +132,61 @@ export const ProductsPage: React.FC = () => {
         />
 
         {/* Product Grid Layout */}
-        <div
-          className={`grid gap-6 my-10 px-4 lg:px-8 
-  ${
-    selectedLayout === "2x2"
-      ? "grid-cols-2 sm:grid-cols-2 lg:grid-cols-3"
-      : selectedLayout === "1x1"
-      ? "grid-cols-1" // Mobile default for 1x1
-      : // 2x2 for mobile, 3 columns for large screens
-      selectedLayout === "4x4"
-      ? "grid-cols-4 lg:grid-cols-4"
-      : selectedLayout === "5x5"
-      ? "grid-cols-5 lg:grid-cols-5"
-      : "grid-cols-1" // Fallback to 1x1 if no layout is selected
-  }`}
-        >
-          {/* Render Product Cards */}
-          {products.map((product: TProduct) => (
-            <ProductCard
-              key={product._id}
-              product={product}
-              onAddToCart={handleAddToCart}
-            />
-          ))}
-        </div>
+        <div className="py-10 px-2 lg:px-8 mx-auto">
+  {/* Mobile: Default to 2x2 */}
+  <div
+    className={`grid gap-4 transition-transform duration-200 ease-in-out ${
+      selectedLayout === "1x1" 
+        ? "grid-cols-1" 
+        : selectedLayout === "2x2" 
+        ? "grid-cols-2" 
+        : "grid-cols-2" // Default to 2x2 for mobile
+    } md:hidden`} // Hide on desktop
+  >
+    {isLoading ? (
+      <p>Loading products...</p>
+    ) : isError ? (
+      <p>Failed to load products.</p>
+    ) : products.length > 0 ? (
+      products.map((product) => (
+        <ProductCard
+          key={product.id}
+          product={product}
+          onAddToCart={handleAddToCart}
+        />
+      ))
+    ) : (
+      <p>No products found.</p>
+    )}
+  </div>
+
+  {/* Desktop: Default to 3x3 */}
+  <div
+    className={`hidden md:grid gap-4 transition-transform duration-200 ease-in-out ${
+      selectedLayout === "3x3" 
+        ? "md:grid-cols-3" 
+        : selectedLayout === "4x4" 
+        ? "md:grid-cols-4" 
+        : "md:grid-cols-3" // Default to 3x3 for desktop
+    }`}
+  >
+    {isLoading ? (
+      <p>Loading products...</p>
+    ) : isError ? (
+      <p>Failed to load products.</p>
+    ) : products.length > 0 ? (
+      products.map((product) => (
+        <ProductCard
+          key={product.id}
+          product={product}
+          onAddToCart={handleAddToCart}
+        />
+      ))
+    ) : (
+      <p>No products found.</p>
+    )}
+  </div>
+</div>
 
         {/* Cart Button */}
         <div className="fixed md:bottom-8 md:right-8 bottom-12 right-4">

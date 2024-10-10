@@ -25,15 +25,15 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
   console.log('Product:', product);
 
   return (
-    <div className="bg-inherit relative group p-4 border rounded-lg shadow-lg transition-transform duration-200 hover:scale-105">
+    <div className="bg-inherit relative group p-4 border h-[300px] md:h-full rounded-lg shadow-lg transition-transform duration-200 hover:scale-105">
       {/* Image Link */}
       <Link href={`/product/${product._id}`} className="block">
         {/* Image Container */}
-        <div className="w-full h-[250px] overflow-hidden relative cursor-pointer">
+        <div className="w-full md:h-[250px] h-[80px] overflow-hidden relative cursor-pointer">
           <img
             src={productImage} // Use the full URL here
             alt={product.name}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+            className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-110"
             onError={(e) => {
               // If the image fails to load, use the placeholder
               e.currentTarget.src = 'https://placehold.co/250x250.png';
@@ -45,8 +45,8 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
       {/* Text Content */}
       <div className="relative mt-4">
         <h3 className="text-lg font-extrabold text-gray-800 mb-1">{product.name}</h3>
-        <p className="text-gray-600 text-sm mb-1">{product.descriptions}</p>
-        <h4 className="text-lg text-gray-800 font-bold mb-2">₹{product.price}</h4>
+        <p className="text-gray-600 text-sm mb-1 line-clamp-2">{product.descriptions}</p>
+        <h4 className="text-sm text-gray-800 font-bold mb-2">₹{product.price}</h4>
         
 
         {/* Quantity Selector */}
