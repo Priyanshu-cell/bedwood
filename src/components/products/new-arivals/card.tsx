@@ -8,7 +8,8 @@ interface NewArrivalsCardProps {
 
 export const NewArrivalsCard: React.FC<NewArrivalsCardProps> = ({ image, title, paragraph }) => {
   return (
-    <div className="bg-white shadow-lg overflow-hidden flex flex-col min-w-[150px] max-w-xs md:min-w-[300px] md:max-w-md lg:min-w-[350px] lg:max-w-lg relative">
+   <div className='z-50'>
+     <div className="bg-white shadow-lg overflow-hidden flex flex-col min-w-[150px] max-w-xs md:min-w-[300px] md:max-w-md lg:min-w-[350px] lg:max-w-lg relative ">
       {/* Image */}
       <img src={image} alt={title} className="w-full object-cover" />
 
@@ -22,5 +23,6 @@ export const NewArrivalsCard: React.FC<NewArrivalsCardProps> = ({ image, title, 
         <p className="text-gray-600 text-xs">{paragraph}</p>
       </div>
     </div>
+   </div>
   );
 };

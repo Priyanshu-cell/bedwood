@@ -65,7 +65,7 @@ export const PopUpForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             </svg>
           </button>
 
-          <h2 className="text-lg font-bold mb-4 text-center">Welcome To Bedwood Furnitures</h2>
+          <h2 className="text-lg text-orange-400 font-bold mb-4 text-center">Welcome To Bedwood Furnitures</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center"> 
             {/* Stack labels and inputs in a column */}
             <div className="w-full mb-2">
@@ -115,7 +115,7 @@ export const PopUpForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
             {/* Submit button aligned to the left */}
             <div className=" w-full flex justify-start"> {/* Align left */}
-              <button type="submit" className="bg-blue-500 text-sm text-white rounded px-4 py-2">Submit</button>
+              <button type="submit" className="bg-orange-500 text-sm text-white rounded px-4 py-2">Submit</button>
             </div>
           </form>
         </div>

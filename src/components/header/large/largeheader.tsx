@@ -9,10 +9,13 @@ import { RiMapPinLine } from "react-icons/ri";
 import { IoMdHelpCircle } from "react-icons/io";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { cartItemsCountState } from "@/src/state/atoms/countCartState";
-import AssociateForm from "@/src/form/assiociate";
+
 import { searchState } from "@/src/state/atoms/searchState";
 import { getProductsList } from "@/src/services/product";
 import { TProduct } from "@/src/services/product/product.type";
+import AssociateForm from "@/src/form/assiociate";
+import { TrackForm } from "@/src/form/trackform";
+import { ImTruck } from "react-icons/im";
 
 interface LargeHeaderProps {
   isScrolled: boolean;
@@ -28,34 +31,35 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
   const cartItemCount = useRecoilValue(cartItemsCountState);
   const setSearchQuery = useSetRecoilState(searchState);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [isTrackFormOpen, setIsTrackFormOpen] = useState(false); // State for Track Form
   const [searchValue, setSearchValue] = useState("");
   const [suggestions, setSuggestions] = useState<TProduct[]>([]);
-  const [noResults, setNoResults] = useState(false); // State for no results
-  const whatsappNumber = "+91 96751 11719"; // Define your WhatsApp number
+  const [noResults, setNoResults] = useState(false);
+  const whatsappNumber = "+91 96751 11719";
 
-  // Manage body scroll when sidebar or form is open
+  // Manage body scroll when sidebar or forms are open
   useEffect(() => {
     document.body.style.overflow =
-      isSidebarOpen || isFormOpen ? "hidden" : "auto";
+      isSidebarOpen || isFormOpen || isTrackFormOpen ? "hidden" : "auto";
     return () => {
       document.body.style.overflow = "auto";
     };
-  }, [isSidebarOpen, isFormOpen]);
+  }, [isSidebarOpen, isFormOpen, isTrackFormOpen]);
 
   // Fetch product suggestions based on the search input
   useEffect(() => {
     const fetchSuggestions = async () => {
       if (searchValue) {
-        const products = await getProductsList(); // Fetch all products or add filtering here
+        const products = await getProductsList(); 
         const filteredSuggestions = products.data.filter((product) =>
           product.name.toLowerCase().includes(searchValue.toLowerCase())
         );
 
         setSuggestions(filteredSuggestions);
-        setNoResults(filteredSuggestions.length === 0); // Set no results state
+        setNoResults(filteredSuggestions.length === 0);
       } else {
         setSuggestions([]);
-        setNoResults(false); // Reset no results state
+        setNoResults(false);
       }
     };
 
@@ -63,14 +67,11 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
   }, [searchValue]);
 
   const handleSearch = () => {
-    setSearchQuery(searchValue); // Set the search query in state
-    setSearchValue(""); // Clear search input after search
-    setSuggestions([]); // Clear suggestions after search
-    // Navigate to the product list page with the search query
+    setSearchQuery(searchValue);
+    setSearchValue("");
+    setSuggestions([]);
     if (searchValue) {
-      window.location.href = `/productlist?query=${encodeURIComponent(
-        searchValue
-      )}`;
+      window.location.href = `/productlist?query=${encodeURIComponent(searchValue)}`;
     }
   };
 
@@ -86,13 +87,13 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
 
           {/* Search Bar and Cart & Agent Button */}
           <div className="flex items-center space-x-4 ml-4">
-            <div className="relative flex-grow w-64 ">
+            <div className="relative flex-grow w-64">
               <input
                 type="text"
                 placeholder="Search..."
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
-                className="p-1 border border-gray-300  bg-white rounded-md w-full"
+                className="p-1 border border-gray-300 bg-white rounded-md w-full"
               />
               <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-2">
                 {searchValue && (
@@ -112,13 +113,10 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
                     <div
                       key={suggestion._id}
                       onClick={() => {
-                        setSearchValue(""); // Clear the search value
-                        setSuggestions([]); // Clear suggestions after selection
-                        // Navigate to the product list page with the search query
-                        window.location.href = `/productlist?query=${encodeURIComponent(
-                          suggestion.name
-                        )}`;
-                      }} // Navigate on click
+                        setSearchValue("");
+                        setSuggestions([]);
+                        window.location.href = `/productlist?query=${encodeURIComponent(suggestion.name)}`;
+                      }}
                     >
                       <div className="p-2 hover:bg-gray-200 cursor-pointer">
                         {suggestion.name}
@@ -156,9 +154,8 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
 
         {/* Sticky Links Header */}
         <div
-          className={`hidden md:block ${
-            isScrolled ? "fixed top-0 left-0 w-full border-b bg-white z-40" : ""
-          }`}
+          className={`hidden md:block ${isScrolled ? "fixed top-0 left-0 w-full border-b bg-white z-40" : ""
+            }`}
         >
           <HeaderLink />
         </div>
@@ -233,13 +230,10 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
                   <div
                     key={suggestion._id}
                     onClick={() => {
-                      setSearchValue(""); // Clear the search value
-                      setSuggestions([]); // Clear suggestions after selection
-                      // Navigate to the product list page with the search query
-                      window.location.href = `/productlist?query=${encodeURIComponent(
-                        suggestion.name
-                      )}`;
-                    }} // Navigate on click
+                      setSearchValue("");
+                      setSuggestions([]);
+                      window.location.href = `/productlist?query=${encodeURIComponent(suggestion.name)}`;
+                    }}
                   >
                     <div className="p-2 hover:bg-gray-200 cursor-pointer">
                       {suggestion.name}
@@ -254,6 +248,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
             ) : null}
           </div>
         </div>
+
         {/* Sidebar */}
         <div
           className={`fixed inset-0 bg-orange-100 transform overflow-y-auto pb-10 scroll-smooth ${
@@ -279,6 +274,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
 
           {/* Sidebar Content */}
           <div className="flex flex-col font-semibold text-gray-700 text-sm mt-4 space-y-4 p-4">
+            {/* Company Associate Button */}
             <button
               className="px-4 flex items-center space-x-4"
               onClick={() => setIsFormOpen(true)}
@@ -287,11 +283,22 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
               <p>Company Associate</p>
             </button>
 
+            {/* Track Order Button */}
+            <button
+              className="px-4 flex items-center space-x-4"
+              onClick={() => setIsTrackFormOpen(true)} // Open Track Form on click
+            >
+              <ImTruck className="text-gray-600 text-lg" />
+              <p>Track Order</p>
+            </button>
+
+            {/* Contact Info */}
             <div className="px-4 flex items-center space-x-4">
               <MdMobileFriendly className="text-gray-600 text-lg" />
               <p>+91-8630715936</p>
             </div>
 
+            {/* Help Center */}
             <div className="px-4 flex items-center space-x-4">
               <IoMdHelpCircle className="text-gray-600 text-lg" />
               <a
@@ -309,6 +316,10 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
 
       {/* Associate Form */}
       {isFormOpen && <AssociateForm onClose={() => setIsFormOpen(false)} />}
+      {/* Track Form */}
+      {isTrackFormOpen && <TrackForm onClose={() => setIsTrackFormOpen(false)} />} {/* Add Track Form here */}
     </header>
   );
 };
+
+export default LargeHeader;

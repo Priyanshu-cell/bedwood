@@ -90,7 +90,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
       {linkData.map((link, index) => (
         <div
           key={index}
-          className="relative flex flex-col md:flex-row md:items-center md:pl-0 pt-4 pb-2 md:py-0 md:px-12 text-gray-700 hover:text-orange-500 bg-inherit md:hover:bg-inherit hover:bg-white whitespace-nowrap md:space-x-4 md:border-0 border-t border-gray-300 transition-all duration-300 ease-in-out"
+          className="relative flex flex-col text-sm md:flex-row md:items-center md:pl-0 pt-4 pb-2 md:py-0 md:px-8 text-gray-700 hover:text-orange-500 bg-inherit md:hover:bg-inherit hover:bg-white whitespace-nowrap md:space-x-4 md:border-0 border-t border-gray-300 transition-all duration-300 ease-in-out"
           onMouseEnter={() => !isMobile && setActiveMenu(index)} // Open submenu on hover for desktop
           onMouseLeave={() =>
             !isMobile && activeMenu === index && setActiveMenu(null)

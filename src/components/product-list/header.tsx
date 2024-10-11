@@ -4,6 +4,7 @@ import { useProducts } from '@/src/hooks/useProducts'; // Adjust the path as nec
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { refetchProductData } from '@/src/state/atoms/refetchdata';
 import { selectedCategoryState } from '@/src/state/atoms/filterstate';
+import Link from 'next/link';
 
 interface HeaderProps {
   selectedCategory: string;
@@ -52,7 +53,7 @@ export const Header: React.FC<HeaderProps> = ({
   };
 
   return (
-    <div className="sticky md:top-14 top-0 bg-orange-50 shadow-xs shadow-slate-100 z-30">
+    <div className="sticky md:top-12 top-0 bg-orange-50 shadow-xs shadow-slate-100 z-30">
       <div className="mx-auto max-w-8xl px-2 lg:px-8 py-4 flex flex-row justify-between items-center gap-4">
         
         {/* Left Section: Sort and Filter */}
@@ -132,7 +133,9 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
 
           {/* Catalog Download Button */}
-          <div className="group relative">
+          <Link
+          href="/catalog"
+           className="group relative">
             <button
               className="bg-white border md:w-10 md:h-10 h-7 w-7 flex justify-center items-center rounded-lg hover:text-orange-500 hover:translate-y-1 hover:duration-300"
             >
@@ -157,7 +160,7 @@ export const Header: React.FC<HeaderProps> = ({
             >
               Catalog
             </span>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

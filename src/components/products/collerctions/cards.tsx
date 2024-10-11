@@ -19,7 +19,7 @@ const collections = [
 
 export const CollectionsSection = () => {
   return (
-    <section className="w-full h-auto py-12 px-6 bg-gray-50">
+    <section className="w-full h-auto py-12 px-6 bg-gray-50 z-40">
       {/* Text Section */}
       <div className="text-start mb-8 ">
         <h2 className="md:text-2xl text-xl font-semibold mb-2">New Collections</h2>
