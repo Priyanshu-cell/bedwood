@@ -25,11 +25,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
   console.log('Product:', product);
 
   return (
-    <div className="bg-inherit relative group p-4 border h-[300px] md:h-full rounded-lg shadow-lg transition-transform duration-200 hover:scale-105">
+    <div className="bg-white relative group p-4 border h-[320px] md:h-full rounded-lg shadow-lg transition-transform duration-200 hover:scale-105">
       {/* Image Link */}
       <Link href={`/product/${product._id}`} className="block">
         {/* Image Container */}
-        <div className="w-full md:h-[250px] h-[80px] overflow-hidden relative cursor-pointer">
+        <div className="w-full md:h-[250px] h-[140px] overflow-hidden relative cursor-pointer">
           <img
             src={productImage} // Use the full URL here
             alt={product.name}
@@ -82,7 +82,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
           e.stopPropagation(); // Prevent the link from being triggered
           onAddToCart(product, quantity);
         }}
-        className="absolute bottom-4 right-4 bg-blue-600 text-white py-1 px-2 text-sm rounded-md hover:bg-blue-500 transition-colors duration-200"
+        className="absolute bottom-4 right-4 bg-orange-600 text-white py-1 px-2 text-sm rounded-md hover:bg-orange-500 transition-colors duration-200"
       >
         <ShoppingCartIcon className="h-4 w-4 inline-block mr-1" />
         Add

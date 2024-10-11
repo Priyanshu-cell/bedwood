@@ -66,7 +66,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         >
           &times;
         </button>
-        <h2 className="text-lg font-semibold mb-6 text-center text-indigo-600">
+        <h2 className="text-lg font-semibold mb-6 text-center text-orange-600">
           Become a Company Associate!
         </h2>
         <form onSubmit={handleSubmit(onSubmit)} className="text-sm space-y-4">
@@ -83,7 +83,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     id="firstName"
                     type="text"
                     {...field}
-                    className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                    className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-orange-300 focus:outline-none"
                   />
                 )}
               />
@@ -101,7 +101,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     id="lastName"
                     type="text"
                     {...field}
-                    className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                    className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-orange-300focus:outline-none"
                   />
                 )}
               />
@@ -122,7 +122,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     id="phone"
                     type="text"
                     {...field}
-                    className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                    className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-orange-300 focus:outline-none"
                   />
                 )}
               />
@@ -140,7 +140,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     id="email"
                     type="email"
                     {...field}
-                    className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                    className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-orange-300 focus:outline-none"
                   />
                 )}
               />
@@ -160,7 +160,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   id="qualification"
                   type="text"
                   {...field}
-                  className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                  className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-orange-300 focus:outline-none"
                 />
               )}
             />
@@ -180,7 +180,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     id="age"
                     type="number"
                     {...field}
-                    className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                    className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-ring-orange-300focus:outline-none"
                   />
                 )}
               />
@@ -198,7 +198,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                     id="occupation"
                     type="text"
                     {...field}
-                    className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                    className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-ring-orange-300 focus:outline-none"
                   />
                 )}
               />
@@ -218,7 +218,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   id="address"
                   type="text"
                   {...field}
-                  className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                  className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-orange-300 focus:outline-none"
                 />
               )}
             />
@@ -237,7 +237,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   id="country"
                   type="text"
                   {...field}
-                  className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-indigo-300 focus:outline-none"
+                  className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-orange-300 focus:outline-none"
                 />
               )}
             />
@@ -246,7 +246,7 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
           <button
             type="submit"
-            className="bg-indigo-600 text-white w-full p-2 rounded-md hover:bg-indigo-700 transition-colors"
+            className="bg-orange-400 text-white w-full p-2 rounded-md hover:bg-orange-600 transition-colors"
           >
             Submit
           </button>

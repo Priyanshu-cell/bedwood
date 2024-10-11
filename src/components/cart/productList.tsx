@@ -14,9 +14,9 @@ export const ProductList: React.FC<ProductListProps> = ({
   onUpdateQuantity,
 }) => {
   return (
-    <div className="bg-white shadow-md rounded-lg pb-6 px-4 h-full flex flex-col">
+    <div className="shadow-md rounded-lg pb-6 px-4 h-full flex flex-col">
       {/* Header */}
-      <div className="sticky bg-white z-10 border-b pb-2">
+      <div className="sticky  z-10 border-b pb-2">
         <h1 className="text-2xl font-semibold">Shopping Cart</h1>
       </div>
 

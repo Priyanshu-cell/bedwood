@@ -17,7 +17,7 @@ export const CartButton: React.FC<CartButtonProps> = ({ onClick, itemCount }) =>
   return (
     <button
       onClick={onClick}
-      className="relative bg-indigo-600 text-white md:p-4 p-2 rounded-full shadow-lg hover:bg-indigo-700 transition duration-300"
+      className="relative bg-orange-400 text-white md:p-4 p-2 rounded-full shadow-lg hover:bg-orange-500 transition duration-300"
     >
       <ShoppingCartIcon className="h-6 w-6" aria-hidden="true" />
       {isMounted && itemCount > 0 && (

@@ -32,11 +32,11 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({ cartItems, onCheckou
       <form>
         <div className="flex justify-between mt-6">
           <p className="text-lg font-medium">Total</p>
-          <p className="text-lg font-semibold text-indigo-600">${subtotal}</p>
+          <p className="text-lg font-semibold text-orange-600">${subtotal}</p>
         </div>
       </form>
 
-      <div className='bg-indigo-500 px-4 py-2 rounded-md mt-2 flex items-center justify-center w-fit '>
+      <div className='bg-orange-400 hover:bg-orange-600 text-black px-4 py-2 rounded-md mt-2 flex items-center justify-center w-fit '>
         <WhatsAppCheckout
           cartItems={cartItems}
           onCheckoutComplete={() => {

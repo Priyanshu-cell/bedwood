@@ -40,7 +40,7 @@ export default function ProductListPage() {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-10 right-1/2 transform translate-x-1/2 bg-indigo-500 text-white p-2 rounded-md shadow-lg hover:bg-indigo-700 transition-all duration-300"
+          className="fixed bottom-10 right-1/2 transform translate-x-1/2 bg-orange-400 text-white p-2 rounded-md shadow-lg hover:bg-indigo-700 transition-all duration-300"
           aria-label="Scroll to Top"
         >
           <ArrowUpIcon className="h-4 w-4" /> {/* Reduced the size of the icon */}

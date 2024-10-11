@@ -10,8 +10,8 @@ import { IoMdHelpCircle } from "react-icons/io";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { cartItemsCountState } from "@/src/state/atoms/countCartState";
 import AssociateForm from "@/src/form/assiociate";
-import { searchState } from "@/src/state/atoms/searchState"; 
-import { getProductsList } from "@/src/services/product"; 
+import { searchState } from "@/src/state/atoms/searchState";
+import { getProductsList } from "@/src/services/product";
 import { TProduct } from "@/src/services/product/product.type";
 
 interface LargeHeaderProps {
@@ -47,7 +47,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
     const fetchSuggestions = async () => {
       if (searchValue) {
         const products = await getProductsList(); // Fetch all products or add filtering here
-        const filteredSuggestions = products.data.filter(product =>
+        const filteredSuggestions = products.data.filter((product) =>
           product.name.toLowerCase().includes(searchValue.toLowerCase())
         );
 
@@ -68,7 +68,9 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
     setSuggestions([]); // Clear suggestions after search
     // Navigate to the product list page with the search query
     if (searchValue) {
-      window.location.href = `/productlist?query=${encodeURIComponent(searchValue)}`;
+      window.location.href = `/productlist?query=${encodeURIComponent(
+        searchValue
+      )}`;
     }
   };
 
@@ -90,18 +92,18 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
                 placeholder="Search..."
                 value={searchValue}
                 onChange={(e) => setSearchValue(e.target.value)}
-                className="p-1 border border-gray-300  bg-gray-50 rounded-md w-full"
+                className="p-1 border border-gray-300  bg-white rounded-md w-full"
               />
               <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-2">
                 {searchValue && (
-                  <FaTimes 
+                  <FaTimes
                     className="text-gray-600 text-lg cursor-pointer"
                     onClick={() => setSearchValue("")}
                   />
                 )}
-                <FaSearch 
-                  className="text-gray-600 text-xl cursor-pointer" 
-                  onClick={handleSearch} 
+                <FaSearch
+                  className="text-gray-600 text-xl cursor-pointer"
+                  onClick={handleSearch}
                 />
               </div>
               {suggestions.length > 0 ? (
@@ -113,7 +115,9 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
                         setSearchValue(""); // Clear the search value
                         setSuggestions([]); // Clear suggestions after selection
                         // Navigate to the product list page with the search query
-                        window.location.href = `/productlist?query=${encodeURIComponent(suggestion.name)}`;
+                        window.location.href = `/productlist?query=${encodeURIComponent(
+                          suggestion.name
+                        )}`;
                       }} // Navigate on click
                     >
                       <div className="p-2 hover:bg-gray-200 cursor-pointer">
@@ -151,10 +155,14 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
         </div>
 
         {/* Sticky Links Header */}
-        <div className={`hidden md:block ${isScrolled ? "fixed top-0 left-0 w-full border-b bg-white z-40" : ""}`}>
+        <div
+          className={`hidden md:block ${
+            isScrolled ? "fixed top-0 left-0 w-full border-b bg-white z-40" : ""
+          }`}
+        >
           <HeaderLink />
         </div>
-        <hr className="w-full border bg-slate-300"/>
+        <hr className="w-full border bg-slate-300" />
       </div>
 
       {/* Mobile View */}
@@ -209,14 +217,14 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
             />
             <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-2">
               {searchValue && (
-                <FaTimes 
+                <FaTimes
                   className="text-gray-600 text-lg cursor-pointer"
                   onClick={() => setSearchValue("")}
                 />
               )}
-              <FaSearch 
-                className="text-gray-600 text-xl cursor-pointer" 
-                onClick={handleSearch} 
+              <FaSearch
+                className="text-gray-600 text-xl cursor-pointer"
+                onClick={handleSearch}
               />
             </div>
             {suggestions.length > 0 ? (
@@ -228,7 +236,9 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
                       setSearchValue(""); // Clear the search value
                       setSuggestions([]); // Clear suggestions after selection
                       // Navigate to the product list page with the search query
-                      window.location.href = `/productlist?query=${encodeURIComponent(suggestion.name)}`;
+                      window.location.href = `/productlist?query=${encodeURIComponent(
+                        suggestion.name
+                      )}`;
                     }} // Navigate on click
                   >
                     <div className="p-2 hover:bg-gray-200 cursor-pointer">
@@ -245,63 +255,60 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
           </div>
         </div>
         {/* Sidebar */}
-    <div
-      className={`fixed inset-0 bg-gray-200 transform overflow-y-auto pb-10 scroll-smooth ${
-        isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-      } transition-transform duration-500 ease-in-out z-50`}
-    >
-      <div className="flex items-center justify-center py-2 bg-white">
-        {/* Arrow Icon for closing */}
-        <button
-          className="flex items-center absolute left-0 px-2"
-          onClick={() => setIsSidebarOpen(false)}
+        <div
+          className={`fixed inset-0 bg-orange-100 transform overflow-y-auto pb-10 scroll-smooth ${
+            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } transition-transform duration-500 ease-in-out z-50`}
         >
-          <HiOutlineArrowLeft className="text-gray-600 text-2xl" />
-        </button>
+          <div className="flex items-center justify-center py-2 bg-white">
+            {/* Arrow Icon for closing */}
+            <button
+              className="flex items-center absolute left-0 px-2"
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              <HiOutlineArrowLeft className="text-gray-600 text-2xl" />
+            </button>
 
-        {/* Logo */}
-        <Link href="/" className="flex flex-col items-center">
-          <img src="/logo.png" alt="Logo" className="h-12" />
-        </Link>
-      </div>
+            {/* Logo */}
+            <Link href="/" className="flex flex-col items-center">
+              <img src="/logo.png" alt="Logo" className="h-12" />
+            </Link>
+          </div>
 
-      <HeaderLink />
-      
-      {/* Sidebar Content */}
-      <div className="flex flex-col font-semibold text-gray-700 text-sm mt-4 space-y-4 p-4">
-        <button
-          className="px-4 flex items-center space-x-4"
-          onClick={() => setIsFormOpen(true)}
-        >
-          <FaUserTie className="text-gray-600 text-lg" />
-          <p>Company Associate</p>
-        </button>
+          <HeaderLink />
 
-        <div className="px-4 flex items-center space-x-4">
-          <MdMobileFriendly className="text-gray-600 text-lg" />
-          <p>+91-8630715936</p>
+          {/* Sidebar Content */}
+          <div className="flex flex-col font-semibold text-gray-700 text-sm mt-4 space-y-4 p-4">
+            <button
+              className="px-4 flex items-center space-x-4"
+              onClick={() => setIsFormOpen(true)}
+            >
+              <FaUserTie className="text-gray-600 text-lg" />
+              <p>Company Associate</p>
+            </button>
+
+            <div className="px-4 flex items-center space-x-4">
+              <MdMobileFriendly className="text-gray-600 text-lg" />
+              <p>+91-8630715936</p>
+            </div>
+
+            <div className="px-4 flex items-center space-x-4">
+              <IoMdHelpCircle className="text-gray-600 text-lg" />
+              <a
+                href={`https://wa.me/${whatsappNumber.replace(/\s+/g, "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-600"
+              >
+                <p>Help Center</p>
+              </a>
+            </div>
+          </div>
         </div>
-
-        <div className="px-4 flex items-center space-x-4">
-          <IoMdHelpCircle className="text-gray-600 text-lg" />
-          <a
-            href={`https://wa.me/${whatsappNumber.replace(/\s+/g, '')}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-600"
-          >
-            <p>Help Center</p>
-          </a>
-        </div>
       </div>
-    </div>
-  </div>
-   
 
       {/* Associate Form */}
-      {isFormOpen && (
-        <AssociateForm onClose={() => setIsFormOpen(false)} />
-      )}
+      {isFormOpen && <AssociateForm onClose={() => setIsFormOpen(false)} />}
     </header>
   );
 };

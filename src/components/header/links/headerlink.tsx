@@ -2,7 +2,10 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { getProductCategories } from "@/src/services/category";
-import { HeaderLinkProps, LinkData } from "@/src/services/category/category.type";
+import {
+  HeaderLinkProps,
+  LinkData,
+} from "@/src/services/category/category.type";
 import { selectedCategoryState } from "@/src/state/atoms/filterstate";
 import { useRecoilState } from "recoil";
 import { useSearchParams, useRouter } from "next/navigation"; // Import useRouter
@@ -11,10 +14,14 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
   className,
   setSideBarOpen,
 }) => {
-  const [selectedCategory, setSelectedCategory] = useRecoilState(selectedCategoryState);
+  const [selectedCategory, setSelectedCategory] = useRecoilState(
+    selectedCategoryState
+  );
   const [linkData, setLinkData] = useState<LinkData[]>([]);
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
-  const [openMobileSubMenu, setOpenMobileSubMenu] = useState<number | null>(null);
+  const [openMobileSubMenu, setOpenMobileSubMenu] = useState<number | null>(
+    null
+  );
   const searchParams = useSearchParams(); // Initialize useSearchParams
   const router = useRouter(); // Initialize useRouter
 
@@ -83,13 +90,15 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
       {linkData.map((link, index) => (
         <div
           key={index}
-          className="relative flex flex-col md:flex-row md:items-center md:pl-0 pt-4 pb-2 md:py-0 md:px-12 text-gray-700 bg-inherit md:hover:bg-inherit hover:bg-gray-100 hover:text-gray-900 whitespace-nowrap md:space-x-4 md:border-0 border-b border-gray-300 transition-all duration-300 ease-in-out"
+          className="relative flex flex-col md:flex-row md:items-center md:pl-0 pt-4 pb-2 md:py-0 md:px-12 text-gray-700 hover:text-orange-500 bg-inherit md:hover:bg-inherit hover:bg-white whitespace-nowrap md:space-x-4 md:border-0 border-t border-gray-300 transition-all duration-300 ease-in-out"
           onMouseEnter={() => !isMobile && setActiveMenu(index)} // Open submenu on hover for desktop
-          onMouseLeave={() => !isMobile && activeMenu === index && setActiveMenu(null)} // Close submenu when cursor leaves if it's not active
+          onMouseLeave={() =>
+            !isMobile && activeMenu === index && setActiveMenu(null)
+          } // Close submenu when cursor leaves if it's not active
         >
           <div
             onClick={() => isMobile && handleMobileMenuClick(index)} // Open on click for mobile
-            className="flex justify-between items-center w-full cursor-pointer pl-4"
+            className="flex justify-between items-center w-full cursor-pointer pl-4 "
           >
             <div className="flex flex-row items-center">
               {/* Display the category image */}
@@ -120,34 +129,43 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
             )}
           </div>
 
-           {/* Dropdown for Desktop View */}
-           {link.children && activeMenu === index && ( // Only show if activeMenu matches
-            <div
-              className={`absolute z-50 left-0 w-auto  bg-slate-50 shadow-lg  overflow-hidden transition-all duration-300 ease-in-out`}
-              style={{ top: '165%', maxHeight: '300px', overflowY: 'auto', width: '200%' }}
-            >
-              {link.children.map((subLink, subIndex) => (
-                <Link
-                  key={subIndex}
-                  href={`/productlist?categoryId=${link._id}&subcategoryId=${subLink._id}`} // Directly link to subcategory
-                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200 transition-colors duration-200 ease-in-out"
-                  onClick={() => setSideBarOpen(false)} // Close sidebar on click
-                >
-                  {subLink.name}
-                </Link>
-              ))}
-            </div>
-          )}
+          {/* Dropdown for Desktop View */}
+          {link.children &&
+            activeMenu === index && ( // Only show if activeMenu matches
+              <div
+                className={`absolute z-50 left-0 w-auto bg-white shadow-lg overflow-hidden transition-all duration-300 ease-in-out`}
+                style={{
+                  top: "100%",
+                  maxHeight: "300px",
+                  overflowY: "auto",
+                  width: "200%",
+                }} // Submenu container positioned right after parent
+              >
+                {link.children.map((subLink, subIndex) => (
+                  <Link
+                    key={subIndex}
+                    href={`/productlist?categoryId=${link._id}&subcategoryId=${subLink._id}`} // Directly link to subcategory
+                    className={`block px-3 py-2 text-sm text-gray-700 hover:text-orange-500 transition-colors duration-200 ease-in-out ${
+                      subIndex === 0 ? "pt-6 bg-transparent" : "" // Add 14px padding-top only to the first submenu item
+                    }`}
+                    onClick={() => setSideBarOpen(false)} // Close sidebar on click
+                  >
+                    {subLink.name}
+                  </Link>
+                ))}
+              </div>
+            )}
 
           {/* Dropdown for Mobile View */}
           {link.children && isMobile && openMobileSubMenu === index && (
-            <div className="w-full bg-inherit divide-y-2 mt-2 flex flex-col rounded-md transition-all duration-300 ease-in-out">
+            <div className="w-full bg-white divide-y-2 mt-2 flex flex-col rounded-md transition-all duration-300 ease-in-out">
+              <hr className="border border-slate-50 w-full"/>
               {link.children.map((subLink, subIndex) => (
                 <Link
                   key={subIndex}
                   href={`/productlist?categoryId=${link._id}&subcategoryId=${subLink._id}`} // Directly link to subcategory
                   onClick={() => setSideBarOpen(false)} // Close sidebar on click
-                  className="block pl-14 px-2 text-sm py-2 text-gray-700 hover:bg-gray-200 transition-colors duration-200 ease-in-out"
+                  className="block pl-14 px-2 text-sm py-2 text-gray-700 hover:bg-white transition-colors duration-200 ease-in-out"
                 >
                   {subLink.name}
                 </Link>

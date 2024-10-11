@@ -65,13 +65,7 @@ export const TopPicksSection = () => {
       title: "Home Furnishing Online",
       name: "Home Furnishing",
     },
-    {
-      id: 10,
-      src: "https://images.unsplash.com/photo-1614254542478-3456749eb70b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwxMTc3M3wwfDF8c2VhcmNofDF8fGZ1cm5pdHVyZSUyMHNhbGV8ZW58MHx8fHwxNjI5NzY3MzEy&ixlib=rb-1.2.1&q=80&w=400",
-      alt: "Furniture Sale Online",
-      title: "Wooden Online Sale",
-      name: "Sale",
-    },
+    
   ];
 
   return (

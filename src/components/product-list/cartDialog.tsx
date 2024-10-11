@@ -165,7 +165,7 @@ export const CartDialog: React.FC<CartDialogProps> = ({
                       ${calculateSubtotal()}
                     </p>
                   </div>
-                  <div className="w-fit bg-blue-500 text-white py-2 px-6 m-4 rounded-md hover:bg-blue-600">
+                  <div className="w-fit bg-orange-400 text-white py-2 px-6 m-4 rounded-md hover:bg-orange-600">
                     {/* WhatsAppCheckout Component with onCheckoutComplete */}
                     <WhatsAppCheckout
                       cartItems={cartItems}
