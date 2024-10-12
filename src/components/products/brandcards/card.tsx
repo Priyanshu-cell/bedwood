@@ -4,11 +4,12 @@ interface CardProps {
   image: string;
   title: string;
   paragraph: string;
+  link: string; // Add link as a prop
 }
 
-export const Card: React.FC<CardProps> = ({ image, title, paragraph }) => {
+export const Card: React.FC<CardProps> = ({ image, title, paragraph, link }) => {
   return (
-    <div className="relative min-w-[270px] md:min-w-[370px] max-w-xs md:max-w-sm aspect-[3/2] bg-gray-200 overflow-hidden shadow-xs">
+    <a href={link} className="relative min-w-[270px] md:min-w-[370px] max-w-xs md:max-w-sm aspect-[3/2] bg-gray-200 overflow-hidden shadow-xs block">
       {/* Image */}
       <img src={image} alt={title} className="w-full h-full object-cover" />
 
@@ -17,6 +18,6 @@ export const Card: React.FC<CardProps> = ({ image, title, paragraph }) => {
         <h3 className="text-lg font-bold mb-2">{title}</h3>
         <p className="text-sm">{paragraph}</p>
       </div>
-    </div>
+    </a>
   );
 };

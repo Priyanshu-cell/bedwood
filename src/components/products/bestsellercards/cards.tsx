@@ -7,14 +7,14 @@ import { Navigation } from 'swiper/modules';
 import { Card } from '../index';
 
 const bestSellers = [
-  { image: '/bestsellerof/1.png', title: '', paragraph: '' },
-  { image: '/bestsellerof/2.png', title: '', paragraph: '' },
-  { image: '/bestsellerof/3.png', title: '', paragraph: '' },
-  { image: '/bestsellerof/4.png', title: '', paragraph: '' },
-  { image: '/bestsellerof/5.png', title: '', paragraph: '' },
-  { image: '/bestsellerof/6.png', title: '', paragraph: '' },
-  { image: '/bestsellerof/7.png', title: '', paragraph: '' },
-  { image: '/bestsellerof/8.png', title: '', paragraph: '' }
+  { image: '/bestsellerof/1.png', title: '', paragraph: '', link: '/productlist' },
+  { image: '/bestsellerof/2.png', title: '', paragraph: '', link: '/productlist' },
+  { image: '/bestsellerof/3.png', title: '', paragraph: '', link: '/productlist' },
+  { image: '/bestsellerof/4.png', title: '', paragraph: '', link: '/productlist' },
+  { image: '/bestsellerof/5.png', title: '', paragraph: '', link: '/productlist' },
+  { image: '/bestsellerof/6.png', title: '', paragraph: '', link: '/productlist' },
+  { image: '/bestsellerof/7.png', title: '', paragraph: '', link: '/productlist' },
+  { image: '/bestsellerof/8.png', title: '', paragraph: '', link: '/productlist' }
 ];
 
 export const BestSellerSection = () => {
@@ -45,6 +45,7 @@ export const BestSellerSection = () => {
               image={item.image}
               title={item.title}
               paragraph={item.paragraph}
+              link={item.link} // Pass the link prop to the Card component
             />
           </SwiperSlide>
         ))}

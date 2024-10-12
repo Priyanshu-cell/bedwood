@@ -1,12 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Link from "next/link";
 import { getProductCategories } from "@/src/services/category";
 import {
   HeaderLinkProps,
   LinkData,
 } from "@/src/services/category/category.type";
-import { selectedCategoryState } from "@/src/state/atoms/filterstate";
+import { selectedCategoryState, selectedSubCategoryState } from "@/src/state/atoms/filterstate"; // Import the new subcategory state
 import { useRecoilState } from "recoil";
 import { useSearchParams, useRouter } from "next/navigation"; // Import useRouter
 
@@ -17,11 +16,12 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
   const [selectedCategory, setSelectedCategory] = useRecoilState(
     selectedCategoryState
   );
+  const [selectedSubCategory, setSelectedSubCategory] = useRecoilState( // New subcategory state
+    selectedSubCategoryState
+  );
   const [linkData, setLinkData] = useState<LinkData[]>([]);
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
-  const [openMobileSubMenu, setOpenMobileSubMenu] = useState<number | null>(
-    null
-  );
+  const [openMobileSubMenu, setOpenMobileSubMenu] = useState<number | null>(null);
   const searchParams = useSearchParams(); // Initialize useSearchParams
   const router = useRouter(); // Initialize useRouter
 
@@ -43,7 +43,6 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
       try {
         const response = await getProductCategories();
         const data = await response;
-        console.log("Data", data);
         if (data.success) {
           const formattedData = data.data.map((item) => ({
             _id: item._id ?? "",
@@ -61,13 +60,17 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
     fetchData();
   }, []);
 
-  // Set the category from the search params on component mount
+  // Set the category and subcategory from the search params on component mount
   useEffect(() => {
     const categoryId = searchParams.get("categoryId"); // Extract categoryId from search parameters
+    const subCategoryId = searchParams.get("subcategoryId"); // Extract subcategoryId from search parameters
     if (categoryId) {
-      setSelectedCategory(categoryId); // Set Recoil state
+      setSelectedCategory(categoryId); // Set Recoil state for category
     }
-  }, [searchParams, setSelectedCategory]);
+    if (subCategoryId) {
+      setSelectedSubCategory(subCategoryId); // Set Recoil state for subcategory
+    }
+  }, [searchParams, setSelectedCategory, setSelectedSubCategory]);
 
   const handleMobileMenuClick = (index: number) => {
     setOpenMobileSubMenu(openMobileSubMenu === index ? null : index);
@@ -75,12 +78,27 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
 
   const handleCategoryClick = (categoryId: string) => {
     setSelectedCategory(categoryId);
+    setSelectedSubCategory(""); // Reset subcategory when category changes
     const params = new URLSearchParams(window.location.search);
     params.set("categoryId", categoryId); // Set the category ID in the search parameters
-    router.push(`/productlist?${params}`); // Use router.push for navigation
+    router.replace(`/productlist?${params}`); // Use router.push for navigation
     if (setSideBarOpen) {
       setSideBarOpen(false);
     }
+  };
+
+  const handleSubCategoryClick = (subCategoryId: string) => {
+    setSelectedCategory("");
+    setSelectedSubCategory(subCategoryId);
+    const params = new URLSearchParams(window.location.search);
+    console.log('LInks subcategory', subCategoryId)
+    params.set("subcategoryId", subCategoryId); 
+    router.push(`/productlist?${params}`); 
+    if (setSideBarOpen) {
+      setSideBarOpen(false);
+    }
+
+  
   };
 
   return (
@@ -130,45 +148,40 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
           </div>
 
           {/* Dropdown for Desktop View */}
-          {link.children &&
-            activeMenu === index && ( // Only show if activeMenu matches
-              <div
-                className={`absolute z-50 left-0 w-auto bg-white shadow-lg overflow-hidden transition-all duration-300 ease-in-out`}
-                style={{
-                  top: "100%",
-                  maxHeight: "300px",
-                  overflowY: "auto",
-                  width: "200%",
-                }} // Submenu container positioned right after parent
-              >
-                {link.children.map((subLink, subIndex) => (
-                  <Link
-                    key={subIndex}
-                    href={`/productlist?categoryId=${link._id}&subcategoryId=${subLink._id}`} // Directly link to subcategory
-                    className={`block px-3 py-2 text-sm text-gray-700 hover:text-orange-500 transition-colors duration-200 ease-in-out ${
-                      subIndex === 0 ? "pt-6 bg-transparent" : "" // Add 14px padding-top only to the first submenu item
-                    }`}
-                    onClick={() => setSideBarOpen(false)} // Close sidebar on click
-                  >
-                    {subLink.name}
-                  </Link>
-                ))}
-              </div>
-            )}
+          {link.children && activeMenu === index && ( // Only show if activeMenu matches
+            <div
+              className={`absolute z-50 left-0 w-auto bg-white shadow-lg overflow-hidden transition-all duration-300 ease-in-out`}
+              style={{
+                top: "100%",
+                maxHeight: "300px",
+                overflowY: "auto",
+                width: "200%",
+              }} // Submenu container positioned right after parent
+            >
+              {link.children.map((subLink, subIndex) => (
+                <p
+                  key={subIndex}
+                  className={`block px-3 py-2 text-sm text-gray-700 hover:text-orange-500 transition-colors duration-200 ease-in-out cursor-pointer`}
+                  onClick={() => handleSubCategoryClick(subLink._id)} // Handle subcategory click
+                >
+                  {subLink.name}
+                </p>
+              ))}
+            </div>
+          )}
 
           {/* Dropdown for Mobile View */}
           {link.children && isMobile && openMobileSubMenu === index && (
             <div className="w-full bg-white divide-y-2 mt-2 flex flex-col rounded-md transition-all duration-300 ease-in-out">
-              <hr className="border border-slate-50 w-full"/>
+              <hr className="border border-slate-50 w-full" />
               {link.children.map((subLink, subIndex) => (
-                <Link
+                <p
                   key={subIndex}
-                  href={`/productlist?categoryId=${link._id}&subcategoryId=${subLink._id}`} // Directly link to subcategory
-                  onClick={() => setSideBarOpen(false)} // Close sidebar on click
-                  className="block pl-14 px-2 text-sm py-2 text-gray-700 hover:bg-white transition-colors duration-200 ease-in-out"
+                  onClick={() => handleSubCategoryClick(subLink._id)} // Handle subcategory click
+                  className="block pl-14 px-2 text-sm py-2 text-gray-700 hover:bg-white transition-colors duration-200 ease-in-out cursor-pointer"
                 >
                   {subLink.name}
-                </Link>
+                </p>
               ))}
             </div>
           )}

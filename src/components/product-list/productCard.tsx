@@ -22,12 +22,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
     : 'https://placehold.co/250x250.png'; // Fallback image
 
   // Log the image source for debugging
-  console.log('Product:', product);
+  // console.log('Product:', product);
 
   return (
     <div className="bg-white relative group p-4 border h-[320px] md:h-full rounded-lg shadow-lg transition-transform duration-200 hover:scale-105">
       {/* Image Link */}
-      <Link href={`/product/${product._id}`} className="block">
+      <Link prefetch={true} href={`/product/${product._id}`} className="block">
         {/* Image Container */}
         <div className="w-full md:h-[250px] h-[140px] overflow-hidden relative cursor-pointer">
           <img
@@ -44,7 +44,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAddToCart }
 
       {/* Text Content */}
       <div className="relative mt-4">
-        <h3 className="text-lg font-extrabold text-gray-800 mb-1">{product.name}</h3>
+        <h3 className="text-lg font-extrabold text-gray-800 mb-1 line-clamp-1">{product.name}</h3>
         <p className="text-gray-600 text-sm mb-1 line-clamp-2">{product.descriptions}</p>
         <h4 className="text-sm text-gray-800 font-bold mb-2">₹{product.price}</h4>
         

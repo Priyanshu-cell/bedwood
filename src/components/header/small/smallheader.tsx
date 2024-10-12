@@ -5,6 +5,7 @@ import { IoMdHelpCircle } from "react-icons/io";
 import { MdMobileFriendly } from "react-icons/md";
 import { ImTruck } from "react-icons/im";
 import { TrackForm } from "@/src/form/trackform";
+import { FaTruckFast } from "react-icons/fa6";
 
 export const SmallHeader = () => {
   const whatsappNumber = "+91 96751 11719"; // Define your WhatsApp number
@@ -21,11 +22,18 @@ export const SmallHeader = () => {
   return (
     <header className="w-full h-auto p-4 md:px-44 bg-inherit flex flex-col md:flex-row md:items-center justify-between">
       {/* Location Section with Icon */}
-      <div className="flex flex-row items-center text-base text-gray-800">
-        {/* Location Marker Heroicon */}
-        <MapPinIcon className="h-5 w-5 text-gray-800 mr-2" />
-        <p className="font-semibold">Location - </p>
-        <p className="text-sm md:pl-1 font-medium">Kotdwar</p>
+      <div className="flex flex-row items-center text-base text-gray-800 md:space-x-2 md:divide-x-2 divide-gray-600" >
+        
+        <div className="flex flex-row items-center md:pl-1 ">
+          <MapPinIcon className="h-5 w-5 text-gray-800" /> 
+          <p className="text-sm md:pl-1 font-medium">Kotdwar</p>
+        </div>
+
+        <div className="flex flex-row items-center md:pl-1 text-orange-400">
+          <FaTruckFast className="h-5 w-5" />
+          <p className="text-sm md:pl-1 font-medium">Fast Delivery</p>
+        </div>
+
       </div>
 
       {/* Contact and Info Section */}

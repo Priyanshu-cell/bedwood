@@ -55,8 +55,7 @@ export const ModulersSection = () => {
             <Card 
               image={item.image}
               title={item.title}
-              paragraph={item.paragraph}
-            />
+              paragraph={item.paragraph} link={''}            />
           </SwiperSlide>
         ))}
       </Swiper>

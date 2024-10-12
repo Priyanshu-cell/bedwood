@@ -3,7 +3,7 @@ import { ProductResponse, TProduct } from "./product.type";
 
 const path = './product';
 
-export const getProductsList = async ( sortValue?: string, categoryId?: string, subcategoryId?: string): Promise<ProductResponse> => {
+export const getProductsList = async ( sortValue?: string, categoryId?: string, subCategoryId?: string): Promise<ProductResponse> => {
     const params = new URLSearchParams();
     if ( sortValue) {
       
@@ -12,13 +12,14 @@ export const getProductsList = async ( sortValue?: string, categoryId?: string, 
     if (categoryId){
         params.append('categoryId', categoryId);
     }
-    if (categoryId && subcategoryId) {
-        params.append('categoryId', categoryId);
-        params.append('subcategoryId', subcategoryId);
+    if (subCategoryId) {
+      
+        params.append('subCategoryId', subCategoryId);
+        
     }
     
    
-    return (await Api.get(path + "/list", { params })).data;
+    return (await Api.get(path + "/list?", { params })).data;
 };
 
 export const getProduct = async (id: string): Promise<TProduct | null> => {

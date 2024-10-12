@@ -1,5 +1,5 @@
 "use client";
-import React, { useActionState, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ProductCard } from "./productCard";
 import { Header } from "./header";
 import { CartDialog } from "./cartDialog";
@@ -14,15 +14,17 @@ import {
   getCartItems,
 } from "@/src/utils/cartUtils";
 import { useProducts } from "@/src/hooks/useProducts";
-import { selectedCategoryState } from "@/src/state/atoms/filterstate";
+import { selectedCategoryState, selectedSubCategoryState } from "@/src/state/atoms/filterstate"; // Import selectedSubCategoryState
 import { refetchProductData } from "@/src/state/atoms/refetchdata";
 
 export const ProductsPage: React.FC = () => {
   const [sortValue, setSortValue] = useState<string>("1"); // Default to low to high
   const categoryId = useRecoilValue(selectedCategoryState);
+  const SubCategoryId = useRecoilValue(selectedSubCategoryState); // Get selected subcategory
   const { data, isLoading, isError, refetch } = useProducts(
     sortValue,
-    categoryId
+    categoryId,
+    SubCategoryId // Pass subcategory to the hook
   );
   const refetchdata = useRecoilValue(refetchProductData);
 
@@ -41,20 +43,19 @@ export const ProductsPage: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useRecoilState(
     selectedCategoryState
   );
+  const [selectedSubCategory, setSelectedSubCategory] = useRecoilState(
+    selectedSubCategoryState
+  )
   const [selectedLayout, setSelectedLayout] = useState("2x2");
   const [openCart, setOpenCart] = useState(false);
-  const [cartItems, setCartItems] = useState<
-    { product: TProduct; quantity: number; variation?: string }[]
+  const [cartItems, setCartItems] = useState< 
+    { product: TProduct; quantity: number; variation?: string }[] 
   >([]);
   const [cartItemCount, setCartItemCount] = useRecoilState(cartItemsCountState);
 
-  // // Filter Products
-  //   const filteredProducts = selectedCategory === 'All'
-  //   ? products
-  //   : products.filter(product => product.categoryId === selectedCategory);
-  console.log("Products Category", products);
-  //  console.log('Filtered Products', filteredProducts)
+  // console.log("Products Category", products);
   console.log("Selected category", selectedCategory);
+  console.log("Selected Subcategory", selectedSubCategory);
 
   // Load cart items from localStorage on component mount
   useEffect(() => {
@@ -72,9 +73,14 @@ export const ProductsPage: React.FC = () => {
     setSelectedCategory(category);
   };
 
+  // Handle subcategory change
+  const handleSubSubCategoryChange = (Subcategory: string) => {
+    setSelectedSubCategory(Subcategory);
+  };
+
   // Handle sorting changes
   const handleSortChange = (sortOption: string) => {
-    setSortValue(sortOption); // Update this line to change sorting based on selected option
+    setSortValue(sortOption);
   };
 
   // Handle layout change
@@ -114,7 +120,7 @@ export const ProductsPage: React.FC = () => {
     localStorage.removeItem("cartItems");
   };
 
-  console.log("Products in list", products);
+  // console.log("Products in list", products);
 
   if (isLoading) return <div className="text-center">Loading products...</div>;
   if (isError)
@@ -133,60 +139,60 @@ export const ProductsPage: React.FC = () => {
 
         {/* Product Grid Layout */}
         <div className="py-10 px-2 lg:px-8 mx-auto">
-  {/* Mobile: Default to 2x2 */}
-  <div
-    className={`grid gap-4 transition-transform duration-200 ease-in-out ${
-      selectedLayout === "1x1" 
-        ? "grid-cols-1" 
-        : selectedLayout === "2x2" 
-        ? "grid-cols-2" 
-        : "grid-cols-2" // Default to 2x2 for mobile
-    } md:hidden`} // Hide on desktop
-  >
-    {isLoading ? (
-      <p>Loading products...</p>
-    ) : isError ? (
-      <p>Failed to load products.</p>
-    ) : products.length > 0 ? (
-      products.map((product) => (
-        <ProductCard
-          key={product.id}
-          product={product}
-          onAddToCart={handleAddToCart}
-        />
-      ))
-    ) : (
-      <p>No products found.</p>
-    )}
-  </div>
+          {/* Mobile: Default to 2x2 */}
+          <div
+            className={`grid gap-4 transition-transform duration-200 ease-in-out ${
+              selectedLayout === "1x1"
+                ? "grid-cols-1"
+                : selectedLayout === "2x2"
+                ? "grid-cols-2"
+                : "grid-cols-2" // Default to 2x2 for mobile
+            } md:hidden`} // Hide on desktop
+          >
+            {isLoading ? (
+              <p>Loading products...</p>
+            ) : isError ? (
+              <p>Failed to load products.</p>
+            ) : products.length > 0 ? (
+              products.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  onAddToCart={handleAddToCart}
+                />
+              ))
+            ) : (
+              <p>No products found.</p>
+            )}
+          </div>
 
-  {/* Desktop: Default to 3x3 */}
-  <div
-    className={`hidden md:grid gap-4 transition-transform duration-200 ease-in-out ${
-      selectedLayout === "3x3" 
-        ? "md:grid-cols-3" 
-        : selectedLayout === "4x4" 
-        ? "md:grid-cols-4" 
-        : "md:grid-cols-3" // Default to 3x3 for desktop
-    }`}
-  >
-    {isLoading ? (
-      <p>Loading products...</p>
-    ) : isError ? (
-      <p>Failed to load products.</p>
-    ) : products.length > 0 ? (
-      products.map((product) => (
-        <ProductCard
-          key={product.id}
-          product={product}
-          onAddToCart={handleAddToCart}
-        />
-      ))
-    ) : (
-      <p>No products found.</p>
-    )}
-  </div>
-</div>
+          {/* Desktop: Default to 3x3 */}
+          <div
+            className={`hidden md:grid gap-4 transition-transform duration-200 ease-in-out ${
+              selectedLayout === "3x3"
+                ? "md:grid-cols-3"
+                : selectedLayout === "4x4"
+                ? "md:grid-cols-4"
+                : "md:grid-cols-3" // Default to 3x3 for desktop
+            }`}
+          >
+            {isLoading ? (
+              <p>Loading products...</p>
+            ) : isError ? (
+              <p>Failed to load products.</p>
+            ) : products.length > 0 ? (
+              products.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  product={product}
+                  onAddToCart={handleAddToCart}
+                />
+              ))
+            ) : (
+              <p>No products found.</p>
+            )}
+          </div>
+        </div>
 
         {/* Cart Button */}
         <div className="fixed md:bottom-8 md:right-8 bottom-12 right-4">

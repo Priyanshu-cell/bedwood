@@ -4,11 +4,12 @@ interface CardProps {
   image: string;
   title: string;
   paragraph: string;
+  link: string; // Add link as a prop
 }
 
-export const Card: React.FC<CardProps> = ({ image, title, paragraph }) => {
+export const Card: React.FC<CardProps> = ({ image, title, paragraph, link }) => {
   return (
-    <div className="relative w-full max-w-lg overflow-hidden">
+    <a href={link} className="relative w-full max-w-lg overflow-hidden block">
       {/* Image Container */}
       <div className="aspect-[1.5/1] shadow-md">
         <img src={image} alt={title} className="w-full h-full object-cover" />
@@ -21,6 +22,6 @@ export const Card: React.FC<CardProps> = ({ image, title, paragraph }) => {
       <div className="py-1">
         <p className="text-base font-medium font-sans">{paragraph}</p>
       </div>
-    </div>
+    </a>
   );
 };

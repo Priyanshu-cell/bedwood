@@ -6,31 +6,37 @@ const cardData = [
     image: '/furniture/1.png',
     title: '',
     paragraph: '',
+    link: '/productlist', // Add the link here
   },
   {
     image: '/furniture/2.png',
     title: '',
     paragraph: '',
+    link: '/productlist',
   },
   {
     image: '/furniture/3.png',
     title: '',
     paragraph: '',
+    link: '/productlist',
   },
   {
     image: '/furniture/4.png',
     title: '',
     paragraph: '',
+    link: '/productlist',
   },
   {
     image: '/furniture/5.png',
     title: '',
     paragraph: '',
+    link: '/productlist',
   },
   {
     image: '/furniture/6.png',
     title: '',
     paragraph: '',
+    link: '/productlist',
   },
 ];
 
@@ -53,6 +59,7 @@ export const BrandSection = () => {
               image={card.image}
               title={card.title}
               paragraph={card.paragraph}
+              link={card.link} // Pass the link to the card
             />
           ))}
         </div>
@@ -65,6 +72,7 @@ export const BrandSection = () => {
               image={card.image}
               title={card.title}
               paragraph={card.paragraph}
+              link={card.link} // Pass the link to the card
             />
           ))}
         </div>

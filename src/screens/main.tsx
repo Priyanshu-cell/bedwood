@@ -15,6 +15,7 @@ import {
   ReviewSection,
   Footer,
   BedwoodFaq,
+  Banner,
   
 } from "@/src/components";
 import { PopUpForm } from '@/src/form/popform';
@@ -57,7 +58,7 @@ export const HomePage = () => {
       <TopPicksSection />
       <BrandSection />
       <BestSellerSection />
-      
+      <Banner/>
       <EssentialsSection />
       <CollectionsSection />
       
