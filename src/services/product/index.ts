@@ -24,7 +24,7 @@ export const getProductsList = async ( sortValue?: string, categoryId?: string, 
 
 export const getProduct = async (id: string): Promise<TProduct | null> => {
     try {
-      const response = await Api.get(`${path}/details`); // Fetch all products
+       const response = await Api.get(`${path}/details/` + id); // Fetch all products
       const productList: TProduct[] = response.data.data; // Extract product data array
       return productList.find(product => product._id === id) || null; // Find product by id
     } catch (error) {
