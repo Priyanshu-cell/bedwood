@@ -22,47 +22,33 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       if (searchValue) {
         const productsResponse = await getProductsList();
         const categoriesResponse = await getProductCategories();
-  
-        // Filter products
-        const filteredProducts = productsResponse.data.filter((product) =>
-          product.name.toLowerCase().includes(searchValue.toLowerCase())
-        );
-  
-        // Filter categories and subcategories
-        const filteredCategories: SubMenuItem[] = categoriesResponse.data.flatMap((category) => {
-          const categoryMatches = category.name.toLowerCase().includes(searchValue.toLowerCase());
+
+        // Filter only subcategories that match the search
+        const filteredSubCategories: SubMenuItem[] = categoriesResponse.data.flatMap((category) => {
           const subCategoryMatches = category.children?.filter((subCategory) =>
             subCategory.name.toLowerCase().includes(searchValue.toLowerCase())
           ) || [];
-  
-          const result: SubMenuItem[] = [];
-  
-          if (categoryMatches) {
-            result.push({
-              _id: category._id || "",
-              name: category.name
-            });
-          }
-  
-          subCategoryMatches.forEach((subCategory) => {
-            result.push({
-              _id: subCategory._id || "", // Ensure this is a string
-              name: subCategory.name
-            });
-          });
-  
-          return result;
+
+          return subCategoryMatches.map((subCategory) => ({
+            _id: subCategory._id || "",
+            name: subCategory.name,
+          }));
         });
-  
-        // Combine product and category suggestions
-        setSuggestions([...filteredProducts, ...filteredCategories]);
-        setNoResults(filteredProducts.length === 0 && filteredCategories.length === 0);
+
+        // Filter products based on the search value
+        const filteredProducts = productsResponse.data.filter((product) =>
+          product.name.toLowerCase().includes(searchValue.toLowerCase())
+        );
+
+        // Combine product suggestions and subcategories
+        setSuggestions([...filteredSubCategories, ...filteredProducts]);
+        setNoResults(filteredSubCategories.length === 0 && filteredProducts.length === 0);
       } else {
         setSuggestions([]);
         setNoResults(false);
       }
     };
-  
+
     fetchSuggestions();
   }, [searchValue]);
 
@@ -80,18 +66,19 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
     setSearchValue("");
     setSuggestions([]);
 
-    // Redirect based on whether the suggestion is a product or category
+    // Check if the suggestion is a product or a subcategory
     if ("categoryId" in suggestion) {
       // It's a product
       window.location.href = `/productlist?query=${encodeURIComponent(suggestion.name)}`;
     } else {
-      // It's a category or subcategory
-      window.location.href = `/productlist?category=${encodeURIComponent(suggestion.name)}`;
+      // It's a subcategory
+      const { _id } = suggestion;
+      window.location.href = `/productlist?subcategoryId=${encodeURIComponent(_id)}`;
     }
   };
 
   return (
-    <div className="relative flex-grow w-64 ">
+    <div className="relative flex-grow w-64">
       <input
         type="text"
         placeholder="Search..."

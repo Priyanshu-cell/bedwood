@@ -10,7 +10,7 @@ import {
   selectedSubCategoryState,
 } from "@/src/state/atoms/filterstate"; // Import the new subcategory state
 import { useRecoilState } from "recoil";
-import { useSearchParams, useRouter } from "next/navigation"; // Import useRouter
+import { useSearchParams } from "next/navigation"; // Import useSearchParams
 
 export const HeaderLink: React.FC<HeaderLinkProps> = ({
   className,
@@ -20,8 +20,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
     selectedCategoryState
   );
   const [selectedSubCategory, setSelectedSubCategory] = useRecoilState(
-    // New subcategory state
-    selectedSubCategoryState
+    selectedSubCategoryState // New subcategory state
   );
   const [linkData, setLinkData] = useState<LinkData[]>([]);
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
@@ -29,7 +28,6 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
     null
   );
   const searchParams = useSearchParams(); // Initialize useSearchParams
-  const router = useRouter(); // Initialize useRouter
 
   const useUserAgent = () => {
     const [userAgent, setUserAgent] = useState("");
@@ -87,19 +85,20 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
     setSelectedSubCategory(""); // Reset subcategory when category changes
     const params = new URLSearchParams(window.location.search);
     params.set("categoryId", categoryId); // Set the category ID in the search parameters
-    router.replace(`/productlist?${params}`); // Use router.push for navigation
+    params.delete("subcategoryId"); // Remove subcategory ID from search parameters
+    // Reload the page to refetch data
+    window.location.href = `/productlist?${params}`; 
     if (setSideBarOpen) {
       setSideBarOpen(false);
     }
   };
 
   const handleSubCategoryClick = (subCategoryId: string) => {
-    setSelectedCategory("");
     setSelectedSubCategory(subCategoryId);
     const params = new URLSearchParams(window.location.search);
-    console.log("LInks subcategory", subCategoryId);
-    params.set("subcategoryId", subCategoryId);
-    router.push(`/productlist?${params}`);
+    params.set("subcategoryId", subCategoryId); // Set the subcategory ID in the search parameters
+    // Reload the page to refetch data
+    window.location.href = `/productlist?${params}`; 
     if (setSideBarOpen) {
       setSideBarOpen(false);
     }
