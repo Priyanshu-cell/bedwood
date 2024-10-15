@@ -5,7 +5,10 @@ import {
   HeaderLinkProps,
   LinkData,
 } from "@/src/services/category/category.type";
-import { selectedCategoryState, selectedSubCategoryState } from "@/src/state/atoms/filterstate"; // Import the new subcategory state
+import {
+  selectedCategoryState,
+  selectedSubCategoryState,
+} from "@/src/state/atoms/filterstate"; // Import the new subcategory state
 import { useRecoilState } from "recoil";
 import { useSearchParams, useRouter } from "next/navigation"; // Import useRouter
 
@@ -16,12 +19,15 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
   const [selectedCategory, setSelectedCategory] = useRecoilState(
     selectedCategoryState
   );
-  const [selectedSubCategory, setSelectedSubCategory] = useRecoilState( // New subcategory state
+  const [selectedSubCategory, setSelectedSubCategory] = useRecoilState(
+    // New subcategory state
     selectedSubCategoryState
   );
   const [linkData, setLinkData] = useState<LinkData[]>([]);
   const [activeMenu, setActiveMenu] = useState<number | null>(null);
-  const [openMobileSubMenu, setOpenMobileSubMenu] = useState<number | null>(null);
+  const [openMobileSubMenu, setOpenMobileSubMenu] = useState<number | null>(
+    null
+  );
   const searchParams = useSearchParams(); // Initialize useSearchParams
   const router = useRouter(); // Initialize useRouter
 
@@ -91,14 +97,12 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
     setSelectedCategory("");
     setSelectedSubCategory(subCategoryId);
     const params = new URLSearchParams(window.location.search);
-    console.log('LInks subcategory', subCategoryId)
-    params.set("subcategoryId", subCategoryId); 
-    router.push(`/productlist?${params}`); 
+    console.log("LInks subcategory", subCategoryId);
+    params.set("subcategoryId", subCategoryId);
+    router.push(`/productlist?${params}`);
     if (setSideBarOpen) {
       setSideBarOpen(false);
     }
-
-  
   };
 
   return (
@@ -108,7 +112,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
       {linkData.map((link, index) => (
         <div
           key={index}
-          className="relative flex flex-col text-sm md:flex-row md:items-center md:pl-0 pt-4 pb-2 md:py-0 md:px-8 text-gray-700 hover:text-orange-500 bg-inherit md:hover:bg-inherit hover:bg-white whitespace-nowrap md:space-x-4 md:border-0 border-t border-gray-300 transition-all duration-300 ease-in-out"
+          className="relative flex flex-col text-sm md:flex-row md:items-center md:pl-0 pt-4 pb-2 md:py-0 lg:px-3 text-gray-700 hover:text-orange-500 bg-inherit md:hover:bg-inherit hover:bg-white whitespace-nowrap md:space-x-4 md:border-0 border-t border-gray-300 transition-all duration-300 ease-in-out"
           onMouseEnter={() => !isMobile && setActiveMenu(index)} // Open submenu on hover for desktop
           onMouseLeave={() =>
             !isMobile && activeMenu === index && setActiveMenu(null)
@@ -126,7 +130,7 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
                 alt={`${link.name} logo`}
               />
               <p
-                className="block text-left px-2 md:px-0 "
+                className="block text-left px-2 md:px-0 text-sm"
                 onClick={() => handleCategoryClick(link._id)} // Category click handler
               >
                 {link.name}
@@ -148,27 +152,28 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
           </div>
 
           {/* Dropdown for Desktop View */}
-          {link.children && activeMenu === index && ( // Only show if activeMenu matches
-            <div
-              className={`absolute z-50 left-0 w-auto bg-white shadow-lg overflow-hidden transition-all duration-300 ease-in-out`}
-              style={{
-                top: "100%",
-                maxHeight: "300px",
-                overflowY: "auto",
-                width: "200%",
-              }} // Submenu container positioned right after parent
-            >
-              {link.children.map((subLink, subIndex) => (
-                <p
-                  key={subIndex}
-                  className={`block px-3 py-2 text-sm text-gray-700 hover:text-orange-500 transition-colors duration-200 ease-in-out cursor-pointer`}
-                  onClick={() => handleSubCategoryClick(subLink._id)} // Handle subcategory click
-                >
-                  {subLink.name}
-                </p>
-              ))}
-            </div>
-          )}
+          {link.children &&
+            activeMenu === index && ( // Only show if activeMenu matches
+              <div
+                className={`absolute z-50 left-0 w-auto bg-white shadow-lg overflow-hidden transition-all duration-300 ease-in-out`}
+                style={{
+                  top: "100%",
+                  maxHeight: "300px",
+                  overflowY: "auto",
+                  width: "200%",
+                }} // Submenu container positioned right after parent
+              >
+                {link.children.map((subLink, subIndex) => (
+                  <p
+                    key={subIndex}
+                    className={`block px-3 py-2 text-sm text-gray-700 hover:text-orange-500 transition-colors duration-200 ease-in-out cursor-pointer`}
+                    onClick={() => handleSubCategoryClick(subLink._id)} // Handle subcategory click
+                  >
+                    {subLink.name}
+                  </p>
+                ))}
+              </div>
+            )}
 
           {/* Dropdown for Mobile View */}
           {link.children && isMobile && openMobileSubMenu === index && (
@@ -178,7 +183,11 @@ export const HeaderLink: React.FC<HeaderLinkProps> = ({
                 <p
                   key={subIndex}
                   onClick={() => handleSubCategoryClick(subLink._id)} // Handle subcategory click
-                  className="block pl-14 px-2 text-sm py-2 text-gray-700 hover:bg-white transition-colors duration-200 ease-in-out cursor-pointer"
+                  className={`block pl-14 px-2 text-sm py-2 transition-colors duration-200 ease-in-out cursor-pointer ${
+                    selectedSubCategory === subLink._id
+                      ? "text-orange-400"
+                      : "text-gray-700"
+                  } hover:bg-white`}
                 >
                   {subLink.name}
                 </p>

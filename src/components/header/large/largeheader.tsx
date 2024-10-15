@@ -16,6 +16,7 @@ import { TProduct } from "@/src/services/product/product.type";
 import AssociateForm from "@/src/form/assiociate";
 import { TrackForm } from "@/src/form/trackform";
 import { ImTruck } from "react-icons/im";
+import SearchBar from "./searchbar";
 
 interface LargeHeaderProps {
   isScrolled: boolean;
@@ -87,49 +88,9 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
 
           {/* Search Bar and Cart & Agent Button */}
           <div className="flex items-center space-x-4 ml-4">
-            <div className="relative flex-grow w-64">
-              <input
-                type="text"
-                placeholder="Search..."
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                className="p-1 border border-gray-300 bg-white rounded-md w-full"
-              />
-              <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-2">
-                {searchValue && (
-                  <FaTimes
-                    className="text-gray-600 text-lg cursor-pointer"
-                    onClick={() => setSearchValue("")}
-                  />
-                )}
-                <FaSearch
-                  className="text-gray-600 text-xl cursor-pointer"
-                  onClick={handleSearch}
-                />
-              </div>
-              {suggestions.length > 0 ? (
-                <div className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 max-h-60 overflow-auto z-50">
-                  {suggestions.map((suggestion) => (
-                    <div
-                      key={suggestion._id}
-                      onClick={() => {
-                        setSearchValue("");
-                        setSuggestions([]);
-                        window.location.href = `/productlist?query=${encodeURIComponent(suggestion.name)}`;
-                      }}
-                    >
-                      <div className="p-2 hover:bg-gray-200 cursor-pointer">
-                        {suggestion.name}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : noResults ? (
-                <div className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 max-h-60 overflow-auto z-50">
-                  <div className="p-2 text-gray-600">No results found</div>
-                </div>
-              ) : null}
-            </div>
+            <SearchBar onSearch={(query) => {
+              window.location.href = `/productlist?query=${encodeURIComponent(query)}`;
+            }} />
 
             {/* Cart Button */}
             <Link
@@ -203,51 +164,9 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
         </div>
 
         {/* Search Bar */}
-        <div className="w-full max-w-6xl mx-auto mt-4">
-          <div className="relative flex-grow w-full">
-            <input
-              type="text"
-              placeholder="Search..."
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              className="p-2 border border-gray-300 bg-white rounded-md w-full"
-            />
-            <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex space-x-2">
-              {searchValue && (
-                <FaTimes
-                  className="text-gray-600 text-lg cursor-pointer"
-                  onClick={() => setSearchValue("")}
-                />
-              )}
-              <FaSearch
-                className="text-gray-600 text-xl cursor-pointer"
-                onClick={handleSearch}
-              />
-            </div>
-            {suggestions.length > 0 ? (
-              <div className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 max-h-60 overflow-auto z-50">
-                {suggestions.map((suggestion) => (
-                  <div
-                    key={suggestion._id}
-                    onClick={() => {
-                      setSearchValue("");
-                      setSuggestions([]);
-                      window.location.href = `/productlist?query=${encodeURIComponent(suggestion.name)}`;
-                    }}
-                  >
-                    <div className="p-2 hover:bg-gray-200 cursor-pointer">
-                      {suggestion.name}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : noResults ? (
-              <div className="absolute left-0 right-0 bg-white border border-gray-300 mt-1 max-h-60 overflow-auto z-50">
-                <div className="p-2 text-gray-600">No results found</div>
-              </div>
-            ) : null}
-          </div>
-        </div>
+        <SearchBar onSearch={(query) => {
+          window.location.href = `/productlist?query=${encodeURIComponent(query)}`;
+        }} />
 
         {/* Sidebar */}
         <div

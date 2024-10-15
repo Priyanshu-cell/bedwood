@@ -1,38 +1,43 @@
-import React from 'react';
-import { useForm, Controller } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
-import { useRecoilState } from 'recoil';
-import { associateAtom } from '@/src/state';
-import { useMutation } from '@tanstack/react-query';
-import { TAssociate } from '@/src/services/assiociate/assiociate.type';
-import { associatePost } from '@/src/services/assiociate';
+import React from "react";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import { useRecoilState } from "recoil";
+import { associateAtom } from "@/src/state";
+import { useMutation } from "@tanstack/react-query";
+import { TAssociate } from "@/src/services/assiociate/assiociate.type";
+import { associatePost } from "@/src/services/assiociate";
+import { CountryDropdown } from "react-country-region-selector";
 
 // Yup schema for form validation
 const schema = yup.object().shape({
-  firstName: yup.string().required('First name is required'),
-  lastName: yup.string().required('Last name is required'),
+  firstName: yup.string().required("First name is required"),
+  lastName: yup.string().required("Last name is required"),
   phone: yup
     .string()
-    .matches(/^\d{10}$/, 'Must be exactly 10 digits')
-    .required('Phone number is required'),
+    .matches(/^\d{10}$/, "Must be exactly 10 digits")
+    .required("Phone number is required"),
   email: yup
     .string()
-    .email('Invalid email address')
-    .required('Email is required'),
-  qualification: yup.string().required('Qualification is required'),
+    .email("Invalid email address")
+    .required("Email is required"),
+  qualification: yup.string().required("Qualification is required"),
   age: yup
     .number()
-    .positive('Age must be a positive number')
-    .integer('Age must be an integer')
-    .required('Age is required'),
-  occupation: yup.string().required('Occupation is required'),
-  address: yup.string().required('Address is required'),
-  country: yup.string().required('Country is required'),
+    .positive("Age must be a positive number")
+    .integer("Age must be an integer")
+    .required("Age is required"),
+  occupation: yup.string().required("Occupation is required"),
+  address: yup.string().required("Address is required"),
+  country: yup.string().required("Country is required"),
 });
 
 const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
-  const { control, handleSubmit, formState: { errors } } = useForm<TAssociate>({
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TAssociate>({
     resolver: yupResolver(schema),
   });
 
@@ -42,11 +47,11 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const mutation = useMutation({
     mutationFn: associatePost,
     onSuccess: () => {
-      console.log('Form Data submitted successfully');
+      console.log("Form Data submitted successfully");
       onClose(); // Close the form upon success
     },
     onError: (error) => {
-      console.error('Error saving data:', error);
+      console.error("Error saving data:", error);
     },
   });
 
@@ -72,7 +77,10 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         <form onSubmit={handleSubmit(onSubmit)} className="text-sm space-y-4">
           <div className="flex gap-4">
             <div className="w-1/2">
-              <label htmlFor="firstName" className="block text-gray-700 mb-1 font-semibold">
+              <label
+                htmlFor="firstName"
+                className="block text-gray-700 mb-1 font-semibold"
+              >
                 First Name
               </label>
               <Controller
@@ -87,10 +95,15 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   />
                 )}
               />
-              <p className="text-red-500 text-xs">{errors.firstName?.message}</p>
+              <p className="text-red-500 text-xs">
+                {errors.firstName?.message}
+              </p>
             </div>
             <div className="w-1/2">
-              <label htmlFor="lastName" className="block text-gray-700 mb-1 font-semibold">
+              <label
+                htmlFor="lastName"
+                className="block text-gray-700 mb-1 font-semibold"
+              >
                 Last Name
               </label>
               <Controller
@@ -111,7 +124,10 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
 
           <div className="flex gap-4">
             <div className="w-1/2">
-              <label htmlFor="phone" className="block text-gray-700 mb-1 font-semibold">
+              <label
+                htmlFor="phone"
+                className="block text-gray-700 mb-1 font-semibold"
+              >
                 Phone Number
               </label>
               <Controller
@@ -129,7 +145,10 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               <p className="text-red-500 text-xs">{errors.phone?.message}</p>
             </div>
             <div className="w-1/2">
-              <label htmlFor="email" className="block text-gray-700 mb-1 font-semibold">
+              <label
+                htmlFor="email"
+                className="block text-gray-700 mb-1 font-semibold"
+              >
                 Email
               </label>
               <Controller
@@ -149,7 +168,10 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           </div>
 
           <div>
-            <label htmlFor="qualification" className="block text-gray-700 mb-1 font-semibold">
+            <label
+              htmlFor="qualification"
+              className="block text-gray-700 mb-1 font-semibold"
+            >
               Qualification
             </label>
             <Controller
@@ -164,12 +186,17 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                 />
               )}
             />
-            <p className="text-red-500 text-xs">{errors.qualification?.message}</p>
+            <p className="text-red-500 text-xs">
+              {errors.qualification?.message}
+            </p>
           </div>
 
           <div className="flex gap-4">
             <div className="w-1/2">
-              <label htmlFor="age" className="block text-gray-700 mb-1 font-semibold">
+              <label
+                htmlFor="age"
+                className="block text-gray-700 mb-1 font-semibold"
+              >
                 Age
               </label>
               <Controller
@@ -187,7 +214,10 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
               <p className="text-red-500 text-xs">{errors.age?.message}</p>
             </div>
             <div className="w-1/2">
-              <label htmlFor="occupation" className="block text-gray-700 mb-1 font-semibold">
+              <label
+                htmlFor="occupation"
+                className="block text-gray-700 mb-1 font-semibold"
+              >
                 Occupation
               </label>
               <Controller
@@ -202,12 +232,17 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
                   />
                 )}
               />
-              <p className="text-red-500 text-xs">{errors.occupation?.message}</p>
+              <p className="text-red-500 text-xs">
+                {errors.occupation?.message}
+              </p>
             </div>
           </div>
 
           <div>
-            <label htmlFor="address" className="block text-gray-700 mb-1 font-semibold">
+            <label
+              htmlFor="address"
+              className="block text-gray-700 mb-1 font-semibold"
+            >
               Address
             </label>
             <Controller
@@ -226,19 +261,23 @@ const AssociateForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
           </div>
 
           <div>
-            <label htmlFor="country" className="block text-gray-700 mb-1 font-semibold">
+            <label
+              htmlFor="country"
+              className="block text-gray-700 mb-1 font-semibold"
+            >
               Country
             </label>
             <Controller
               name="country"
               control={control}
               render={({ field }) => (
-                <input
-                  id="country"
-                  type="text"
-                  {...field}
-                  className="border-2 border-gray-300 rounded-md p-2 w-full focus:ring focus:ring-orange-300 focus:outline-none"
-                />
+                <div className="border-2 border-gray-300 rounded-md p-2 w-full focus-within:ring focus-within:ring-orange-300 focus-within:outline-none">
+                  <CountryDropdown
+                    id="country"
+                    value={field.value}
+                    onChange={(val) => field.onChange(val)}
+                  />
+                </div>
               )}
             />
             <p className="text-red-500 text-xs">{errors.country?.message}</p>

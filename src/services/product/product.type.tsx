@@ -16,5 +16,7 @@ export type  TProduct  = {
 
 
   export type ProductResponse = {
+    success: any;
+    message(message: any): unknown;
     data: TProduct[]; 
   }

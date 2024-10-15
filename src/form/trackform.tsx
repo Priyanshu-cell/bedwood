@@ -64,7 +64,7 @@ export const TrackForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
             </svg>
           </button>
 
-          <h2 className="text-lg text-orange-400 font-bold mb-4 text-center">Welcome To Bedwood Furnitures</h2>
+          <h2 className="text-lg text-orange-400 font-bold mb-4 text-center">Welcome To BedWood Furnishing</h2>
           <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center"> 
             {/* Name Input */}
             <div className="w-full mb-2">

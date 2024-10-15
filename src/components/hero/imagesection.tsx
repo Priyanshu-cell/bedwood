@@ -23,14 +23,14 @@ export const ImageSection = () => {
     <section className="w-full flex flex-col md:flex-row p-4">
       
       {/* Slider Image Section */}
-      <div className="w-full md:w-2/3">
+      <div className="w-full md:w-2/3 ">
         <Swiper
           modules={[Navigation, Pagination, Autoplay]}
           navigation
           pagination={{ clickable: true }}
           autoplay={{ delay: 3000, disableOnInteraction: false }}
           loop={true}
-          className="h-[175px] md:h-[480px]" // Adjust height for mobile and desktop
+          className="h-auto"
         >
           {images.map((image, index) => (
             <SwiperSlide key={index}>
@@ -38,7 +38,7 @@ export const ImageSection = () => {
                 <img 
                   src={image} 
                   alt={`Slide ${index}`} 
-                  className="w-full h-full object-cover" // Ensure it fills the container
+                  className="w-full h-full object-contain" // Ensure it fills the container
                 />
               </div>
             </SwiperSlide>
@@ -47,22 +47,22 @@ export const ImageSection = () => {
       </div>
 
       {/* Other Images Section */}
-      <div className="w-full md:w-1/3 flex-col hidden md:flex">
+      <div className="w-full md:w-1/3 flex-col hidden md:flex justify-center items-center">
         {/* First Image */}
-        <div className="w-full h-[240px]">
+        <div className="w-full h-auto">
           <img 
             src={sideImages[0]} 
             alt="Side Image 1" 
-            className="w-full h-full object-cover" 
+            className="w-full h-full object-contain" 
           />
         </div>
         
         {/* Second Image */}
-        <div className="w-full h-[240px]">
+        <div className="w-full h-auto">
           <img 
             src={sideImages[1]} 
             alt="Side Image 2" 
-            className="w-full h-full object-cover" 
+            className="w-full h-full object-contain" 
           />
         </div>
       </div>
