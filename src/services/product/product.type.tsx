@@ -19,4 +19,8 @@ export type  TProduct  = {
     success: any;
     message(message: any): unknown;
     data: TProduct[]; 
+    extra: {
+      total: number; // Total number of products
+      limit: number; // Items per page
+    };
   }

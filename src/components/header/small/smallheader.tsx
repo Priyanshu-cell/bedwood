@@ -22,12 +22,12 @@ export const SmallHeader = () => {
   return (
     <header className="w-full h-auto p-2 md:px-14 bg-inherit flex flex-col md:flex-row md:items-center justify-between">
       {/* Location Section with Icon */}
-      <div className="flex flex-col md:flex-row items-center text-base text-gray-800 md:space-x-2 md:divide-x-2 divide-gray-600 space-y-2 md:space-y-0">
+      <div className="flex flex-col md:flex-row items-center text-base text-orange-400 space-y-2 md:space-x-2 md:divide-x-2 divide-gray-600  md:space-y-0">
         <div className="flex flex-row items-center md:pl-1 ">
-          <MapPinIcon className="h-4 w-4 text-gray-800" />
-          <p className="text-xs md:pl-1 font-medium">Kotdwar, Uttrakhand</p>
+          {/* <MapPinIcon className="h-4 w-4 text-gray-800" /> */}
+          <p className="text-xs md:pl-1 font-medium">Door-To-Door Service</p>
         </div>
-
+ 
         <div className="flex flex-row items-center md:pl-1 text-orange-400">
           <FaTruckFast className="h-4 w-4" />
           <p className="text-xs md:pl-1 font-medium">Fast Delivery</p>

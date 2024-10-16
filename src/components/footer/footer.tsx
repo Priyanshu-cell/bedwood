@@ -3,7 +3,13 @@ import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaUserTie } from 'react-icons/fa';
+import { FaFacebook } from "react-icons/fa";
 import AssociateForm from '@/src/form/assiociate';
+import { AiFillInstagram } from "react-icons/ai";
+import { FaLinkedin } from "react-icons/fa";
+import { FaYoutube } from "react-icons/fa";
+import { FaInstagramSquare } from "react-icons/fa";
+import { FaSquareXTwitter } from "react-icons/fa6";
 
 export function Footer() {
   const [isFormOpen, setIsFormOpen] = useState(false); // State for form visibility
@@ -13,14 +19,35 @@ export function Footer() {
       <div className="w-full max-w-screen-xl mx-auto">
         {/* Flex container for desktop layout */}
         <div className="flex flex-col md:flex-row items-start justify-between">
-          
+
           {/* Logo and Company Associate button */}
-          <div className="flex flex-col items-center mb-4 md:mb-0 md:items-start">
+          <div className="flex flex-col  gap-y-2 items-start mb-4 md:mb-0 md:items-start">
             {/* Logo on the left */}
-            <Link href="" className="flex items-center space-x-3">
+            <Link href="" className="flex md:items-center space-x-3">
               <Image src="/logo.png" className="h-20" alt="Logo" width={300} height={400} />
             </Link>
-            
+
+            <div className='flex flex-row w-full items-start gap-2 ml-5 md:ml-5'>
+              <a href="https://www.facebook.com/profile.php?id=61565700196739&mibextid=ZbWKwL
+" target="_blank" rel="noreferrer" className="text-2xl text-blue-500 hover:text-blue-700">
+                <FaFacebook />
+              </a>
+              <a href="https://www.instagram.com/bedwood_furnishing_/profilecard/?igsh=MTdodjc0NGN2emxyYg==
+" target="_blank" rel="noreferrer" className="text-2xl text-red-500 hover:text-red-700">
+                <FaInstagramSquare />
+              </a>
+              <a href="https://www.linkedin.com/company/bedwood-furnishing/" target="_blank" rel="noreferrer" className="text-2xl text-blue-500 hover:text-blue-700">
+                <FaLinkedin />
+              </a>
+              <a href="https://x.com/BedwoodFurnish?t=U2xuHD4kyimLI-TsSpLe9A&s=09" target="_blank" rel="noreferrer" className="text-2xl">
+                <FaSquareXTwitter />
+              </a>
+              {/* <a href="https://www.youtube.com/bedwoodfurnishing" target="_blank" rel="noreferrer" className="text-2xl text-red-500 hover:text-red-700">
+                <FaYoutube />
+              </a> */}
+
+            </div>
+
             {/* Company Associate form */}
             <div className='flex flex-col items-start space-y-2 ml-5'>
               <p className="text-xl font-sans text-balance">Become a Company Associate and join our journey to success!</p>

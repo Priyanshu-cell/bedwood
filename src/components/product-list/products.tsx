@@ -14,117 +14,101 @@ import {
   getCartItems,
 } from "@/src/utils/cartUtils";
 import { useProducts } from "@/src/hooks/useProducts";
-import { selectedCategoryState, selectedSubCategoryState } from "@/src/state/atoms/filterstate"; // Import selectedSubCategoryState
+import { selectedCategoryState, selectedSubCategoryState } from "@/src/state/atoms/filterstate";
 import { refetchProductData } from "@/src/state/atoms/refetchdata";
+import { ImSpinner2 } from "react-icons/im";
 
 export const ProductsPage: React.FC = () => {
-  const [sortValue, setSortValue] = useState<string>("1"); // Default to low to high
+  const [sortValue, setSortValue] = useState<string>("1");
   const categoryId = useRecoilValue(selectedCategoryState);
-  const SubCategoryId = useRecoilValue(selectedSubCategoryState); // Get selected subcategory
+  const SubCategoryId = useRecoilValue(selectedSubCategoryState);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage] = useState(12); // You can adjust this value as needed
   const { data, isLoading, isError, refetch } = useProducts(
     sortValue,
     categoryId,
-    SubCategoryId // Pass subcategory to the hook
+    SubCategoryId,
+    currentPage,
+
   );
   const refetchdata = useRecoilValue(refetchProductData);
 
-  if (refetchdata) {
-    refetch();
-    console.log("Refetch Data", refetchdata);
-  }
-
   useEffect(() => {
     refetch();
-  }, [refetchdata]);
+  }, [refetchdata, currentPage, itemsPerPage]);
 
-  // Extract products from response data
   const products = data?.data || [];
+  const totalItems = data?.extra?.total || 0;
+  const totalPages = Math.ceil(totalItems / 20);
 
-  const [selectedCategory, setSelectedCategory] = useRecoilState(
-    selectedCategoryState
-  );
-  const [selectedSubCategory, setSelectedSubCategory] = useRecoilState(
-    selectedSubCategoryState
-  )
+  const [selectedCategory, setSelectedCategory] = useRecoilState(selectedCategoryState);
+  const [selectedSubCategory, setSelectedSubCategory] = useRecoilState(selectedSubCategoryState);
   const [selectedLayout, setSelectedLayout] = useState("2x2");
   const [openCart, setOpenCart] = useState(false);
-  const [cartItems, setCartItems] = useState< 
-    { product: TProduct; quantity: number; variation?: string }[] 
-  >([]);
+  const [cartItems, setCartItems] = useState<{ product: TProduct; quantity: number; variation?: string }[]>([]);
   const [cartItemCount, setCartItemCount] = useRecoilState(cartItemsCountState);
 
-  // console.log("Products Category", products);
-  console.log("Selected category", selectedCategory);
-  console.log("Selected Subcategory", selectedSubCategory);
-
-  // Load cart items from localStorage on component mount
   useEffect(() => {
     const storedItems = getCartItems();
     setCartItems(storedItems);
+      // Scroll to top when the button is clicked
+
+  
   }, []);
 
-  // Update cart item count whenever cartItems state changes
   useEffect(() => {
     setCartItemCount(cartItems.length);
   }, [cartItems, setCartItemCount]);
 
-  // Handle category change
   const handleCategoryChange = (category: string) => {
     setSelectedCategory(category);
+    setCurrentPage(1); // Reset to first page when changing category
   };
 
-  // Handle subcategory change
   const handleSubSubCategoryChange = (Subcategory: string) => {
     setSelectedSubCategory(Subcategory);
+    setCurrentPage(1); // Reset to first page when changing subcategory
   };
 
-  // Handle sorting changes
   const handleSortChange = (sortOption: string) => {
     setSortValue(sortOption);
+    setCurrentPage(1); // Reset to first page when changing sort option
   };
 
-  // Handle layout change
   const handleLayoutChange = (layout: string) => {
     setSelectedLayout(layout);
   };
 
-  // Add product to cart
-  const handleAddToCart = (
-    product: TProduct,
-    quantity: number,
-    variationId?: string
-  ) => {
+  const handleAddToCart = (product: TProduct, quantity: number, variationId?: string) => {
     addToCart(product, quantity, variationId);
     setCartItems(getCartItems());
   };
 
-  // Update product quantity in cart
-  const handleUpdateQuantity = (
-    productId: string,
-    quantity: number,
-    variationId?: string
-  ) => {
+  const handleUpdateQuantity = (productId: string, quantity: number, variationId?: string) => {
     updateCartItemQuantity(productId, quantity, variationId);
     setCartItems(getCartItems());
   };
 
-  // Remove product from cart
   const handleRemoveFromCart = (productId: string) => {
     removeCartItem(productId);
     setCartItems(getCartItems());
   };
 
-  // Clear the cart
   const clearCart = () => {
     setCartItems([]);
     localStorage.removeItem("cartItems");
   };
 
-  // console.log("Products in list", products);
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({
+      top: 0,
+       // This adds a smooth scrolling effect
+    });
+  };
 
-  if (isLoading) return <div className="text-center">Loading products...</div>;
-  if (isError)
-    return <div className="text-center">Error fetching products!</div>;
+  if (isLoading) return <div className="text-center w-full h-screen flex justify-center items-center"><ImSpinner2 className="text-center items-center animate-spin text-2xl"/></div>;
+  if (isError) return <div className="text-center">Error fetching products!</div>;
 
   return (
     <section className="pb-12 bg-gray-100 min-h-screen">
@@ -146,11 +130,11 @@ export const ProductsPage: React.FC = () => {
                 ? "grid-cols-1"
                 : selectedLayout === "2x2"
                 ? "grid-cols-2"
-                : "grid-cols-2" // Default to 2x2 for mobile
-            } md:hidden`} // Hide on desktop
+                : "grid-cols-2"
+            } md:hidden`}
           >
             {isLoading ? (
-              <p>Loading products...</p>
+               <div className="text-center w-full h-screen flex justify-center items-center"><ImSpinner2 className="text-center items-center animate-spin text-2xl"/></div>
             ) : isError ? (
               <p>Failed to load products.</p>
             ) : products.length > 0 ? (
@@ -173,11 +157,11 @@ export const ProductsPage: React.FC = () => {
                 ? "md:grid-cols-3"
                 : selectedLayout === "4x4"
                 ? "md:grid-cols-4"
-                : "md:grid-cols-3" // Default to 3x3 for desktop
+                : "md:grid-cols-3"
             }`}
           >
-            {isLoading ? (
-              <p>Loading products...</p>
+           {isLoading ? (
+               <div className="text-center w-full h-screen flex justify-center items-center"><ImSpinner2 className="text-center items-center animate-spin text-2xl"/></div>
             ) : isError ? (
               <p>Failed to load products.</p>
             ) : products.length > 0 ? (
@@ -193,6 +177,40 @@ export const ProductsPage: React.FC = () => {
             )}
           </div>
         </div>
+
+{products.length > 0 && (
+    /* Pagination */
+    <div className="flex justify-center items-center space-x-2 my-8">
+    <button
+      onClick={() => handlePageChange(currentPage - 1)}
+      disabled={currentPage === 1}
+      className="px-4 py-2 border rounded-md bg-white text-gray-600 disabled:opacity-50"
+    >
+      Previous
+    </button>
+    {[...Array(totalPages)].map((_, index) => (
+      <button
+        key={index}
+        onClick={() => handlePageChange(index + 1)}
+        className={`px-4 py-2 border rounded-md ${
+          currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-white text-gray-600'
+        }`}
+      >
+        {index + 1}
+      </button>
+    ))}
+    <button
+      onClick={() => handlePageChange(currentPage + 1)}
+      disabled={currentPage === totalPages}
+      className="px-4 py-2 border rounded-md bg-white text-gray-600 disabled:opacity-50"
+    >
+      Next
+    </button>
+  </div>
+)}
+    
+
+
 
         {/* Cart Button */}
         <div className="fixed md:bottom-8 md:right-8 bottom-12 right-4">

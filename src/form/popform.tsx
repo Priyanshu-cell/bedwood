@@ -40,7 +40,7 @@ export const PopUpForm: React.FC<{ onClose: () => void }> = ({ onClose }) => {
         {/* Image on the left */}
         <div className="w-full md:w-1/2">
           <img
-            src="/home/popup.png"
+            src="/home/Popup.png"
             alt="Descriptive Alt Text"
             className="w-full h-full object-cover rounded-t md:rounded-l md:rounded-t-none"
           />

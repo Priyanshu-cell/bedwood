@@ -6,37 +6,37 @@ const cardData = [
     image: '/furniture/1.png',
     title: '',
     paragraph: '',
-    link: '/productlist', // Add the link here
+    link: '/productlist?categoryId=67075e3299a97c3e8c6512f2', // Add the link here
   },
   {
     image: '/furniture/2.png',
     title: '',
     paragraph: '',
-    link: '/productlist',
+    link: '/productlist?categoryId=67076494cb95d84fec71ff78',
   },
   {
     image: '/furniture/3.png',
     title: '',
     paragraph: '',
-    link: '/productlist',
+    link: '/productlist?categoryId=670a3b0ecb95d84fec72235b',
   },
   {
-    image: '/furniture/4.png',
+    image: '/furniture/4.jpeg',
     title: '',
     paragraph: '',
-    link: '/productlist',
+    link: '/productlist?subcategoryId=670a42d0cb95d84fec722c35',
   },
   {
-    image: '/furniture/5.png',
+    image: '/furniture/5.jpeg',
     title: '',
     paragraph: '',
-    link: '/productlist',
+    link: '/productlist?subcategoryId=670a4191cb95d84fec722acd',
   },
   {
     image: '/furniture/6.png',
     title: '',
     paragraph: '',
-    link: '/productlist',
+    link: '/productlist?subcategoryId=670a43dfcb95d84fec722d34',
   },
 ];
 
