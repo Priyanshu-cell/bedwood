@@ -7,7 +7,7 @@ import { FaFacebook } from "react-icons/fa";
 import AssociateForm from '@/src/form/assiociate';
 import { AiFillInstagram } from "react-icons/ai";
 import { FaLinkedin } from "react-icons/fa";
-import { FaYoutube } from "react-icons/fa";
+import { FaSquareYoutube } from "react-icons/fa6";
 import { FaInstagramSquare } from "react-icons/fa";
 import { FaSquareXTwitter } from "react-icons/fa6";
 
@@ -42,9 +42,10 @@ export function Footer() {
               <a href="https://x.com/BedwoodFurnish?t=U2xuHD4kyimLI-TsSpLe9A&s=09" target="_blank" rel="noreferrer" className="text-2xl">
                 <FaSquareXTwitter />
               </a>
-              {/* <a href="https://www.youtube.com/bedwoodfurnishing" target="_blank" rel="noreferrer" className="text-2xl text-red-500 hover:text-red-700">
-                <FaYoutube />
-              </a> */}
+              <a href="https://youtube.com/@bedwoodfurnishing?si=dIEgxhM_r2mJsqUp
+" target="_blank" rel="noreferrer" className="text-2xl text-red-500 hover:text-red-700">
+                <FaSquareYoutube />
+              </a>
 
             </div>
 
