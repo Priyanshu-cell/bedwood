@@ -18,7 +18,7 @@ export function generateWhatsAppMessage(
   const productDetails = cartItems.map(({ product, quantity }) => `
 Name: ${product.name}
 Quantity: ${quantity}
-Price: $${product.price.toFixed(2)} // Assuming price needs formatting
+Price: ₹${product.price.toFixed(2)} // Assuming price needs formatting
 `).join('\n');
 
   // Construct the message
