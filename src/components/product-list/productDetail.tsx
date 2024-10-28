@@ -177,7 +177,7 @@ Address: ${data.address}
 
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col m-4">
       <main className="flex flex-col md:flex-row items-center pt-4 md:pt-6 md:px-32">
       <div className="md:w-1/2 w-full flex flex-col items-center">
           <div className="w-full md:w-auto px-4 flex justify-center"> {/* Center the image */}
@@ -196,10 +196,10 @@ Address: ${data.address}
         </div>
 
         <div className="w-full md:w-1/2 px-4 md:m-0 m-6  flex flex-col justify-center"> {/* Align text to the right */}
-          <h2 className="md:text-4xl text-2xl font-bold mb-2">{product.name}</h2>
-          <p className="text-gray-600 mb-4">{product.category}</p>
+          <h2 className="text-2xl font-bold mb-2">{product.name}</h2>
+          <p className="text-gray-600 mb-4">({product.category})</p>
           <div className="mb-4">
-            <span className="text-2xl font-bold mr-2">{product.price}</span>
+            <span className="text-2xl font-bold mr-2">Rs. {product.price}</span>
           </div>
 
           <p className="text-gray-700 mb-4 text-balance">{product.descriptions}</p>

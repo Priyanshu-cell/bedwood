@@ -10,12 +10,17 @@ import { XMarkIcon } from "@heroicons/react/24/outline";
 import { FaTrash } from "react-icons/fa";
 import { TProduct } from "@/src/services/product/product.type"; // Use TProduct instead of Product
 import { WhatsAppCheckout } from "@/src/form/whatsappCheckOut";
+import Link from "next/link";
 
 interface CartDialogProps {
   open: boolean;
   onClose: () => void;
-  cartItems: { product: TProduct; quantity: number, variationId?: string   }[]; 
-  onUpdateQuantity: (productId: string, quantity: number, variationId?: string) => void; 
+  cartItems: { product: TProduct; quantity: number; variationId?: string }[];
+  onUpdateQuantity: (
+    productId: string,
+    quantity: number,
+    variationId?: string
+  ) => void;
   onRemoveFromCart: (productId: string) => void;
   clearCart: () => void;
 }
@@ -80,7 +85,7 @@ export const CartDialog: React.FC<CartDialogProps> = ({
                       </p>
                     ) : (
                       <ul>
-                        {cartItems.map(({ product, quantity, variationId}) => (
+                        {cartItems.map(({ product, quantity, variationId }) => (
                           <li
                             key={product._id}
                             className="flex py-4 border-b border-gray-200"
@@ -92,17 +97,19 @@ export const CartDialog: React.FC<CartDialogProps> = ({
                             />
                             <div className="flex-1 flex justify-between">
                               <div>
-                                <p className="text-sm font-medium text-gray-900">
-                                  {product.name}
-                                </p>
+                                <Link href={`/product/${product._id}`} passHref>
+                                  <h3 className="text-md font-semibold text-gray-800 hover:text-blue-500 cursor-pointer">
+                                    {product.name}
+                                  </h3>
+                                </Link>
                                 <p className="text-sm text-gray-500">
                                   {quantity > 1 ? (
                                     <>
-                                      ${product.price} x {quantity} = $
+                                      ₹{product.price} x {quantity} = $
                                       {(product.price * quantity).toFixed(2)}
                                     </>
                                   ) : (
-                                    `$${product.price}`
+                                    `₹${product.price}`
                                   )}
                                 </p>
                                 <div className="mt-2">
@@ -162,7 +169,7 @@ export const CartDialog: React.FC<CartDialogProps> = ({
                     </p>
                     {/* Display the subtotal */}
                     <p className="text-lg font-medium text-gray-900">
-                      ${calculateSubtotal()}
+                      ₹{calculateSubtotal()}
                     </p>
                   </div>
                   <div className="w-fit bg-orange-400 text-white py-2 px-6 m-4 rounded-md hover:bg-orange-600">
