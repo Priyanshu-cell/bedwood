@@ -1,72 +1,44 @@
-import React from 'react';
+'use client'
+import React, { useEffect, useState } from "react";
+import { getProductCategories } from "@/src/services/category";
+import { LinkData } from "@/src/services/category/category.type";
+import { useRouter } from "next/navigation"; // Import the useRouter hook to handle navigation
+import { ImSpinner2 } from "react-icons/im";
 
-export const TopPicksSection = () => {
-  const picks = [
-    {
-      id: 1,
-      src: "/toppicks/sofaset.jpg",
-      alt: "Wooden Sofa Set Furniture",
-      title: "Sofa set online",
-      name: "Sofa Sets",
-    },
-    {
-      id: 2,
-      src: "/toppicks/bed.jpg",
-      alt: "Wooden Bed Furniture",
-      title: "Wooden Bed",
-      name: "Beds",
-    },
-    {
-      id: 3,
-      src: "/toppicks/diningtable.jpg",
-      alt: "Dining Table Set",
-      title: "Dining Table set",
-      name: "Dining Table Sets",
-    },
-    {
-      id: 4,
-      src: "/toppicks/sofacumbed.jpg",
-      alt: "Sofa Cum Bed Furniture",
-      title: "Sofa cum bed online",
-      name: "Sofa Cum Beds",
-    },
-    {
-      id: 5,
-      src: "/toppicks/bookshelve.jpg",
-      alt: "Wooden Bookshelf Furniture",
-      title: "Book Shelves online",
-      name: "Book Shelves",
-    },
-    {
-      id: 6,
-      src: "/toppicks/coffeetable.png",
-      alt: "Coffee Table Furniture",
-      title: "Coffee Table Sets online",
-      name: "Coffee Tables",
-    },
-    {
-      id: 7,
-      src: "/toppicks/studytable.jpg",
-      alt: "Study Table Furniture",
-      title: "Study Table",
-      name: "Study Tables",
-    },
-    {
-      id: 8,
-      src: "/toppicks/homedecor.png",
-      alt: "Home Decor Items",
-      title: "Decor Item",
-      name: "Home Decor",
-    },
-    {
-      id: 9,
-      src: "/toppicks/homefurnishing.png",
-      alt: "Home Furnishing Items",
-      title: "Home Furnishing Online",
-      name: "Home Furnishing",
-    },
-    
-  ];
+export const TopPicksSection: React.FC = () => {
+  const [linkData, setLinkData] = useState<LinkData[]>([]);
+  const router = useRouter(); // Initialize useRouter to programmatically navigate
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getProductCategories();
+        const data = await response;
+        if (data.success) {
+          const formattedData = data.data.map((item) => ({
+            _id: item._id ?? "",
+            name: item.name,
+            logo: item.image || "", // Map the image URL to the 'logo' field
+            children: item.children || [],
+          }));
+          setLinkData(formattedData);
+        }
+      } catch (error) {
+        console.error("Failed to fetch data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // Handle navigation when a category is clicked
+  const handleCategoryClick = (categoryId: string) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set("categoryId", categoryId); // Set the category ID in the URL query params
+
+    // Navigate to the product list page with the selected category
+    router.push(`/productlist?${params.toString()}`);
+  };
 
   return (
     <div className="container mx-auto py-8 px-4">
@@ -76,19 +48,26 @@ export const TopPicksSection = () => {
       </div>
       <div className="relative overflow-x-auto scrollbar-hidden">
         <div className="flex items-center space-x-4">
-          {picks.map((pick) => (
-            <div key={pick.id} className="flex flex-col items-center">
-              <div className="relative overflow-hidden rounded-full bg-gray-200 w-24 h-24 sm:w-32 sm:h-32 md:w-44 md:h-44">
-                <img
-                  src={pick.src}
-                  alt={pick.alt}
-                  title={pick.title}
-                  className="object-cover w-full h-full"
-                />
+          {linkData.length === 0 ? (
+            <div className="text-center w-full flex justify-center items-center"><ImSpinner2 className="text-center items-center animate-spin text-2xl"/></div>
+          ) : (
+            linkData.map((link) => (
+              <div key={link._id} className="flex flex-col items-center">
+                <div
+                  className="relative overflow-hidden rounded-full bg-gray-200 w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 cursor-pointer"
+                  onClick={() => handleCategoryClick(link._id)} // Handle click to navigate
+                >
+                  <img
+                    src={link.logo}
+                    alt={link.name}
+                    title={link.name}
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+                <p className="mt-2 text-center text-xs lg:text-base font-medium">{link.name}</p>
               </div>
-              <p className="mt-2 text-center text-xs lg:text-base font-medium">{pick.name}</p>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </div>
