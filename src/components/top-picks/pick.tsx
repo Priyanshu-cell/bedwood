@@ -55,7 +55,7 @@ export const TopPicksSection: React.FC = () => {
               <div key={link._id} className="flex flex-col items-center">
                 <div
                   className="relative overflow-hidden rounded-full bg-gray-200 w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 cursor-pointer"
-                  onClick={() => handleCategoryClick(link._id)} // Handle click to navigate
+                  onClick={() => handleCategoryClick(link._id)} 
                 >
                   <img
                     src={link.logo}

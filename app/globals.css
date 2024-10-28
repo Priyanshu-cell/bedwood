@@ -56,4 +56,63 @@
 }
 
 
+/* Swiper Navigation Arrows - Small Screens */
+.swiper-button-next, 
+.swiper-button-prev {
+  background-color: white !important;   /* White background */
+  color: orange !important;              /* Orange arrow color */
+  padding: 6px 8px !important;           /* Compact arrows */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  
+  /* Disable Swiper's default margin */
+  margin: 0 !important; 
+  
+  /* Override default position for the arrows */
+  top: 50% !important;  /* Vertically center arrows */
+  transform: translateY(-50%) !important; /* Keep them centered vertically */
+}
+
+/* Custom position for the left arrow */
+.swiper-button-prev {
+  left: -5px !important;   /* Move left arrow slightly to the left */
+}
+
+/* Custom position for the right arrow */
+.swiper-button-next {
+  right: -5px !important;  /* Move right arrow slightly to the right */
+}
+
+/* Ensure arrow color changes properly */
+.swiper-button-next::after, 
+.swiper-button-prev::after {
+  color: orange !important;            /* Orange arrow color */
+  font-size: 12px !important;          /* Small arrow size */
+}
+
+@media (min-width: 780px) {
+  /* Adjust arrow size and padding for larger screens */
+  .swiper-button-next, 
+  .swiper-button-prev {
+    padding: 2px 6px !important;       /* Slightly larger padding for bigger screens */
+  }
+
+  .swiper-button-next::after, 
+  .swiper-button-prev::after {
+    font-size: 20px !important;        /* Larger arrow size on bigger screens */
+  }
+
+  /* Custom position for the left arrow on larger screens */
+  .swiper-button-prev {
+    left: 0px !important;            /* Move left arrow slightly to the left */
+  }
+
+  /* Custom position for the right arrow on larger screens */
+  .swiper-button-next {
+    right: 0px !important;           /* Move right arrow slightly to the right */
+  }
+}
+
+
+
+
 
