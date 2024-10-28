@@ -36,24 +36,26 @@ export const Header: React.FC<HeaderProps> = ({
 
   const handleCategoryChange = (category: string) => {
     const params = new URLSearchParams(window.location.search);
-
+  
     if (category === 'All') {
       setrefetchdata(true);
       setSelectedCategory("");
       params.delete("categoryId"); // Clear categoryId parameter
       refetch(); // Refetch the products without category
     } else {
+      setSelectedCategory(category);
       params.set("categoryId", category); // Set categoryId for other categories
-      refetch();
-      setrefetchdata(false); // Refetch the products with the selected category
+      refetch(); // Refetch the products with the selected category
+      setrefetchdata(false);
     }
-
-    // Update the URL without refreshing
-    window.history.replaceState({}, "", `/productlist`);
+  
+    // Update the URL without refreshing, including query parameters
+    window.history.replaceState({}, "", `/productlist?${params.toString()}`);
   };
+  
 
   return (
-    <div className="sticky md:top-12 top-0 bg-orange-50 shadow-xs shadow-slate-100 z-30">
+    <div className="sticky md:top-8 top-0 bg-orange-50 shadow-xs shadow-slate-100 z-30">
       <div className="mx-auto max-w-8xl px-2 lg:px-8 py-4 flex flex-row justify-between items-center gap-4">
         
         {/* Left Section: Sort and Filter */}

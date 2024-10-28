@@ -178,7 +178,7 @@ Address: ${data.address}
 
   return (
     <div className="flex flex-col">
-      <main className="flex flex-col md:flex-row items-center pt-4 md:pt-6 md:pl-32">
+      <main className="flex flex-col md:flex-row items-center pt-4 md:pt-6 md:px-32">
       <div className="md:w-1/2 w-full flex flex-col items-center">
           <div className="w-full md:w-auto px-4 flex justify-center"> {/* Center the image */}
             <ImageGallery

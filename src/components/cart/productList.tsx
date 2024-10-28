@@ -1,6 +1,7 @@
 import { TProduct } from '@/src/services/product/product.type';
 import React from 'react';
 import { FaTrash } from 'react-icons/fa';
+import Link from 'next/link'; // Import Link component from Next.js
 
 interface ProductListProps {
   cartItems: { product: TProduct; quantity: number }[];
@@ -16,7 +17,7 @@ export const ProductList: React.FC<ProductListProps> = ({
   return (
     <div className="shadow-md rounded-lg pb-6 px-4 h-full flex flex-col">
       {/* Header */}
-      <div className="sticky  z-10 border-b pb-2">
+      <div className="sticky z-10 border-b pb-2">
         <h1 className="text-2xl font-semibold">Shopping Cart</h1>
       </div>
 
@@ -35,7 +36,12 @@ export const ProductList: React.FC<ProductListProps> = ({
                     className="w-24 h-24 object-cover rounded-md"
                   />
                   <div className="flex-1">
-                    <h3 className="text-xl font-semibold text-gray-800">{product.name}</h3>
+                    {/* Link to product detail */}
+                    <Link href={`/product/${product._id}`} passHref>
+                      <h3 className="text-xl font-semibold text-gray-800 hover:text-blue-500 cursor-pointer">
+                        {product.name}
+                      </h3>
+                    </Link>
 
                     {/* Display price with multiplication if quantity > 1 */}
                     <p className="text-lg text-gray-600">
