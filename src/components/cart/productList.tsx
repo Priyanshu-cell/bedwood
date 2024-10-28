@@ -47,10 +47,10 @@ export const ProductList: React.FC<ProductListProps> = ({
                     <p className="text-lg text-gray-600">
                       {quantity > 1 ? (
                         <>
-                          ${product.price} x {quantity} = ${(product.price * quantity).toFixed(2)}
+                          ₹{product.price} x {quantity} = ${(product.price * quantity).toFixed(2)}
                         </>
                       ) : (
-                        `$${product.price}`
+                        `₹${product.price}`
                       )}
                     </p>
 

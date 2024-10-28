@@ -26,13 +26,13 @@ export const OrderSummary: React.FC<OrderSummaryProps> = ({ cartItems, onCheckou
       {/* Display the count of distinct products */}
       <div className="flex justify-between mb-4">
         <p className="text-lg">Items: {distinctProductsCount}</p> {/* Distinct product count */}
-        <p className="text-lg font-semibold">${subtotal}</p>
+        <p className="text-lg font-semibold">₹{subtotal}</p>
       </div>
 
       <form>
         <div className="flex justify-between mt-6">
           <p className="text-lg font-medium">Total</p>
-          <p className="text-lg font-semibold text-orange-600">${subtotal}</p>
+          <p className="text-lg font-semibold text-orange-600">₹{subtotal}</p>
         </div>
       </form>
 
