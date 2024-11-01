@@ -125,7 +125,7 @@ export const LargeHeader: React.FC<LargeHeaderProps> = ({
 
       {/* Mobile View */}
       <div className="md:hidden flex flex-col items-center">
-        <div className="flex items-center w-full max-w-6xl mx-auto justify-between">
+        <div className="flex items-center w-full max-w-5xl mx-auto justify-between">
           <div className="flex items-center">
             {/* Hamburger Icon */}
             <button

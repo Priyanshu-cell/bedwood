@@ -11,7 +11,7 @@ export const EssentialCard: React.FC<EssentialCardProps> = ({ image, title, desc
   return (
     <div className="flex flex-col h-full bg-white rounded-md shadow-md overflow-hidden">
       {/* Image */}
-      <div className="relative w-full h-60">
+      <div className="relative w-full h-64">
         <img src={image} alt={title} className="absolute inset-0 w-full h-full object-fill" />
       </div>
 

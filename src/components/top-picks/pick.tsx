@@ -13,12 +13,11 @@ export const TopPicksSection: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await getProductCategories();
-        const data = await response;
-        if (data.success) {
-          const formattedData = data.data.map((item) => ({
+        if (response.success) {
+          const formattedData = response.data.map((item) => ({
             _id: item._id ?? "",
             name: item.name,
-            logo: item.image || "", // Map the image URL to the 'logo' field
+            logo: item.image || "", 
             children: item.children || [],
           }));
           setLinkData(formattedData);
@@ -33,11 +32,7 @@ export const TopPicksSection: React.FC = () => {
 
   // Handle navigation when a category is clicked
   const handleCategoryClick = (categoryId: string) => {
-    const params = new URLSearchParams(window.location.search);
-    params.set("categoryId", categoryId); // Set the category ID in the URL query params
-
-    // Navigate to the product list page with the selected category
-    router.push(`/productlist?${params.toString()}`);
+    router.push(`/productlist?categoryId=${categoryId}`);
   };
 
   return (
@@ -49,13 +44,15 @@ export const TopPicksSection: React.FC = () => {
       <div className="relative overflow-x-auto scrollbar-hidden">
         <div className="flex items-center space-x-4">
           {linkData.length === 0 ? (
-            <div className="text-center w-full flex justify-center items-center"><ImSpinner2 className="text-center items-center animate-spin text-2xl"/></div>
+            <div className="flex justify-center items-center w-full">
+              <ImSpinner2 className="animate-spin text-2xl" />
+            </div>
           ) : (
             linkData.map((link) => (
               <div key={link._id} className="flex flex-col items-center">
                 <div
                   className="relative overflow-hidden rounded-full bg-gray-200 w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 cursor-pointer"
-                  onClick={() => handleCategoryClick(link._id)} 
+                  onClick={() => handleCategoryClick(link._id)}
                 >
                   <img
                     src={link.logo}

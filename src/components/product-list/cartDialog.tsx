@@ -98,7 +98,7 @@ export const CartDialog: React.FC<CartDialogProps> = ({
                             <div className="flex-1 flex justify-between">
                               <div>
                                 <Link href={`/product/${product._id}`} passHref>
-                                  <h3 className="text-md font-semibold text-gray-800 hover:text-blue-500 cursor-pointer">
+                                  <h3 className="text-md font-semibold text-gray-800 hover:text-orange-500 cursor-pointer">
                                     {product.name}
                                   </h3>
                                 </Link>

@@ -38,7 +38,7 @@ export const ProductList: React.FC<ProductListProps> = ({
                   <div className="flex-1">
                     {/* Link to product detail */}
                     <Link href={`/product/${product._id}`} passHref>
-                      <h3 className="text-xl font-semibold text-gray-800 hover:text-blue-500 cursor-pointer">
+                      <h3 className="text-xl font-semibold text-gray-800 hover:text-orange-500 cursor-pointer">
                         {product.name}
                       </h3>
                     </Link>

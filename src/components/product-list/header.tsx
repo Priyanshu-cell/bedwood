@@ -55,7 +55,7 @@ export const Header: React.FC<HeaderProps> = ({
   
 
   return (
-    <div className="sticky md:top-8 top-0 bg-orange-50 shadow-xs shadow-slate-100 z-30">
+    <div className="sticky md:top-10 top-0 bg-orange-50 shadow-xs shadow-slate-100 z-30">
       <div className="mx-auto max-w-8xl px-2 lg:px-8 py-4 flex flex-row justify-between items-center gap-4">
         
         {/* Left Section: Sort and Filter */}
