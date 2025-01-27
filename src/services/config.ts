@@ -2,7 +2,7 @@
 import axios from "axios";
 
 export const Api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_URL,
+  baseURL: 'https://bedwood.vercel.app',
   timeout: 1000,
   headers: { 'Content-Type': 'application/json' },
 });

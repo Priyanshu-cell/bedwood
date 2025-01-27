@@ -91,7 +91,7 @@ export function Footer() {
           <Link href="" className="hover:underline">
             BedWood™
           </Link>
-          . All Rights Reserved.
+          . All Rights Reserved || Powered by Grandeur Net
         </span>
       </div>
 

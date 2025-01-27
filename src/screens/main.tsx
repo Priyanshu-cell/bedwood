@@ -55,13 +55,12 @@ export const HomePage = () => {
     <main className="overflow-hidden">
       <Header />
       <ImageSection />
-      <TopPicksSection />
+      {/* <TopPicksSection /> */}
       <BrandSection />
       <BestSellerSection />
       <Banner/>
       <EssentialsSection />
-      <CollectionsSection />
-      
+      <CollectionsSection /> 
       <ReviewSection />
       <BedwoodFaq/>
       <Footer />

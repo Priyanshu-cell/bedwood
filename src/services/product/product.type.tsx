@@ -13,8 +13,6 @@ export type  TProduct  = {
     price: number;
   }
 
-
-
   export type ProductResponse = {
     success: any;
     message(message: any): unknown;
