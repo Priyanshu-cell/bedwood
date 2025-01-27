@@ -19,6 +19,8 @@ import {
   
 } from "@/src/components";
 import { PopUpForm } from '@/src/form/popform';
+import BedSeoContent from '../components/seoContent/BedSeoContent';
+import DiningTableContent from '../components/seoContent/DiningTableContent';
 
 export const HomePage = () => {
   const [isPopUpVisible, setIsPopUpVisible] = useState(false); // Initialize as false
@@ -64,6 +66,9 @@ export const HomePage = () => {
       <ReviewSection />
       <BedwoodFaq/>
       <Footer />
+
+      <BedSeoContent />
+      <DiningTableContent />
 
       {isPopUpVisible && <PopUpForm onClose={handleClosePopUp} />}
     </main>
